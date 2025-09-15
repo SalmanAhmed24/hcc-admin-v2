@@ -1,0 +1,32 @@
+.bg-all-modals {
+  .MuiPaper-root {
+    background: rgba($color: rgb(0, 0, 21), $alpha: 0.6);
+    backdrop-filter: blur(10px);
+    box-shadow: 0px -1px 10px 0px #a2a2a2;
+    color: #fff;
+    min-height: 600px;
+  }
+}
+#role-select-cus {
+  z-index: 22;
+  color: #000 !important;
+  // div {
+  //   background: rgba($color: #fff, $alpha: 0.5) !important;
+  //   color: #000 !important;
+  //   backdrop-filter: blur(20px) !important;
+  // }
+  .css-1nmdiq5-menu {
+    box-shadow: 0 0 5px 0px #a2a2a2;
+  }
+}
+.MuiCheckbox-root {
+  color: #fff;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1); /* Makes it white */
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
