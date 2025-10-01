@@ -32,7 +32,7 @@ import { ArrowBack } from "@mui/icons-material";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 
-function TaskTable({ open, handleClose }) {
+function TaskTable({ open, handleClose, filterBy, searchTerm }) {
   const [taskModal, setTaskModal] = useState(false);
   const [taskId, setTaskId] = useState("");
   const [openModal, setOpenModal] = useState(false);
@@ -45,6 +45,7 @@ function TaskTable({ open, handleClose }) {
   const [pagesAT, setPagesAT] = useState(1);
   const [totalAT, setTotalAT] = useState(0);
   const [pageAT, setPageAT] = useState(1);
+  const [taskStatusOpt, setTaskStatusOpt] = useState([]);
   
   const [taskPriorityOpt, setTaskPriorityOpt] = useState([]);
 
@@ -70,50 +71,102 @@ function TaskTable({ open, handleClose }) {
     setTaskPriorityOpt(options);
   }
 
+  async function taskStatusOptions() {
+    const taskStatus = await axios.get(`${apiPath.prodPath}/api/picklist/taskStatus/getAlltaskStatus`)
+    .then((res) => {
+      const statusArr = res.data.taskStatus;
+      console.log(statusArr)
+      return statusArr;
+    });
+    ;
+    const options = taskStatus.map((item)=>{
+      const statusOption = {
+        label : item.status,
+        value : item.status,
+      }
+      return statusOption;
+    });
+    setTaskStatusOpt(options);
+  }
+
+  const getUserCreatedByTasks = async (page=1) => {
+    if(!filterBy || !searchTerm.trim()){
+      const res = await axios.get(`${apiPath.devPath}/api/tasks/user/createdBy/${username}/?page=${page}&limit=8`);
+      setTaskCreatedBy(res.data.tasks);
+      setPagesCB(res.data.pages);
+      setTotalCB(res.data.total);
+    } else {
+      const res = await axios.get(`${apiPath.devPath}/api/tasks/user/createdBy/${username}/?filterBy=${filterBy}&searchTerm=${searchTerm}&page=${page}&limit=8`);
+      setTaskCreatedBy(res.data.tasks);
+      setPagesCB(res.data.pages);
+      setTotalCB(res.data.total);
+    }
+  }
+
+  const getUserAssignedToTasks = async (page=1) => {
+    if(!filterBy || !searchTerm.trim()){
+      const res = await axios.get(`${apiPath.devPath}/api/tasks/user/assignedTo/${username}/?page=${page}&limit=8`);
+      setTaskAssignedTo(res.data.tasks);
+      setPagesAT(res.data.pages);
+      setTotalAT(res.data.total);
+    } else {
+      const res = await axios.get(`${apiPath.devPath}/api/tasks/user/assignedTo/${username}/?filterBy=${filterBy}&searchTerm=${searchTerm}&page=${page}&limit=8`);
+      setTaskAssignedTo(res.data.tasks);
+      setPagesAT(res.data.pages);
+      setTotalAT(res.data.total);
+    }
+  }
+
   useEffect(()=>{
     taskPriorityOptions();
+    taskStatusOptions();
+    getUserCreatedByTasks();
+    getUserAssignedToTasks();
 
-    axios.get(`${apiPath.prodPath}/api/tasks/user/createdBy/${username}`)
-      .then((res) => {
-        setTaskCreatedBy(res.data.tasks);
-        setPagesCB(res.data.pages);
-        setTotalCB(res.data.total);
-      })
-      .catch((err) => {
-        console.error("Error fetching task details:", err);
-      });
-    axios.get(`${apiPath.prodPath}/api/tasks/user/assignedTo/${username}`)
-      .then((res) => {
-        setTaskAssignedTo(res.data.tasks);
-        setPagesAT(res.data.pages);
-        setTotalAT(res.data.total);
-      })
-      .catch((err) => {
-        console.error("Error fetching task details:", err);
-      });
-  }, [open]);
+    // axios.get(`${apiPath.prodPath}/api/tasks/user/createdBy/${username}`)
+    //   .then((res) => {
+    //     setTaskCreatedBy(res.data.tasks);
+    //     setPagesCB(res.data.pages);
+    //     setTotalCB(res.data.total);
+    //   })
+    //   .catch((err) => {
+    //     console.error("Error fetching task details:", err);
+    //   });
+    // axios.get(`${apiPath.prodPath}/api/tasks/user/assignedTo/${username}`)
+    //   .then((res) => {
+    //     setTaskAssignedTo(res.data.tasks);
+    //     setPagesAT(res.data.pages);
+    //     setTotalAT(res.data.total);
+    //   })
+    //   .catch((err) => {
+    //     console.error("Error fetching task details:", err);
+    //   }); 
+  }, [open, filterBy, searchTerm]);
 
   async function refreshData(page=1) {
+    getUserCreatedByTasks(page);
+    getUserAssignedToTasks(page);
+  
 
-    await axios.get(`${apiPath.prodPath}/api/tasks/user/createdBy/${username}/?page=${page}&limit=5`)
-      .then((res) => {
-        setTaskCreatedBy(res.data.tasks);
-        setPagesCB(res.data.pages);
-        setTotalCB(res.data.total);
-      })
-      .catch((err) => {
-        console.error("Error fetching task details:", err);
-      });
+    // await axios.get(`${apiPath.prodPath}/api/tasks/user/createdBy/${username}/?page=${page}&limit=8`)
+    //   .then((res) => {
+    //     setTaskCreatedBy(res.data.tasks);
+    //     setPagesCB(res.data.pages);
+    //     setTotalCB(res.data.total);
+    //   })
+    //   .catch((err) => {
+    //     console.error("Error fetching task details:", err);
+    //   });
 
-    await axios.get(`${apiPath.prodPath}/api/tasks/user/assignedTo/${username}/?page=${page}&limit=5`)
-      .then((res) => {
-        setTaskAssignedTo(res.data.tasks);
-        setPagesAT(res.data.pages);
-        setTotalAT(res.data.total);
-      })
-      .catch((err) => {
-        console.error("Error fetching task details:", err);
-      });
+    // await axios.get(`${apiPath.prodPath}/api/tasks/user/assignedTo/${username}/?page=${page}&limit=8`)
+    //   .then((res) => {
+    //     setTaskAssignedTo(res.data.tasks);
+    //     setPagesAT(res.data.pages);
+    //     setTotalAT(res.data.total);
+    //   })
+    //   .catch((err) => {
+    //     console.error("Error fetching task details:", err);
+    //   });
   }
 
   async function onChangePageAT(e, value){
@@ -147,7 +200,7 @@ function TaskTable({ open, handleClose }) {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`${apiPath.devPath}/api/tasks/${id}`)
+          .delete(`${apiPath.prodPath}/api/tasks/${id}`)
           .then((res) => {
             refreshData();
           })
@@ -304,11 +357,11 @@ function TaskTable({ open, handleClose }) {
                                         value={task.taskStatus}
                                         onChange={(e) => handleStatusChange(task._id, e.target.value)}
                                         >
-                                        <option value="Not Started">Not Started</option>
-                                        <option value="In Progress">In Progress</option>
-                                        <option value="Completed">Completed</option>
-                                        <option value="Deferred">Deferred</option>
-                                        <option value="Waiting on Someone">Waiting on Someone</option>
+                                        {taskStatusOpt.map((option) => (
+                                          <option key={option.value} value={option.value}>
+                                            {option.label}
+                                          </option>
+                                        ))}
                                         </select>
                                     </TableCell>
                                     <TableCell className="font-satoshi font-medium text-white">
@@ -449,16 +502,16 @@ function TaskTable({ open, handleClose }) {
                                 </TableCell>
                                 <TableCell className="font-satoshi font-medium text-white">
                                     <select
-                                    className="bg-[#1b071b] text-white px-2 py-1 rounded"
-                                    value={task.taskStatus}
-                                    onChange={(e) => handleStatusChange(task._id, e.target.value)}
-                                    >
-                                    <option value="Not Started">Not Started</option>
-                                    <option value="In Progress">In Progress</option>
-                                    <option value="Completed">Completed</option>
-                                    <option value="Deferred">Deferred</option>
-                                    <option value="Waiting on Someone">Waiting on Someone</option>
-                                    </select>
+                                      className="bg-[#1b071b] text-white px-2 py-1 rounded"
+                                      value={task.taskStatus}
+                                      onChange={(e) => handleStatusChange(task._id, e.target.value)}
+                                      >
+                                      {taskStatusOpt.map((option) => (
+                                        <option key={option.value} value={option.value}>
+                                          {option.label}
+                                        </option>
+                                      ))}
+                                      </select>
                                 </TableCell>
                                 <TableCell className="font-satoshi font-medium text-white">
                                     {task.taskCategory}

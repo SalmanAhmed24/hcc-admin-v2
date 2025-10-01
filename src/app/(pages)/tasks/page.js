@@ -31,10 +31,12 @@ function TasksPage() {
   function filterOptions() {
     const sorts = [
       'taskStatus',
-      'assignedTo',
+      // 'assignedTo',
       'taskCategory',
-      'createdBy',
-      'dueDate'
+      // 'createdBy',
+      // 'dueDate',
+      'taskDescription',
+      'taskPriority',
     ];
     const options = sorts.map((item)=>{
       const statusOption = {
@@ -71,19 +73,19 @@ function TasksPage() {
     setLoader(true);
     try {
       
-      let url = `${apiPath.prodPath}/api/tasks/filter`;
-      const params = {};
+      // let url = `${apiPath.prodPath}/api/tasks/filter`;
+      // const params = {};
       
-      if (filterBy === 'dateCreated' || filterBy === 'dueDate') {
+      // if (filterBy === 'dateCreated' || filterBy === 'dueDate') {
         
-        params[filterBy] = searchTerm;
-      } else {
+      //   params[filterBy] = searchTerm;
+      // } else {
         
-        params[filterBy] = searchTerm;
-      }
+      //   params[filterBy] = searchTerm;
+      // }
       
-      const res = await axios.get(url, { params });
-      setAllTasks(res.data);
+      // const res = await axios.get(url, { params });
+      // setAllTasks(res.data);
     } catch (err) {
       console.error(err);
       Swal.fire({
@@ -257,7 +259,10 @@ function TasksPage() {
           <TaskTable refreshData={refreshData} allTasks={allTasks}
             currentPage={currentPage}
             totalPages={totalPages}
-            onPageChange={handlePageChange}/>
+            onPageChange={handlePageChange}
+            filterBy={filterBy}
+            searchTerm={searchTerm}
+            />
         )}
       </div>
       <AddTask
