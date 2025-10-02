@@ -45,6 +45,7 @@ const AddTask = ({ open, handleClose, addTask, edit, editData, editTask }) => {
   const [taskPriority, setTaskPriority] = useState("");
   const [inputPriority, setInputPriority] = useState("");
   const [taskPriorityOpt, setTaskPriorityOpt] = useState([]);
+  const [taskTitle, setTaskTitle] = useState("");
 
   useEffect(() => {
    if(edit && editData) {
@@ -320,7 +321,18 @@ const AddTask = ({ open, handleClose, addTask, edit, editData, editTask }) => {
           </div>
 
         <div className="flex flex-row gap-4 w-full items-center justify-between pb-6 border-b-[1px] border-[#7F56D9]">
-             <div className="flex flex-col gap-2 w-1/2">
+          <div className="flex flex-col gap-2 w-1/3">
+              <label htmlFor="taskTitle">Task Title</label>
+              <input
+                id="taskTitle"
+                name="taskTitle"
+                value={taskTitle}
+                onChange={(e) => setTaskTitle(e.target.value)}
+                required
+                className="p-3 border-[#452C95] rounded-[12px] focus-within:outline-none border-[1px] bg-[#191526]"
+              />
+            </div>
+             <div className="flex flex-col gap-2 w-1/3">
             <label htmlFor="taskCategory">Task Category</label>
             <Select
               options={taskCategoryOpt}
@@ -334,7 +346,7 @@ const AddTask = ({ open, handleClose, addTask, edit, editData, editTask }) => {
               name="Task Catagory"
               />
           </div>
-          <div className="flex flex-col gap-2 w-1/2">
+          <div className="flex flex-col gap-2 w-1/3">
             <label htmlFor="taskStatus">Task Priority</label>
             <Select
               options={taskPriorityOpt}
