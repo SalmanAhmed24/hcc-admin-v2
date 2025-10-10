@@ -207,7 +207,7 @@ const SubTask = ({item, open}) => {
           setTaskDescription("");
           setTaskPriority("");
           setDate("");
-          setCreatedBy("");
+          // setCreatedBy("");
           setTaskStatus("");
           setEditClientTask(false);
           setAssignedToUsername("");
@@ -257,7 +257,7 @@ const SubTask = ({item, open}) => {
           setTaskDescription("");
           setTaskPriority("");
           setDate("");
-          setCreatedBy("");
+          // setCreatedBy("");
           setTaskStatus("");
           setEditClientTask(false);
           setAssignedToUsername("");
@@ -578,7 +578,7 @@ const removeTag = (index) => {
                       setTaskDescription(i.taskDescription); 
                       setTaskPriority({label: i.taskPriority, value: i.taskPriority}); 
                       setDate(i.date); 
-                      setCreatedBy({label: i.createdBy, value: i.createdBy}); 
+                      // setCreatedBy({label: i.createdBy, value: i.createdBy}); 
                       setTaskStatus({label: i.taskStatus, value: i.taskStatus});
                       setTaskId(i._id);
                       setAssignedToUsername(editData.assignedTo.map(user => {

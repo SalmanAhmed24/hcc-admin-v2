@@ -18,12 +18,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Pagination from "@mui/material/Pagination";
-import moment from "moment";
-import AddPicklist from "../drawers/picklist";
+// import moment from "moment";
+// import AddPicklist from "../drawers/picklist";
 import { apiPath } from "@/utils/routes";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { color } from "@mui/system";
+// import { color } from "@mui/system";
 import AddSalelist from "../drawers/salelist";
 import SaleDetails from "../drawers/saleListOpen";
 

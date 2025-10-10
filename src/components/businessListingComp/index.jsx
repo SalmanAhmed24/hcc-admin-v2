@@ -1,16 +1,16 @@
 import { Poppins } from "next/font/google";
-// import EmployeeTable from "@/components/subcomponents/tables/employeeTable";
+import EmployeeTable from "@/components/subcomponents/tables/employeeTable";
 import { Button } from "@/components/ui/button";
 import { apiPath } from "@/utils/routes";
 import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-// import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 import Swal from "sweetalert2";
 import { SkeletonCard } from "@/components/reusable/skeleton-card";
-// import Select from "react-select";
-// import { Search } from "lucide-react";
-// import SearchForm from "../reusable/searchForm";
+import Select from "react-select";
+import { Search } from "lucide-react";
+import SearchForm from "../reusable/searchForm";
 
 const poppins = Poppins({
   weight: ["300", "400", "500", "600", "800"],
@@ -18,16 +18,17 @@ const poppins = Poppins({
   subsets: ["latin"],
 });
 
-// const germanCities = {city: ["Berlin", "Hamburg", "Munich", "Cologne", "Frankfurt", "Stuttgart", "Düsseldorf", "Dortmund", "Essen", "Leipzig"]};
+const germanCities = {city: ["Berlin", "Hamburg", "Munich", "Cologne", "Frankfurt", "Stuttgart", "Düsseldorf", "Dortmund", "Essen", "Leipzig"]};
 import "./style.scss";
 
 // import SalelistTable from "../subcomponents/tables/saleslistTable";
 // import AddSalelist from "../subcomponents/drawers/salelist";
 import MailingTable from "../subcomponents/tables/mailingTable";
 import AddEmailCredentials from "../subcomponents/drawers/addEmailCredentials";
+import BusinessListingsTable from "../subcomponents/tables/businessListingsTable";
 
 
-function MailingComp({ picklistName }) {
+function BusinessListingComp({ picklistName }) {
   const [picklistData, setPicklistData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1); 
   const [totalPages, setTotalPages] = useState(1);
@@ -40,12 +41,10 @@ function MailingComp({ picklistName }) {
   function filterOptions() {
     let sorts;
 
-    if(picklistName == "Inbox"){
-       sorts = [];
+    if(picklistName == "Business Listings"){
+       sorts = ["category", "city", "state", "numberOfReviews", "stars", "storeName", "googleUrl", "bizWebsite", "address"];
     }
-    else if(picklistName == "Gmail"){
-      sorts = [];
-    }else if (picklistName == "Resend"){
+    else if(picklistName == "Search"){
       sorts = [];
     }else{ console.log("No data found"); }
 
@@ -74,28 +73,24 @@ function MailingComp({ picklistName }) {
     
       var url = "";
 
-    if (picklistName == "Inbox") {
-      url = `${apiPath.prodPath}/api/gmail/inbox?${filterBy}=${searchTerm}`;
+    if (picklistName == "Business Listings") {
+      url = `${apiPath.prodPath2}/api/gmail/inbox?${filterBy}=${searchTerm}`;
     }
-    if (picklistName == "Gmail") {
-      url = `${apiPath.prodPath}/api/clients/allNewLeads?${filterBy}=${searchTerm}`;
+    if (picklistName == "Search") {
+      url = `${apiPath.prodPath2}/api/clients/allNewLeads?${filterBy}=${searchTerm}`;
     }
-    if (picklistName == "Resend"){
-      url = `${apiPath.prodPath}/api/clients/allNewLeads?${filterBy}=${searchTerm}`
-    }
+    
     
       const res = await axios
       .get(url)
       .then((res) => {
-        if (picklistName == "Inbox"){
-          setPicklistData(res.data.Inbox);
+        if (picklistName == "Business Listings") {
+          setPicklistData(res.data.listings);
         }
-        if (picklistName == "Gmail") {
+        if (picklistName == "Search") {
           setPicklistData(res.data);
         }
-        if (picklistName == "Resend"){
-          setPicklistData(res.data);
-        }
+        
         setLoader(false);
       })
       .catch((err) => {
@@ -115,26 +110,21 @@ function MailingComp({ picklistName }) {
     setLoader(true);
     filterOptions();
     var url = "";
-    if (picklistName == "Inbox") {
-      url = `${apiPath.prodPath}/api/gmail/inbox?page=${page}&limit=8`;
+    if (picklistName == "Business Listings") {
+      url = `${apiPath.prodPath2}/api/business-listings/`;
     }
-    if (picklistName == "Gmail") {
-      url = `${apiPath.prodPath}/api/clients/allNewLeads?page=${page}&limit=8`;
+    if (picklistName == "Search") {
+      url = `${apiPath.prodPath2}/api/search/`;
     }
-    if (picklistName == "Direct Mail"){
-      url = `${apiPath.prodPath}/api/clients/allNewLeads?page=${page}&limit=8`
-    }
+    
   
     axios
       .get(url)
       .then((res) => {
-        if (picklistName == "Inbox"){
-          setPicklistData(res.data.Inbox);
+        if (picklistName == "Business Listings"){
+          setPicklistData(res.data.listings);
           setTotalPages(res.data.pages);
-        }else if (picklistName == "Gmail"){
-          setPicklistData(res.data);
-          setTotalPages(res.data.pages);
-        }else if (picklistName == "Resend"){
+        }else if (picklistName == "Search"){
           setPicklistData(res.data);
           setTotalPages(res.data.pages);
         }
@@ -168,26 +158,20 @@ function MailingComp({ picklistName }) {
   const refreshData = async (page=1) => {
     setLoader(true);
     var url = "";
-    if (picklistName == "Inbox") {
-      url = `${apiPath.prodPath}/api/gmail/inbox?page=${page}&limit=8`;
+    if (picklistName == "Business Listings") {
+      url = `${apiPath.prodPath2}/api/business-listings/`;
     }
-    if (picklistName == "Gmail") {
-      url = `${apiPath.prodPath}/api/clients/allNewLeads?page=${page}&limit=8`;
+    if (picklistName == "Search") {
+      url = `${apiPath.prodPath2}/api/search/`;
     }
-    if (picklistName == "Direct Mail"){
-      url = `${apiPath.prodPath}/api/clients/allNewLeads?page=${page}&limit=8`
-    }
-
 
     await axios
       .get(url)
-      .then((res) => {if (picklistName == "Inbox"){
-        setPicklistData(res.data.Inbox);
-      }else if (picklistName == "Gmail"){
+      .then((res) => {if (picklistName == "Business Listings"){
+        setPicklistData(res.data.listings);
+      }else if (picklistName == "Search"){
         setPicklistData(res.data);
-      }else if (picklistName == "Resend"){
-          setPicklistData(res.data);
-        }
+      }
       else{
         console.log("No data found");
       }
@@ -202,35 +186,35 @@ function MailingComp({ picklistName }) {
         setLoader(false);
       });
   };
-  const addPicklist = async (data) => {
-    var url = "";
-    if (picklistName == "Web Requests") {
-      url = `${apiPath.prodPath}/api/webSaleLeads/addWebSaleLead`;
-    }
-    if (picklistName == "Contact Leads") {
-      url = `${apiPath.prodPath}/api/webContactLeads/addWebContactLead`;
-    }
-    if (picklistName == "Direct Mail"){
-      url = `${apiPath.prodPath}/api/directMail/addDirectMail`
-    }
+//   const addPicklist = async (data) => {
+//     var url = "";
+//     if (picklistName == "Web Requests") {
+//       url = `${apiPath.prodPath}/api/webSaleLeads/addWebSaleLead`;
+//     }
+//     if (picklistName == "Contact Leads") {
+//       url = `${apiPath.prodPath}/api/webContactLeads/addWebContactLead`;
+//     }
+//     if (picklistName == "Direct Mail"){
+//       url = `${apiPath.prodPath}/api/directMail/addDirectMail`
+//     }
     
-    await axios
-      .post(url, data)
-      .then( (res) => {
-        setUserTypeModal(false);
-        console.log(res);
-        Swal.fire({
-          icon: "success",
-          text: "Added Successfully",
-        });
-         refreshData();
-      })
-      .catch((err) => {
-        setUserTypeModal(false);
+//     await axios
+//       .post(url, data)
+//       .then( (res) => {
+//         setUserTypeModal(false);
+//         console.log(res);
+//         Swal.fire({
+//           icon: "success",
+//           text: "Added Successfully",
+//         });
+//          refreshData();
+//       })
+//       .catch((err) => {
+//         setUserTypeModal(false);
 
-        console.log(err);
-      });
-  };
+//         console.log(err);
+//       });
+//   };
   const handleTest=(data)=>{
     console.log("@@@@@",data)
   }
@@ -319,20 +303,21 @@ function MailingComp({ picklistName }) {
       <div className="mt-8">
         {loader ? (
           <SkeletonCard />
-        ) : (picklistName == "Gmail" &&
-          <MailingTable
+        ) : (picklistName == "Business Listings" &&
+          <BusinessListingsTable
+            picklistData={picklistData}
+            picklistName={picklistName}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            handlePageChange={handlePageChange}
+            refreshData={refreshData}
+            onPageChange={handlePageChange}
           />
         )}
-      </div>{
-        picklistName == "Gmail" &&
-        <AddEmailCredentials
-          open={userTypeModal}
-          handleClose={() => setUserTypeModal(false)}
-        />
-      }
+      </div>
       
     </main>
   );
 }
 
-export default MailingComp;
+export default BusinessListingComp;

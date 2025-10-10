@@ -91,12 +91,12 @@ function TaskTable({ open, handleClose, filterBy, searchTerm }) {
 
   const getUserCreatedByTasks = async (page=1) => {
     if(!filterBy || !searchTerm.trim()){
-      const res = await axios.get(`${apiPath.devPath}/api/tasks/user/createdBy/${username}/?page=${page}&limit=8`);
+      const res = await axios.get(`${apiPath.prodPath}/api/tasks/user/createdBy/${username}/?page=${page}&limit=8`);
       setTaskCreatedBy(res.data.tasks);
       setPagesCB(res.data.pages);
       setTotalCB(res.data.total);
     } else {
-      const res = await axios.get(`${apiPath.devPath}/api/tasks/user/createdBy/${username}/?filterBy=${filterBy}&searchTerm=${searchTerm}&page=${page}&limit=8`);
+      const res = await axios.get(`${apiPath.prodPath}/api/tasks/user/createdBy/${username}/?filterBy=${filterBy}&searchTerm=${searchTerm}&page=${page}&limit=8`);
       setTaskCreatedBy(res.data.tasks);
       setPagesCB(res.data.pages);
       setTotalCB(res.data.total);
@@ -105,12 +105,12 @@ function TaskTable({ open, handleClose, filterBy, searchTerm }) {
 
   const getUserAssignedToTasks = async (page=1) => {
     if(!filterBy || !searchTerm.trim()){
-      const res = await axios.get(`${apiPath.devPath}/api/tasks/user/assignedTo/${username}/?page=${page}&limit=8`);
+      const res = await axios.get(`${apiPath.prodPath}/api/tasks/user/assignedTo/${username}/?page=${page}&limit=8`);
       setTaskAssignedTo(res.data.tasks);
       setPagesAT(res.data.pages);
       setTotalAT(res.data.total);
     } else {
-      const res = await axios.get(`${apiPath.devPath}/api/tasks/user/assignedTo/${username}/?filterBy=${filterBy}&searchTerm=${searchTerm}&page=${page}&limit=8`);
+      const res = await axios.get(`${apiPath.prodPath}/api/tasks/user/assignedTo/${username}/?filterBy=${filterBy}&searchTerm=${searchTerm}&page=${page}&limit=8`);
       setTaskAssignedTo(res.data.tasks);
       setPagesAT(res.data.pages);
       setTotalAT(res.data.total);
