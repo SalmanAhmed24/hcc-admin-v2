@@ -193,7 +193,7 @@ const SubTask = ({item, open}) => {
       formData.append("tags", JSON.stringify(tags));
       
       await axios
-        .patch(`${apiPath.devPath}/api/tasks/editSubTask/${item._id}/${taskId}`, formData, {
+        .patch(`${apiPath.prodPath}/api/tasks/editSubTask/${item._id}/${taskId}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -602,7 +602,7 @@ const removeTag = (index) => {
             </TableRow>
           ) }
         </TableBody>
-        {openModal && empId == i._id ? (
+        {openModal && empId == item._id ? (
                     <SubTaskInfo
                       open={openModal}
                       handleClose={() => setOpenModal(false)}

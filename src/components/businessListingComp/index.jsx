@@ -74,7 +74,7 @@ function BusinessListingComp({ picklistName }) {
       var url = "";
 
     if (picklistName == "Business Listings") {
-      url = `${apiPath.devpath2}/api/business-listings/filter?${filterBy}=${searchTerm}`;
+      url = `${apiPath.prodPath2}/api/business-listings/filter?${filterBy}=${searchTerm}`;
     }
     if (picklistName == "Search") {
       url = `${apiPath.prodPath2}/api/clients/allNewLeads?${filterBy}=${searchTerm}`;
