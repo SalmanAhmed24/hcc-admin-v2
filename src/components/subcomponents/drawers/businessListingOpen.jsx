@@ -12,7 +12,7 @@ function BusinessListingsDetails({ open, handleClose, item }) {
   return (
     <>
       <Drawer
-        className="bg-all-modals"
+        className="bg-client-modals"
         anchor="left" 
         open={open}
         onClose={handleClose}
@@ -40,72 +40,72 @@ function BusinessListingsDetails({ open, handleClose, item }) {
             <h1 className="font-satoshi font-bold text-2xl ">Open Business Listing</h1>
           </div>
           <div className="flex flex-wrap flex-row gap-10 justify-start ml-14">
-            <div className="w-1/4 flex flex-col gap-2">
-              <label className="font-satoshi font-semibold text-xl">Name</label>
+            <div className="w-1/2 flex flex-col gap-2 border-b-2 border-b-[#E1C9FF] pb-2">
+              <label className="font-satoshi font-semibold text-xl pb-2">Name</label>
               <p className="font-satoshi text-md">{item.storeName}</p>
             </div>
-            <div className="w-1/4 flex flex-col gap-2">
-              <label className="font-satoshi font-semibold text-xl">google URL</label>
+            <div className="w-1/2 flex flex-col gap-2 border-b-2 border-b-[#E1C9FF] pb-2">
+              <label className="font-satoshi font-semibold text-xl pb-2">google URL</label>
               <p className="font-satoshi text-md">
                 {item.googleUrl == "" ? "N/A" : item.googleUrl}
               </p>
             </div>
-            <div className="w-1/4 flex flex-col gap-2">
-              <label className="font-satoshi font-semibold text-xl">Place ID</label>
+            <div className="w-1/2 flex flex-col gap-2 border-b-2 border-b-[#E1C9FF] pb-2">
+              <label className="font-satoshi font-semibold text-xl pb-2">Place ID</label>
               <p className="font-satoshi text-md">{item.placeId}</p>
             </div>
-            <div className="w-1/4 flex flex-col gap-2">
-              <label className="font-satoshi font-semibold text-xl">Phone</label>
+            <div className="w-1/2 flex flex-col gap-2 border-b-2 border-b-[#E1C9FF] pb-2">
+              <label className="font-satoshi font-semibold text-xl pb-2">Phone</label>
               <p className="font-satoshi text-md">{item.phone}</p>
             </div>
-            <div className="w-1/4 flex flex-col gap-2">
-              <label className="font-satoshi font-semibold text-xl">Stars</label>
+            <div className="w-1/2 flex flex-col gap-2 border-b-2 border-b-[#E1C9FF] pb-2">
+              <label className="font-satoshi font-semibold text-xl pb-2">Stars</label>
               <p className="font-satoshi text-md">{item.stars == "" ? "N/A" : item.stars}</p>
             </div>
-            <div className="w-1/4 flex flex-col gap-2">
-              <label className="font-satoshi font-semibold text-xl">Number of Reviews</label>
+            <div className="w-1/2 flex flex-col gap-2 border-b-2 border-b-[#E1C9FF] pb-2">
+              <label className="font-satoshi font-semibold text-xl pb-2">Number of Reviews</label>
               <p className="font-satoshi text-md">{item.numberOfReviews == "" ? "N/A" : item.numberOfReviews}</p>
             </div>
-            <div className="w-1/4 flex flex-col gap-2">
-              <label className="font-satoshi font-semibold text-xl">Business Website</label>
+            <div className="w-1/2 flex flex-col gap-2 border-b-2 border-b-[#E1C9FF] pb-2">
+              <label className="font-satoshi font-semibold text-xl pb-2">Business Website</label>
               <p className="font-satoshi text-md">{item.bizWebsite == "" ? "N/A" : item.bizWebsite}</p>
             </div>
-            <div className="w-1/4 flex flex-col gap-2">
-              <label className="font-satoshi font-semibold text-xl">Category</label>
+            <div className="w-1/2 flex flex-col gap-2 border-b-2 border-b-[#E1C9FF] pb-2">
+              <label className="font-satoshi font-semibold text-xl pb-2">Category</label>
               <p className="font-satoshi text-md">
                 {item.category == "" ? "N/A" : item.category}
               </p>
             </div>
-            <div className="w-1/4 flex flex-col gap-2">
-              <label className="font-satoshi font-semibold text-xl">Address</label>
+            <div className="w-1/2 flex flex-col gap-2 border-b-2 border-b-[#E1C9FF] pb-2">
+              <label className="font-satoshi font-semibold text-xl pb-2">Address</label>
               <p className="font-satoshi text-md">
                 {item.address == "" ? "N/A" : item.address}
               </p>
             </div>
-            <div className="w-1/4 flex flex-col gap-2">
-              <label className="font-satoshi font-semibold text-xl">City</label>
+            <div className="w-1/2 flex flex-col gap-2 border-b-2 border-b-[#E1C9FF] pb-2">
+              <label className="font-satoshi font-semibold text-xl pb-2">City</label>
               <p className="font-satoshi text-md">
                 {item.location.city == "" ? "N/A" : item.location.city}
               </p>
             </div>
-            <div className="w-1/4 flex flex-col gap-2">
-              <label className="font-satoshi font-semibold text-xl">State</label>
+            <div className="w-1/2 flex flex-col gap-2 border-b-2 border-b-[#E1C9FF] pb-2">
+              <label className="font-satoshi font-semibold text-xl pb-2">State</label>
               <p className="font-satoshi text-md">{item.location.state == "" ? "N/A" : item.location.state}</p>
             </div>
-            <div className="w-1/4 flex flex-col gap-2">
-              <label className="font-satoshi font-semibold text-xl">Zip Code</label>
-              <p className="font-satoshi text-md">{item.location.zip == "" ? "N/A" : item.location.zip}</p>
+            <div className="w-1/2 flex flex-col gap-2 border-b-2 border-b-[#E1C9FF] pb-2">
+              <label className="font-satoshi font-semibold text-xl pb-2">Zip Code</label>
+              <p className="font-satoshi text-md">{item.location.zipcode == "" ? "N/A" : item.location.zipcode}</p>
             </div>
-            <div className="w-1/4 flex flex-col gap-2">
-              <label className="font-satoshi font-semibold text-xl">query</label>
+            <div className="w-1/2 flex flex-col gap-2 border-b-2 border-b-[#E1C9FF] pb-2">
+              <label className="font-satoshi font-semibold text-xl pb-2">query</label>
               <p className="font-satoshi text-md">{item.query == "" ? "N/A" : item.query}</p>
             </div>
-            <div className="w-1/4 flex flex-col gap-2">
-              <label className="font-satoshi font-semibold text-xl">Raw Body</label>
+            <div className="w-1/2 flex flex-col gap-2 border-b-2 border-b-[#E1C9FF] pb-2">
+              <label className="font-satoshi font-semibold text-xl pb-2">Raw Body</label>
               <p className="font-satoshi text-md">{item.rawBody == "" ? "N/A" : item.rawBody}</p>
             </div>
-            <div className="w-1/4 flex flex-col gap-2">
-              <label className="font-satoshi font-semibold text-xl">Scraped At</label>
+            <div className="w-1/2 flex flex-col gap-2 border-b-2 border-b-[#E1C9FF] pb-2">
+              <label className="font-satoshi font-semibold text-xl pb-2">Scraped At</label>
               <p className="font-satoshi text-md">{item.scrapedAt == "" ? "N/A" : item.scrapedAt}</p>
             </div>
           </div>

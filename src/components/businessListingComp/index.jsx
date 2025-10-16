@@ -1,16 +1,16 @@
 import { Poppins } from "next/font/google";
-import EmployeeTable from "@/components/subcomponents/tables/employeeTable";
+// import EmployeeTable from "@/components/subcomponents/tables/employeeTable";
 import { Button } from "@/components/ui/button";
 import { apiPath } from "@/utils/routes";
 import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
+// import { Skeleton } from "@/components/ui/skeleton";
 import Swal from "sweetalert2";
 import { SkeletonCard } from "@/components/reusable/skeleton-card";
-import Select from "react-select";
-import { Search } from "lucide-react";
-import SearchForm from "../reusable/searchForm";
+// import Select from "react-select";
+// import { Search } from "lucide-react";
+// import SearchForm from "../reusable/searchForm";
 
 const poppins = Poppins({
   weight: ["300", "400", "500", "600", "800"],
@@ -23,8 +23,8 @@ import "./style.scss";
 
 // import SalelistTable from "../subcomponents/tables/saleslistTable";
 // import AddSalelist from "../subcomponents/drawers/salelist";
-import MailingTable from "../subcomponents/tables/mailingTable";
-import AddEmailCredentials from "../subcomponents/drawers/addEmailCredentials";
+// import MailingTable from "../subcomponents/tables/mailingTable";
+// import AddEmailCredentials from "../subcomponents/drawers/addEmailCredentials";
 import BusinessListingsTable from "../subcomponents/tables/businessListingsTable";
 
 
@@ -42,7 +42,7 @@ function BusinessListingComp({ picklistName }) {
     let sorts;
 
     if(picklistName == "Business Listings"){
-       sorts = ["category", "city", "state", "numberOfReviews", "stars", "storeName", "googleUrl", "bizWebsite", "address"];
+       sorts = ["category", "city", "state", "storeName", "googleUrl", "bizWebsite", "address", "phone", "placeId"];
     }
     else if(picklistName == "Search"){
       sorts = [];
@@ -74,7 +74,7 @@ function BusinessListingComp({ picklistName }) {
       var url = "";
 
     if (picklistName == "Business Listings") {
-      url = `${apiPath.prodPath2}/api/gmail/inbox?${filterBy}=${searchTerm}`;
+      url = `${apiPath.devpath2}/api/business-listings/filter?${filterBy}=${searchTerm}`;
     }
     if (picklistName == "Search") {
       url = `${apiPath.prodPath2}/api/clients/allNewLeads?${filterBy}=${searchTerm}`;
