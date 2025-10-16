@@ -131,6 +131,16 @@ function AppSideBar() {
         >
           <Email /> Mailing
         </Link>
+        <Link
+          href={"/businesslistings"}
+          className={
+            pathname == "/businesslistings"
+              ? "active-link pt-3 pb-3 pl-[30px] text-center flex flex-row items-end gap-4"
+              : "text-[#E1C9FF] pt-3 pb-3 pl-[30px] text-center flex flex-row items-end gap-4"
+          }
+        >
+          <Email /> Business Listings
+        </Link>
       </SidebarContent>
       <SidebarFooter className="pl-10 pb-10">
         <button className="ml-[30px]">

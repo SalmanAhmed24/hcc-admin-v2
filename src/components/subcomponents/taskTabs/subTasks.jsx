@@ -182,7 +182,7 @@ const SubTask = ({item, open}) => {
         };
       });
 
-      console.log(taskCategory, " ", taskDescription, " ", taskPriority, " ", date, " ", createdBy, " ", taskStatus, " ", assignedTo, " ", tags);
+      console.log(taskCategory, " ", taskDescription, " ", taskPriority, " ", date, " ", username, " ", taskStatus, " ", assignedTo, " ", tags);
       formData.append("subTaskCategory", taskCategory.value);
       formData.append("taskDescription", taskDescription);
       formData.append("taskPriority", taskPriority.value);
@@ -193,21 +193,25 @@ const SubTask = ({item, open}) => {
       formData.append("tags", JSON.stringify(tags));
       
       await axios
-        .patch(`${apiPath.prodPath}/api/tasks/editSubTask/${item._id}&&${taskId}`, formData)
+        .patch(`${apiPath.prodPath}/api/tasks/editSubTask/${item._id}/${taskId}`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
         .then((res) => {
-          Swal.fire({
+          res.status == 200 && Swal.fire({
             icon: "success",
             text: "SubTask Updated Successfully",
           });
           setTaskCategory("");
-          setInputCreatedBy("");
+          // setInputCreatedBy("");
           setInputTaskCategory("");
           setInputTaskPriority("");
           setInputTaskStatus("");
           setTaskDescription("");
           setTaskPriority("");
           setDate("");
-          setCreatedBy("");
+          // setCreatedBy("");
           setTaskStatus("");
           setEditClientTask(false);
           setAssignedToUsername("");
@@ -257,7 +261,7 @@ const SubTask = ({item, open}) => {
           setTaskDescription("");
           setTaskPriority("");
           setDate("");
-          setCreatedBy("");
+          // setCreatedBy("");
           setTaskStatus("");
           setEditClientTask(false);
           setAssignedToUsername("");
@@ -578,10 +582,10 @@ const removeTag = (index) => {
                       setTaskDescription(i.taskDescription); 
                       setTaskPriority({label: i.taskPriority, value: i.taskPriority}); 
                       setDate(i.date); 
-                      setCreatedBy({label: i.createdBy, value: i.createdBy}); 
+                      // setCreatedBy({label: i.createdBy, value: i.createdBy}); 
                       setTaskStatus({label: i.taskStatus, value: i.taskStatus});
                       setTaskId(i._id);
-                      setAssignedToUsername(editData.assignedTo.map(user => {
+                      setAssignedToUsername(i.assignedTo.map(user => {
                             return { label: user.fullname, value: user.fullname, username: user.username };
                         }) || []);
                       setTags(i.tags);
@@ -594,16 +598,17 @@ const removeTag = (index) => {
                   </DropdownMenuContent>
                 </DropdownMenu>
               </TableCell>
-              {openModal && empId == i._id ? (
+              
+            </TableRow>
+          ) }
+        </TableBody>
+        {openModal && empId == item._id ? (
                     <SubTaskInfo
                       open={openModal}
                       handleClose={() => setOpenModal(false)}
                       item={i}
                     />
                   ) : null}
-            </TableRow>
-          ) }
-        </TableBody>
       </Table>
           }
     </>

@@ -1,9 +1,29 @@
-import React from "react";
+import Drawer from "@mui/material/Drawer";
+import "./style.scss";
+import React, { useState, useEffect } from "react";
+import CloseIcon from "@mui/icons-material/Close";
 import moment from "moment";
 
-const SubTaskInfo = ({item, open}) => {
+const SubTaskInfo = ({item, open, handleClose}) => {
+
   return (
-    <div className="flex flex-wrap flex-row gap-10 justify-start ml-14">
+  <>
+    <Drawer
+            className="bg-all-modals"
+            anchor={"bottom"}
+            open={open}
+            onClose={handleClose}
+          />
+
+     <div className="p-10">
+        <div className="flex flex-row justify-end">
+            <CloseIcon
+              className="text-2xl hover:cursor-pointer"
+              onClick={() => handleClose()}
+            />
+          </div>
+         
+         <div className="flex flex-wrap flex-row gap-10 justify-start ml-14">
                 
         <div className="space-y-4 mt-4">
             <div>
@@ -47,6 +67,10 @@ const SubTaskInfo = ({item, open}) => {
 
             </div>
         </div>
+     </div>
+    
+
+    </>
   );
 };
 
