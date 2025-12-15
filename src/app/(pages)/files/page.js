@@ -10,12 +10,14 @@ import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/store";
 import MailingComp from "@/components/mailingComp";
 import SendBulkEmailViaGmail from "@/components/subcomponents/drawers/bulkEmialDrawer";
+import FileComp from "@/components/fileComp";
 
-function MailingPage() {
-  const [value, setValue] = useState("Inbox");
+function FilesPage() {
+  const [value, setValue] = useState("User Files");
   const isUserLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const hasHydrated = useAuthStore((state) => state.hasHydrated);
   const router = useRouter();
+  
 
 useEffect(() => {
   if (!hasHydrated) return; 
@@ -34,19 +36,19 @@ useEffect(() => {
           <Box sx={{ borderBottom: 1, borderColor: "divider", color: "#fff" }}>
             <TabList onChange={handleChange} aria-label="lab API tabs example">
               
-              <Tab label="Inbox" value="Inbox" />
-              <Tab label="Gmail" value="Gmail" />
-              <Tab label="Email Templates" value="Email Templates"/>
+              <Tab label="User Files" value="User Files" />
+              <Tab label="Shared Files" value="Shared Files" />
+              <Tab label="Common Files" value="Common Files" />
             </TabList>
           </Box>
-          <TabPanel value="Inbox">
-            <MailingComp picklistName={"Inbox"} />
+          <TabPanel value="User Files">
+            <FileComp picklistName={"User Files"} />
           </TabPanel>
-          <TabPanel value="Gmail">
-            <MailingComp picklistName={"Gmail"} />
+          <TabPanel value="Shared Files">
+            <FileComp picklistName={"Shared Files"} />
           </TabPanel>
-          <TabPanel  value="Email Templates">
-            <MailingComp picklistName={"Email Templates"}/>
+          <TabPanel  value="Common Files">
+            <FileComp picklistName={"Common Files"} />
           </TabPanel>
         </TabContext>
       </Box>
@@ -54,4 +56,4 @@ useEffect(() => {
   );
 }
 
-export default  MailingPage;
+export default  FilesPage;

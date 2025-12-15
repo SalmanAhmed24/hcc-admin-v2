@@ -229,6 +229,26 @@ function TaskTable({ open, handleClose, filterBy, searchTerm }) {
       });
   };
 
+  const addTask = (data, id) => {
+    axios
+      .post(`${apiPath.prodPath}/api/tasks/modify/${id}`, data)
+      .then((res) => {
+        console.log(res);
+        refreshData();
+        Swal.fire({
+          icon: "success",
+          text: "Task created successfully",
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        Swal.fire({
+          icon: "error",
+          text: "Failed to create task",
+        });
+      });
+  };
+
   const handleStatusChange = async (taskId, newStatus) => {
     try {
       const updateData = {
@@ -405,7 +425,6 @@ function TaskTable({ open, handleClose, filterBy, searchTerm }) {
                                         <AddTask
                                         open={taskModal}
                                         handleClose={() => setTaskModal(false)}
-                                        // addTask={(data) => addTask(data)}
                                         edit={true}
                                         editData={task}
                                         editTask={editTask}
@@ -554,7 +573,6 @@ function TaskTable({ open, handleClose, filterBy, searchTerm }) {
                                     <AddTask
                                     open={taskModal}
                                     handleClose={() => setTaskModal(false)}
-                                    // addTask={(data) => addTask(data)}
                                     edit={true}
                                     editData={task}
                                     editTask={editTask}

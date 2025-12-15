@@ -34,7 +34,7 @@ function AddClientResearch({ open, handleClose, item }) {
               onClose={handleClose}
               PaperProps={{
                 sx: {
-                  width: "1142px",  
+                  width: "90vw",  
                   height: "dvh", 
                   position: "absolute",
                   left: "50%",

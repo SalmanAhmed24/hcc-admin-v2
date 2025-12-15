@@ -86,16 +86,16 @@ console.log("##$$", loggedInUser);
           <h1 className="text-center text-2xl font-bold main-heading">
             {/* <NewClientWidget user={user} /> */}
           </h1>
-          {user?.user.role === "Business Growth Consultant" || "Admin" || "SuperUser" ? (
+          {["Business Growth Consultant", "Admin", "SuperUser"].includes(user?.user.role) ? (
             <main className="flex flex-col justify-start items-center w-full h-dvh gap-5">
-            <NewClientWidget user={user} client={clientItem} />
-            <ResearchCompleteClient user ={user} client = {clientItem}/>
-            <TaskAccordion user = {user} client = {clientItem}/>
+              <NewClientWidget user={user} client={clientItem} />
+              <ResearchCompleteClient user={user} client={clientItem} />
+              <TaskAccordion user={user} client={clientItem} />
             </main>
-            
           ) : null}
         </div>
       </section>
     </div>
   );
 }
+

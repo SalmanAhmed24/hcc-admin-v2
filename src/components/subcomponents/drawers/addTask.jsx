@@ -208,7 +208,7 @@ const AddTask = ({ open, handleClose, addTask, edit, editData, editTask }) => {
       formData.append("taskStatus", taskStatus.value);
       formData.append("taskPriority", taskPriority.value);
 
-      addTask(formData);
+      await addTask(formData);
 
       setTaskCategory("");
       setTaskDescription("");

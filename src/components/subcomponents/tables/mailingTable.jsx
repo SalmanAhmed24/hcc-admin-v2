@@ -4,10 +4,7 @@ import { apiPath } from "@/utils/routes";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-
-// import AddEmployee from "@/components/subcomponents/drawers/employeeAdd";
-
-import { ClearAll, Refresh } from "@mui/icons-material";
+import { ClearAll, Email, Refresh } from "@mui/icons-material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
   Table,
@@ -18,14 +15,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-// import {
-//   Accordion,
-//   AccordionSummary,
-//   AccordionDetails,
-//   Typography,
-//   TableContainer,
-//   Paper,
-// } from '@mui/material';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -40,6 +29,7 @@ import Pagination from "@mui/material/Pagination";
 import ClientDetails from "@/components/subcomponents/drawers/clientOpen";
 import AddClientResearch from "@/components/subcomponents/drawers/clientResearchOpen";
 import SendEmailViaGmail from "../drawers/mailingDrawer";
+import SendBulkEmailViaGmail from "../drawers/bulkEmialDrawer";
 
 
 
@@ -60,6 +50,7 @@ function MailingTable( {clientItem}) {
   const [openResearchModal, setOpenResearchModal] = useState(false);
   const [openMailingModal, setOpenMailingModal] = useState(false);
   const [email, setEmail] = useState("");
+  const [openBulkMailModal, setOpenBulkMailModal] = useState(false);
 
   const refreshData = async () => {
   setLoader(true);
@@ -224,6 +215,10 @@ useEffect(() => {
     setEmail(email);
   };
 
+  const bulkEmail = async () => {
+    setOpenBulkMailModal(true);
+  };
+
   return (
       <div className="mt-5 w-full">
         {loader ? "loading...." : (
@@ -237,6 +232,13 @@ useEffect(() => {
               >
                 <Refresh className="mr-2" />
                 Refresh
+              </Button>
+              <Button
+                className="bg-[#452C95] w-1/3 text-white hover:bg-[#452C95] hover:opacity-80"
+                onClick={() => bulkEmail()}
+              >
+              <Email className="mr-2" />
+                Email All
               </Button>
             </div>
            
@@ -339,7 +341,14 @@ useEffect(() => {
                         )}
                       </TableBody>
                     </Table>
-                    
+                    {openBulkMailModal ? (
+                                <SendBulkEmailViaGmail
+                                  open={openBulkMailModal}
+                                  handleClose={() => setOpenBulkMailModal(false)}
+                                  emails={email}
+                                  newClients = {newClients}
+                                />
+                            ) : null}
                             
                     </>
                     

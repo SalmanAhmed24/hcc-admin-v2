@@ -1,0 +1,103 @@
+.bg-all-modals {
+  .MuiPaper-root {
+    background: #2D245B;
+    // backdrop-filter: blur(10px);
+    // box-shadow: 0px -1px 10px 0px #a2a2a2;
+    color: #fff;
+    min-height: 600px;
+  }
+}
+
+.bg-client-modals {
+  .MuiPaper-root {
+    background: #2D245B;
+    // backdrop-filter: blur(10px);
+    // box-shadow: 0px -1px 10px 0px #a2a2a2;
+    color: #fff;
+    min-height: 350px;
+  }
+}
+
+#role-select-cus {
+  z-index: 22;
+  color: #000 !important;
+  border: 1px;
+  border-radius: 12px;
+  background-color: #191526;
+  // div {
+  //   background: rgba($color: #fff, $alpha: 0.5) !important;
+  //   color: #000 !important;
+  //   backdrop-filter: blur(20px) !important;
+  // }
+  .css-1nmdiq5-menu {
+    box-shadow: 0 0 5px 0px #a2a2a2;
+  }
+}
+
+#role-select-cus2 {
+  z-index: 9999;
+  color: #000 !important;
+  border: 1px;
+  border-radius: 12px;
+  background-color: #191526;
+  // div {
+  //   background: rgba($color: #fff, $alpha: 0.5) !important;
+  //   color: #000 !important;
+  //   backdrop-filter: blur(20px) !important;
+  // }
+  .css-1nmdiq5-menu {
+    box-shadow: 0 0 5px 0px #a2a2a2;
+  }
+}
+
+#role-select-cus3 {
+  z-index: 9999;
+  color: #000 !important;
+  border: 1px;
+  border-radius: 12px;
+  background-color: #191526;
+  // div {
+  //   background: rgba($color: #fff, $alpha: 0.5) !important;
+  //   color: #000 !important;
+  //   backdrop-filter: blur(20px) !important;
+  // }
+  .css-1nmdiq5-menu {
+    box-shadow: 0 0 5px 0px #a2a2a2;
+  }
+}
+
+.MuiCheckbox-root {
+  color: #fff;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1); /* Makes it white */
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+.swal2-container{
+  z-index: 3333333 !important;
+  width: 525.49px;
+  height: 341/21px;
+  border-radius: 12px;
+  background: #2D245B;
+  color: #E1C9FF;
+}
+
+#role-select-cusTaskPriorty {
+  z-index: 200;
+  color: #000 !important;
+  border: 1px;
+  border-radius: 12px;
+  background-color: #191526;
+  // div {
+  //   background: rgba($color: #fff, $alpha: 0.5) !important;
+  //   color: #000 !important;
+  //   backdrop-filter: blur(20px) !important;
+  // }
+  .css-1nmdiq5-menu {
+    box-shadow: 0 0 5px 0px #a2a2a2;
+  }
+}
+

@@ -27,6 +27,7 @@ import Pagination from "@mui/material/Pagination";
 // import AddSalelist from "../drawers/salelist";
 // import SaleDetails from "../drawers/saleListOpen";
 import BusinessListingsDetails from "../drawers/businessListingOpen";
+import AddLead from "../drawers/addBizToLead";
 
 function BusinessListingsTable({ picklistData, picklistName, refreshData, currentPage, totalPages, onPageChange, }) {
   const [addModal, setAddModal] = useState(false);
@@ -120,6 +121,11 @@ function BusinessListingsTable({ picklistData, picklistName, refreshData, curren
     setOpenModal(true);
   };
 
+  const handleAddModal = (item) => {
+    setId(item._id);
+    setAddModal(true);
+  };
+
   return (
     <div>
       {picklistData.length ? (
@@ -159,8 +165,8 @@ function BusinessListingsTable({ picklistData, picklistName, refreshData, curren
                       <DropdownMenuContent>
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem onClick={() => handleEdit(i)}>
-                          Edit
+                        <DropdownMenuItem onClick={() => handleAddModal(i)}>
+                          Add to Leads
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => handleDelete(i)}>
                           Delete
@@ -218,6 +224,13 @@ function BusinessListingsTable({ picklistData, picklistName, refreshData, curren
                       item={i}
                     />
                   )}
+                  {addModal && id === i._id && (
+                    <AddLead
+                      open={addModal}
+                      handleClose={() => setAddModal(false)}
+                      editData={i}
+                    />
+                    )}
                 </TableRow>
               ))}
             </TableBody>
