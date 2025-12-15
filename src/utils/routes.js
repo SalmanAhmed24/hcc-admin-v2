@@ -3,4 +3,5 @@ export const apiPath = {
   prodPath: "https://hcc-adam-backend.vercel.app",
   prodPath2: "https://google-scraper-inky.vercel.app",
   devpath2: "http://localhost:5000",
+  prodPath3: "https://hcc-adam-backend.vercel.app",
 };

@@ -155,7 +155,7 @@ function TasksPage() {
   
   const addTask = (data) => {
     axios
-      .post(`${apiPath.prodPath}/api/tasks`, data, {
+      .post(`${apiPath.prodPath}/api/tasks/addTask`, data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

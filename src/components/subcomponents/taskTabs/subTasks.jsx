@@ -172,7 +172,7 @@ const SubTask = ({item, open}) => {
     e.preventDefault();
     
     if (editClientTask) {
-        const username = user?.user?.username
+        const username = user?.user?.username;
       const formData = new FormData();
       
       const assignedTo = assignedToUsername.map(user => {

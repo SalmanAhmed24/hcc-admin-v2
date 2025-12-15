@@ -135,7 +135,7 @@ useEffect(() => {
               axios.get(`${apiPath.prodPath}/api/clients/allNewLeads`, {
               params: {
                 status: "Lead",
-                researchStatus: "No Research Done",
+                researchStatus: "completed",
                 assignedTo: `${user.user.firstName} ${user.user.secondName}`,
                 fields: "clientName,email,companyName,phone,assignedTo,assignee,status",
                 limit: 10,
