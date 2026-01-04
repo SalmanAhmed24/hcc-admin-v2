@@ -1,17 +1,13 @@
+
 import { Poppins } from "next/font/google";
-// import EmployeeTable from "@/components/subcomponents/tables/employeeTable";
 import { Button } from "@/components/ui/button";
 import { apiPath } from "@/utils/routes";
 import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
-import React, { useState, useEffect } from "react";
-// import { Skeleton } from "@/components/ui/skeleton";
+import React, { useState, useEffect, useCallback } from "react";
 import Swal from "sweetalert2";
 import { SkeletonCard } from "@/components/reusable/skeleton-card";
 import useAuthStore from "@/store/store";
-// import Select from "react-select";
-// import { Search } from "lucide-react";
-// import SearchForm from "../reusable/searchForm";
 
 const poppins = Poppins({
   weight: ["300", "400", "500", "600", "800"],
@@ -19,17 +15,12 @@ const poppins = Poppins({
   subsets: ["latin"],
 });
 
-// const germanCities = {city: ["Berlin", "Hamburg", "Munich", "Cologne", "Frankfurt", "Stuttgart", "Düsseldorf", "Dortmund", "Essen", "Leipzig"]};
 import "./style.scss";
-
-// import SalelistTable from "../subcomponents/tables/saleslistTable";
-// import AddSalelist from "../subcomponents/drawers/salelist";
 import MailingTable from "../subcomponents/tables/mailingTable";
 import AddEmailCredentials from "../subcomponents/drawers/addEmailCredentials";
 import InboxTable from "../subcomponents/tables/inboxTable";
 import AddEmailTemplate from "../subcomponents/drawers/emailTemplateDrawer";
 import EmailTemplateTable from "../subcomponents/tables/emailTemplateTable";
-
 
 function MailingComp({ picklistName }) {
   const [picklistData, setPicklistData] = useState([]);
@@ -41,38 +32,77 @@ function MailingComp({ picklistName }) {
   const [filterBy, setFilterBy] = useState("");  
   const [filterOpt, setFilterOpt] = useState([]);
   const [emailTemplateModal, setEmailTemplateModal] = useState(false);
-
+  
   const user = useAuthStore((state) => state.user);
-  console.log("This is user data", user);
-
-  const usernameId = user.user._id;
-  console.log("This is user id", usernameId);
+  const usernameId = user?.user?._id || ""; // Directly get from Zustand store
 
   function filterOptions() {
     let sorts;
-
-    if(picklistName == "Inbox"){
-       sorts = [];
+    
+    if (picklistName == "Inbox") {
+      sorts = [];
+    } else if (picklistName == "Gmail") {
+      sorts = [];
+    } else if (picklistName == "Email Templates") {
+      sorts = [];
+    } else { 
+      console.log("No data found"); 
     }
-    else if(picklistName == "Gmail"){
-      sorts = [];
-    }else if (picklistName == "Email Templates"){
-      sorts = [];
-    }else{ console.log("No data found"); }
 
-    const options = sorts.map((item)=>{
-      const statusOption = {
-        label : item,
-        value : item,
-      }
-      return statusOption;
-    });
+    const options = sorts.map((item) => ({
+      label: item,
+      value: item,
+    }));
     setFilterOpt(options);
   }
 
+  const fetchData = useCallback(async (page = 1) => {
+    console.log("fetchData called with usernameId:", usernameId);
+    
+    // If we need usernameId for Inbox but it's not available, don't fetch
+    if (picklistName === "Inbox" && !usernameId) {
+      console.log("Skipping fetch - usernameId not available yet");
+      return;
+    }
+
+    setLoader(true);
+    let url = "";
+    
+    try {
+      if (picklistName === "Inbox") {
+        url = `${apiPath.prodPath}/api/appGmail/listEmails/${usernameId}`;
+      } else if (picklistName === "Gmail") {
+        url = `${apiPath.prodPath}/api/clients/allNewLeads?page=${page}&limit=8`;
+      } else if (picklistName === "Email Templates") {
+        url = `${apiPath.prodPath}/api/emailTemplate/getAllEmailTemplates?page=${page}&limit=8`;
+      }
+
+      const res = await axios.get(url);
+      
+      if (picklistName === "Inbox") {
+        setPicklistData(res.data);
+      } else if (picklistName === "Gmail") {
+        setPicklistData(res.data);
+      } else if (picklistName === "Email Templates") {
+        setPicklistData(res.data.emailTemplates);
+      } else {
+        console.log("No data found");
+      }
+      
+      setLoader(false);
+    } catch (err) {
+      console.log(err);
+      Swal.fire({
+        icon: "error",
+        text: "Something went wrong with the data fetching",
+      });
+      setLoader(false);
+    }
+  }, [picklistName, usernameId]); // Add dependencies
 
   const handleSearch = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
+    
     if (!filterBy || !searchTerm.trim()) {
       Swal.fire({
         icon: "warning",
@@ -82,91 +112,49 @@ function MailingComp({ picklistName }) {
     }
 
     setLoader(true);
-    
-      var url = "";
+    let url = "";
 
-    if (picklistName == "Inbox") {
-      url = `${apiPath.prodPath}/api/gmail/inbox?${filterBy}=${searchTerm}`;
-    }
-    if (picklistName == "Gmail") {
-      url = `${apiPath.prodPath}/api/clients/allNewLeads?${filterBy}=${searchTerm}`;
-    }
-    if (picklistName == "Email Templates"){
-      url = `${apiPath.prodPath}/api/emailTemplate/getEmailTemplateByFilter?${filterBy}=${searchTerm}`
-    }
-    
-      const res = await axios
-      .get(url)
-      .then((res) => {
-        if (picklistName == "Inbox"){
-          setPicklistData(res.data);
-        }
-        if (picklistName == "Gmail") {
-          setPicklistData(res.data);
-        }
-        if (picklistName == "Email Templates"){
-          setPicklistData(res.data);
-        }
-        setLoader(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        Swal.fire({
-          icon: "error",
-          text: "Something went wrong with the data fetching",
-        });
-        setLoader(false);
-      });
+    try {
+      if (picklistName === "Inbox") {
+        url = `${apiPath.prodPath}/api/gmail/inbox?${filterBy}=${searchTerm}`;
+      } else if (picklistName === "Gmail") {
+        url = `${apiPath.prodPath}/api/clients/allNewLeads?${filterBy}=${searchTerm}`;
+      } else if (picklistName === "Email Templates") {
+        url = `${apiPath.prodPath}/api/emailTemplate/getEmailTemplateByFilter?${filterBy}=${searchTerm}`;
+      }
+
+      const res = await axios.get(url);
       
+      if (picklistName === "Inbox") {
+        setPicklistData(res.data);
+      } else if (picklistName === "Gmail") {
+        setPicklistData(res.data);
+      } else if (picklistName === "Email Templates") {
+        setPicklistData(res.data);
+      }
+      
+      setLoader(false);
+    } catch (err) {
+      console.log(err);
+      Swal.fire({
+        icon: "error",
+        text: "Something went wrong with the data fetching",
+      });
+      setLoader(false);
+    }
   };
 
-
-  
-  const fetchData = (page=1)=>{
-    setLoader(true);
-    filterOptions();
-    var url = "";
-    if (picklistName == "Inbox") {
-      url = `${apiPath.devPath}/api/appGmail/listEmails/${usernameId}`;
-    }
-    if (picklistName == "Gmail") {
-      url = `${apiPath.prodPath}/api/clients/allNewLeads?page=${page}&limit=8`;
-    }
-    if (picklistName == "Email Templates"){
-      url = `${apiPath.prodPath}/api/emailTemplate/getAllEmailTemplates?page=${page}&limit=8`
-    }
-  
-    axios
-      .get(url)
-      .then((res) => {
-        if (picklistName == "Inbox"){
-          setPicklistData(res.data);
-        }else if (picklistName == "Gmail"){
-          setPicklistData(res.data);
-          setTotalPages(res.data.pages);
-        }else if (picklistName == "Email Templates"){
-          setPicklistData(res.data.emailTemplates);
-          setTotalPages(res.data.pages);
-        }
-        else{
-          console.log("No data found");
-        }
-        setLoader(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        Swal.fire({
-          icon: "error",
-          text: "Something went wrong with the data fetching",
-        });
-        setLoader(false);
-      });
-  }
-  
-  
   useEffect(() => {
-    fetchData(currentPage)
-  }, [currentPage]);
+    filterOptions();
+  }, [picklistName]);
+
+  useEffect(() => {
+    if (picklistName === "Inbox" && !usernameId) {
+      // Wait for usernameId to be available before fetching
+      return;
+    }
+    fetchData(currentPage);
+  }, [currentPage, picklistName, usernameId, fetchData]);
 
   const handlePageChange = (event, page) => {
     setCurrentPage(page); 
@@ -175,85 +163,50 @@ function MailingComp({ picklistName }) {
   const handleUserTypeModal = () => {
     setUserTypeModal(true);
   };
-  const refreshData = async (page=1) => {
+
+  const refreshData = async (page = 1) => {
     setLoader(true);
-    var url = "";
-    if (picklistName == "Inbox") {
-      url = `${apiPath.devPath}/api/appGmail/listEmails/${usernameId}`;
-    }
-    if (picklistName == "Gmail") {
-      url = `${apiPath.prodPath}/api/clients/allNewLeads?page=${page}&limit=8`;
-    }
-    if (picklistName == "Email Templates"){
-      url = `${apiPath.prodPath}/api/emailTemplate/getAllEmailTemplates?page=${page}&limit=8`
-    }
+    let url = "";
+    
+    try {
+      if (picklistName === "Inbox") {
+        url = `${apiPath.prodPath}/api/appGmail/listEmails/${usernameId}`;
+      } else if (picklistName === "Gmail") {
+        url = `${apiPath.prodPath}/api/clients/allNewLeads?page=${page}&limit=8`;
+      } else if (picklistName === "Email Templates") {
+        url = `${apiPath.prodPath}/api/emailTemplate/getAllEmailTemplates?page=${page}&limit=8`;
+      }
 
-
-    await axios
-      .get(url)
-      .then((res) => {if (picklistName == "Inbox"){
+      const res = await axios.get(url);
+      
+      if (picklistName === "Inbox") {
         setPicklistData(res.data);
-      }else if (picklistName == "Gmail"){
+      } else if (picklistName === "Gmail") {
         setPicklistData(res.data);
-      }else if (picklistName == "Email Templates"){
-          setPicklistData(res.data.emailTemplates);
-        }
-      else{
+      } else if (picklistName === "Email Templates") {
+        setPicklistData(res.data.emailTemplates);
+      } else {
         console.log("No data found");
       }
-        setLoader(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        Swal.fire({
-          icon: "error",
-          text: "Something went wrong with the data fetching",
-        });
-        setLoader(false);
+      
+      setLoader(false);
+    } catch (err) {
+      console.log(err);
+      Swal.fire({
+        icon: "error",
+        text: "Something went wrong with the data fetching",
       });
+      setLoader(false);
+    }
   };
-  // const addPicklist = async (data) => {
-  //   var url = "";
-  //   if (picklistName == "Web Requests") {
-  //     url = `${apiPath.prodPath}/api/webSaleLeads/addWebSaleLead`;
-  //   }
-  //   if (picklistName == "Contact Leads") {
-  //     url = `${apiPath.prodPath}/api/webContactLeads/addWebContactLead`;
-  //   }
-  //   if (picklistName == "Direct Mail"){
-  //     url = `${apiPath.prodPath}/api/directMail/addDirectMail`
-  //   }
-    
-  //   await axios
-  //     .post(url, data)
-  //     .then( (res) => {
-  //       setUserTypeModal(false);
-  //       console.log(res);
-  //       Swal.fire({
-  //         icon: "success",
-  //         text: "Added Successfully",
-  //       });
-  //        refreshData();
-  //     })
-  //     .catch((err) => {
-  //       setUserTypeModal(false);
-
-  //       console.log(err);
-  //     });
-  // };
-  const handleTest=(data)=>{
-    console.log("@@@@@",data)
-  }
 
   const handleAuth = () => {
-    window.location.assign("http://localhost:5000/auth/google");
-  }
+    window.location.assign("https://api-hccbackendcrm.com/auth/google");
+  };
 
   const handleEmailTemplateModal = () => {
     setEmailTemplateModal(true);
-  }
-
-
+  };
 
   return (
     <main className={`${poppins.className} flex flex-col`}>
@@ -262,41 +215,42 @@ function MailingComp({ picklistName }) {
           <h1 className="font-satoshi font-semibold text-2xl ml-[20px]">{picklistName}</h1>
         </div>
         <div className="flex flex-row gap-4 items-start border-none w-full">
-        <form onSubmit={handleSearch} className="flex flex-row gap-4 w-full items-center">
-               <input
-                  type="search"
-                  placeholder="  Search..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="px-5 text-white bg-[#2D245B] h-[42px] w-[243px] rounded-full font-satoshi"
-                />
-              <select
-                    value={filterBy}
-                    onChange={(e) => setFilterBy(e.target.value)}
-                    className="rounded-full text-white bg-[#2D245B] h-[42px] w-[243px] px-5 pr-4 font-satoshi"
-                    >
-                    <option value="" disabled>Select Filter</option>
-                    {filterOpt.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.value}
-                      </option>
-                    ))}
-                    </select>
-                
-                <input
-                  type="submit"
-                  className="rounded-full w-[99px] h-[42px] font-satoshi font-bold px-3 bg-[#2D245B] text-white hover:bg-gray-500 cursor-pointer"
-                value={"Search"}
-                />                        
-           </form>
-          <div className="w-3/4 flex flex-row gap-5 justify-end">
-          {(picklistName === "Gmail" || picklistName === "Inbox") && <Button
-              onClick={handleAuth}
-              variant="outline"
-              className="bg-[#B797FF] w-[162.2px] h-[42] rounded-[8px] font-satoshi"
+          <form onSubmit={handleSearch} className="flex flex-row gap-4 w-full items-center">
+            <input
+              type="search"
+              placeholder="  Search..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="px-5 text-white bg-[#2D245B] h-[42px] w-[243px] rounded-full font-satoshi"
+            />
+            <select
+              value={filterBy}
+              onChange={(e) => setFilterBy(e.target.value)}
+              className="rounded-full text-white bg-[#2D245B] h-[42px] w-[243px] px-5 pr-4 font-satoshi"
             >
-              <AddIcon /> Google
-            </Button>}
+              <option value="" disabled>Select Filter</option>
+              {filterOpt.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.value}
+                </option>
+              ))}
+            </select>
+            <input
+              type="submit"
+              className="rounded-full w-[99px] h-[42px] font-satoshi font-bold px-3 bg-[#2D245B] text-white hover:bg-gray-500 cursor-pointer"
+              value={"Search"}
+            />
+          </form>
+          <div className="w-3/4 flex flex-row gap-5 justify-end">
+            {(picklistName === "Gmail" || picklistName === "Inbox") && (
+              <Button
+                onClick={handleAuth}
+                variant="outline"
+                className="bg-[#B797FF] w-[162.2px] h-[42] rounded-[8px] font-satoshi"
+              >
+                <AddIcon /> Google
+              </Button>
+            )}
             {picklistName === "Email Templates" && (
               <Button
                 onClick={handleEmailTemplateModal}
@@ -308,54 +262,17 @@ function MailingComp({ picklistName }) {
             )}
           </div>
         </div>
-
-        {/* <div className="w-3/4 flex flex-row gap-5 justify-end">
-          <Button
-            onClick={handleUserTypeModal}
-            variant="outline"
-            className="bg-transparent"
-          >
-            <AddIcon /> {picklistName}
-          </Button>
-        </div>
-        <form onSubmit={handleSearch} className="flex flex-row gap-4 w-full items-center">
-        <Select
-                options={filterOpt}
-                value={filterBy}
-                onChange={(selectedOption) => setFilterBy(selectedOption)}
-                placeholder="Select Filter"
-                className="rounded text-gray-800 h-[37px] w-1/5"
-              />
-              <div className="flex gap-4 rounded items-center border-none">
-                <input
-                  type="search"
-                  placeholder="  Search..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="rounded px-5 text-gray-800 h-[38px] w-full"
-                />
-                <input
-                  type="submit"
-                  className="rounded p-2 bg-gray-400 text-black hover:bg-gray-500 cursor-pointer"
-                value={"Search"}
-                />                
-              </div>
-        </form> */}
-        {/* <div className="w-full">
-          <SearchForm handleSearch={handleTest} />
-        </div> */}
       </div>
 
       <div className="mt-8">
         {loader ? (
           <SkeletonCard />
-        ) : (picklistName == "Gmail" &&
-          <MailingTable
-          />
+        ) : picklistName === "Gmail" && (
+          <MailingTable />
         )}
         {loader ? (
           <SkeletonCard />
-        ) : (picklistName == "Inbox" &&
+        ) : picklistName === "Inbox" && (
           <InboxTable
             picklistData={picklistData}
             refreshData={refreshData}
@@ -364,28 +281,27 @@ function MailingComp({ picklistName }) {
         )}
         {loader ? (
           <SkeletonCard />
-        ) : (
-          picklistName == "Email Templates" &&
+        ) : picklistName === "Email Templates" && (
           <EmailTemplateTable
             picklistData={picklistData}
             refreshData={refreshData}
             picklistName={picklistName}
           />
         )}
-      </div>{
-        picklistName == "Gmail" &&
+      </div>
+      
+      {picklistName === "Gmail" && (
         <AddEmailCredentials
           open={userTypeModal}
           handleClose={() => setUserTypeModal(false)}
         />
-      }
-      {picklistName == "Email Templates" &&
+      )}
+      {picklistName === "Email Templates" && (
         <AddEmailTemplate
           open={emailTemplateModal}
           handleClose={() => setEmailTemplateModal(false)}
         />
-      }
-      
+      )}
     </main>
   );
 }
