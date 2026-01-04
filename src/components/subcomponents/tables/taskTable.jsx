@@ -1,4 +1,6 @@
 
+
+
 import {
   Table,
   TableBody,
@@ -146,27 +148,6 @@ function TaskTable({ open, handleClose, filterBy, searchTerm }) {
   async function refreshData(page=1) {
     getUserCreatedByTasks(page);
     getUserAssignedToTasks(page);
-  
-
-    // await axios.get(`${apiPath.prodPath}/api/tasks/user/createdBy/${username}/?page=${page}&limit=8`)
-    //   .then((res) => {
-    //     setTaskCreatedBy(res.data.tasks);
-    //     setPagesCB(res.data.pages);
-    //     setTotalCB(res.data.total);
-    //   })
-    //   .catch((err) => {
-    //     console.error("Error fetching task details:", err);
-    //   });
-
-    // await axios.get(`${apiPath.prodPath}/api/tasks/user/assignedTo/${username}/?page=${page}&limit=8`)
-    //   .then((res) => {
-    //     setTaskAssignedTo(res.data.tasks);
-    //     setPagesAT(res.data.pages);
-    //     setTotalAT(res.data.total);
-    //   })
-    //   .catch((err) => {
-    //     console.error("Error fetching task details:", err);
-    //   });
   }
 
   async function onChangePageAT(e, value){
@@ -225,26 +206,6 @@ function TaskTable({ open, handleClose, filterBy, searchTerm }) {
         Swal.fire({
           icon: "error",
           text: "Failed to update task",
-        });
-      });
-  };
-
-  const addTask = (data, id) => {
-    axios
-      .post(`${apiPath.prodPath}/api/tasks/modify/${id}`, data)
-      .then((res) => {
-        console.log(res);
-        refreshData();
-        Swal.fire({
-          icon: "success",
-          text: "Task created successfully",
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-        Swal.fire({
-          icon: "error",
-          text: "Failed to create task",
         });
       });
   };

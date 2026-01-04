@@ -338,8 +338,6 @@ function AddTags({ tagsStored, initialTags = [], placeholder = "Add Tags", onCha
   );
 }
 
-
-
 const AddUserFiles = ({open, handleClose, item = {}, editAttachments = false, refreshData}) => {
     const user = useAuthStore((state) => state.user);
     const [file, setFile] = useState({});
@@ -394,8 +392,9 @@ const AddUserFiles = ({open, handleClose, item = {}, editAttachments = false, re
 
     useEffect(() => {
       if(editAttachments){
-        setFileCategory(editAttachments.attachmentCategories);
-        setNote(editAttachments.note);
+        setFileCategory({label:item.attachmentCategories, value:item.attachmentCategories});
+        setNote(item.note);
+        setTag(item.tag.map((item) => ({label:item, value:item})));
       }
     }, [editAttachments]);
 
@@ -408,9 +407,9 @@ const AddUserFiles = ({open, handleClose, item = {}, editAttachments = false, re
       formData.append("attachmentCategories", fileCategory.value);
 
       if (Array.isArray(tag)) {
-       formData.append("recipients", JSON.stringify(tag));
+       formData.append("tag", JSON.stringify(tag));
       } else if (typeof to === 'string') {
-        formData.append('recipients', tag);
+        formData.append('tag', tag);
       }
       
         if (files.length) {
@@ -516,7 +515,7 @@ const AddUserFiles = ({open, handleClose, item = {}, editAttachments = false, re
   }
 
   function handleToChange(list) {
-    setTag(list.map((s) => String(s)));
+      setTag(list.map((s) => String(s)));
   }
 
   const customStyles = {
@@ -587,7 +586,8 @@ const AddUserFiles = ({open, handleClose, item = {}, editAttachments = false, re
             <div className="flex flex-row gap-4 w-full items-center justify-between pb-6 border-b-[1px] border-[#7F56D9]">
               <div className="flex flex-col gap-2 w-1/2">
                 <label className="font-satoshi text-md">Files</label>
-                <input
+                { !editAttachments &&
+                  <input
                   type="file"
                   multiple
                   className="p-2  border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526]"
@@ -595,6 +595,17 @@ const AddUserFiles = ({open, handleClose, item = {}, editAttachments = false, re
                   name="Files"
                   required
                 />
+                }
+                { editAttachments &&
+                  <input
+                  type="file"
+                  multiple
+                  className="p-2  border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526]"
+                  onChange={handleFileChange}
+                  name="Files"
+                />
+                }
+                
               </div>
                 <div className="flex flex-col gap-2 w-1/2">
                 <label className="font-satoshi text-md">File Catagory</label>
@@ -626,7 +637,7 @@ const AddUserFiles = ({open, handleClose, item = {}, editAttachments = false, re
               </div>
               <div className="flex flex-col gap-2 w-1/2">
                 <label className="font-satoshi text-md">Add Tags</label>
-                  <AddTags onChange={handleToChange} />
+                  <AddTags onChange={handleToChange} initialTags={item.tag} />
               </div>
             </div>
             
@@ -634,16 +645,20 @@ const AddUserFiles = ({open, handleClose, item = {}, editAttachments = false, re
               <div className="flex flex-col gap-2 w-1/2" >
                 <h3 className="font-satoshi text-md">Selected Files:</h3>
                 <ul className="list-disc pl-4 text-xl">
-                  {files.map((file, index) => (
+                  {!editAttachments && files.map((file, index) => (
                     <li key={index}><Button onClick={() => handleRemove(file)} className="w-fit h-30px m-2 bg-gray-400 rounded-xl text-black font-bold">{file.name} <Trash/> </Button></li>
                   ))}
+                  {
+                    editAttachments && item?.filename? 
+                    <li><Button onClick={() => handleRemove(file)} className="w-fit h-30px m-2 bg-gray-400 rounded-xl text-black font-bold">{item?.filename} </Button></li> : null
+                  }
                 </ul>
               </div>
               <div className="flex flex-col gap-2 w-1/2" >
                 <h3 className="font-satoshi text-md">Old File:</h3>
                 {editAttachments ? (
                   
-                    <Button  className="w-fit h-30px m-2 bg-gray-400 rounded-xl text-black font-bold">{file} </Button>
+                    <Button  className="w-fit h-30px m-2 bg-gray-400 rounded-xl text-black font-bold">{file.filename} </Button>
                   
                 ) : null}
               </div>
@@ -653,7 +668,7 @@ const AddUserFiles = ({open, handleClose, item = {}, editAttachments = false, re
               <input
                 type="submit"
                 className="w-[144px] h-[42px] p-2 rounded-[8px] bg-[#7F56D9] self-end text-white hover:text-white hover:bg-orange-400"
-                value={`Upload`}
+                value={editAttachments ? `Update` : `Upload`}
               />
             </div>
       
@@ -661,6 +676,7 @@ const AddUserFiles = ({open, handleClose, item = {}, editAttachments = false, re
         </div>
             
         </Drawer>
+        
       </>);
      
 }
@@ -1075,6 +1091,10 @@ const AddUserFiles = ({open, handleClose, item = {}, editAttachments = false, re
 //     }),
 //   };
 
+//   const handleNoteChange = (e) => {
+//     setNote(e.target.value);
+//   };
+
 //   return (
 //     <Drawer
 //       className="bg-all-modals"
@@ -1152,9 +1172,8 @@ const AddUserFiles = ({open, handleClose, item = {}, editAttachments = false, re
 //                 type="text"
 //                 value={note}
 //                 className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526] text-white"
-//                 onChange={(e) => setNote(e.target.value)}
+//                 onChange={handleNoteChange}
 //                 name="note"
-//                 placeholder="Add a note (optional)"
 //               />
 //             </div>
             
