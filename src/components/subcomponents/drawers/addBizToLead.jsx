@@ -230,7 +230,7 @@ function AddLead({ open, handleClose, editData, }) {
     
 
     axios
-      .post(`${apiPath.devPath}/api/clients/addLead`, formData)
+      .post(`${apiPath.prodPath}/api/clients/addLead`, formData)
       .then((res) => {
         console.log(res.data);
         Swal.fire({
