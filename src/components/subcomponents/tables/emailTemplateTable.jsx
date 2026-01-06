@@ -23,22 +23,37 @@ import MailDetails from "../drawers/mailOpen";
 import { Button } from "@/components/ui/button";
 import EmailTemplateDetails from "../drawers/emailTemplateOpen";
 import useAuthStore from "@/store/store";
+import AddEmailTemplate from "../drawers/emailTemplateDrawer";
+import axios from "axios";
+import { apiPath } from "@/utils/routes";
+import Swal from "sweetalert2";
 
 function EmailTemplateTable({ picklistData, refreshData, picklistName }) {
+  console.log("picklistData", picklistData);
   const [empId, setEmpId] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
   const user = useAuthStore((state) => state.user);
+  const [emailTemplateModal, setEmailTemplateModal] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [editData, setEditData] = useState(null);
+  
 
-  const currentUsername = user?.user?.username;
+  const currentUsername = user?.user?._id;
+  console.log("currentUsername", currentUsername);
+
+  // Filter data to show only current user's templates
+  const filteredData = picklistData.filter(
+    item => item.createdBy?.username === currentUsername
+  );
 
   // Pagination logic
-  const totalPages = Math.ceil(picklistData.length / itemsPerPage);
-  const currentItems = picklistData.slice(
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+  const currentItems = filteredData.length > 8 ? filteredData.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
-  );
+  ) : filteredData;
 
   const onPageChange = (event, page) => {
     setCurrentPage(page);
@@ -47,6 +62,34 @@ function EmailTemplateTable({ picklistData, refreshData, picklistName }) {
   const handleOpenModal = (item) => {
     setEmpId(item.id);
     setOpenModal(true);
+  };
+
+  const handleEmailTemplateModal = (item) => {
+    setEmailTemplateModal(true);
+    setEditMode(true);
+    setEditData(item);
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await axios.delete(`${apiPath.prodPath}/api/emailTemplate/deleteEmailTemplate/${id}`);
+      console.log("response", response);
+      if (response.status === 200) {
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: "Email Template deleted successfully",
+        });
+        refreshData();
+      }
+    } catch (error) {
+      console.log("error", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Something went wrong",
+      });
+    }
   };
 
   return (
@@ -60,7 +103,7 @@ function EmailTemplateTable({ picklistData, refreshData, picklistName }) {
         </Button>
       </div>
 
-      {picklistData.length && currentItems.createdBy.username === currentUsername ? (
+      {currentItems.length > 0 ? (
         <>
           <Table className="bg-[#231C46] rounded-[12px] font-satoshi">
             <TableCaption>A list of all {picklistName}.</TableCaption>
@@ -96,6 +139,12 @@ function EmailTemplateTable({ picklistData, refreshData, picklistName }) {
                         <DropdownMenuItem onClick={() => handleOpenModal(i)}>
                           Open
                         </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleEmailTemplateModal(i)}>
+                          Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleDelete(i._id)}>
+                          Delete
+                        </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>
@@ -128,6 +177,13 @@ function EmailTemplateTable({ picklistData, refreshData, picklistName }) {
               ))}
             </TableBody>
           </Table>
+          <AddEmailTemplate 
+          refreshData={refreshData}
+          open={emailTemplateModal}
+          handleClose={() => setEmailTemplateModal(false)}
+          editMode={editMode}
+          editData={editData}
+           />
 
           <Pagination
             count={totalPages}
@@ -158,5 +214,4 @@ function EmailTemplateTable({ picklistData, refreshData, picklistName }) {
     </div>
   );
 }
-
 export default EmailTemplateTable;

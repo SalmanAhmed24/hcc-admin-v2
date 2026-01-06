@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // import { Input } from "@/components/ui/input";
 // import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,7 @@ import useAuthStore from "@/store/store";
 import { Drawer } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
-const AddEmailTemplate = ({ open, handleClose }) => {
+const AddEmailTemplate = ({ open, handleClose, refreshData, editMode, editData }) => {
   
   const user = useAuthStore((state) => state.user);
   const [subject, setSubject] = useState("");
@@ -22,6 +22,14 @@ const AddEmailTemplate = ({ open, handleClose }) => {
   const email = user?.user?.email;
   const fullname = user?.user?.firstName + " " + user?.user?.secondName;
 
+  useEffect(() => {
+    if (editMode && editData) {
+      setSubject(editData.subject || "");
+      setBody(editData.body || "");
+      setTemplateName(editData.templateName || "");
+    }
+  }, [editMode, editData]);
+
   const handleUpload = async (e) => {
     e.preventDefault();
       const formData = new FormData();
@@ -33,8 +41,26 @@ const AddEmailTemplate = ({ open, handleClose }) => {
       formData.append("subject", subject);
       formData.append("body", body);
 
-
-        try {
+        if (editMode && editData) {
+            try {
+              await axios.patch(`${apiPath.prodPath}/api/emailTemplate/modifyEmailTemplate/${editData._id}`, formData, {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              }).then((response) => {
+                console.log(response.data);
+                Swal.fire({
+                  title: "Success!",
+                  text: "Email Template successfully updated.",
+                  icon: "success",
+                  confirmButtonText: "OK",
+                });
+              });
+          } catch (error) {
+              console.error("Error updating email template:", error);
+          }
+        }else {
+            try {
              await axios.post(`${apiPath.prodPath}/api/emailTemplate/addEmailTemplate`, formData, {
               headers: {
                 "Content-Type": "multipart/form-data",
@@ -48,10 +74,12 @@ const AddEmailTemplate = ({ open, handleClose }) => {
                 confirmButtonText: "OK",
               });
             });
-        } catch (error) {
-            console.error("Error sending email:", error);
+          } catch (error) {
+              console.error("Error creating email template:", error);
+          }
         }
 
+      refreshData();
       setSubject("");
       setBody("");
       setTemplateName("");
