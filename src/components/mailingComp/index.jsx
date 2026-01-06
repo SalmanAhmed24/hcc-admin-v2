@@ -1,4 +1,3 @@
-
 import { Poppins } from "next/font/google";
 import { Button } from "@/components/ui/button";
 import { apiPath } from "@/utils/routes";
@@ -35,6 +34,7 @@ function MailingComp({ picklistName }) {
   
   const user = useAuthStore((state) => state.user);
   const usernameId = user?.user?._id || ""; // Directly get from Zustand store
+  const username = user?.user?.username || "";
 
   function filterOptions() {
     let sorts;
@@ -74,7 +74,7 @@ function MailingComp({ picklistName }) {
       } else if (picklistName === "Gmail") {
         url = `${apiPath.prodPath}/api/clients/allNewLeads?page=${page}&limit=8`;
       } else if (picklistName === "Email Templates") {
-        url = `${apiPath.prodPath}/api/emailTemplate/getAllEmailTemplates?page=${page}&limit=8`;
+        url = `${apiPath.prodPath}/api/emailTemplate/getEmailTemplateForUser/${username}`;
       }
 
       const res = await axios.get(url);
@@ -84,7 +84,7 @@ function MailingComp({ picklistName }) {
       } else if (picklistName === "Gmail") {
         setPicklistData(res.data);
       } else if (picklistName === "Email Templates") {
-        setPicklistData(res.data.emailTemplates);
+        setPicklistData(res.data);
       } else {
         console.log("No data found");
       }
@@ -120,7 +120,7 @@ function MailingComp({ picklistName }) {
       } else if (picklistName === "Gmail") {
         url = `${apiPath.prodPath}/api/clients/allNewLeads?${filterBy}=${searchTerm}`;
       } else if (picklistName === "Email Templates") {
-        url = `${apiPath.prodPath}/api/emailTemplate/getEmailTemplateByFilter?${filterBy}=${searchTerm}`;
+        url = `${apiPath.prodPath}/api/emailTemplate/getEmailTemplateForUser/${username}`;
       }
 
       const res = await axios.get(url);
@@ -174,7 +174,7 @@ function MailingComp({ picklistName }) {
       } else if (picklistName === "Gmail") {
         url = `${apiPath.prodPath}/api/clients/allNewLeads?page=${page}&limit=8`;
       } else if (picklistName === "Email Templates") {
-        url = `${apiPath.prodPath}/api/emailTemplate/getAllEmailTemplates?page=${page}&limit=8`;
+        url = `${apiPath.prodPath}/api/emailTemplate/getEmailTemplateForUser/${username}`;
       }
 
       const res = await axios.get(url);
@@ -184,7 +184,7 @@ function MailingComp({ picklistName }) {
       } else if (picklistName === "Gmail") {
         setPicklistData(res.data);
       } else if (picklistName === "Email Templates") {
-        setPicklistData(res.data.emailTemplates);
+        setPicklistData(res.data);
       } else {
         console.log("No data found");
       }
@@ -300,6 +300,7 @@ function MailingComp({ picklistName }) {
         <AddEmailTemplate
           open={emailTemplateModal}
           handleClose={() => setEmailTemplateModal(false)}
+          refreshData={refreshData}
         />
       )}
     </main>
