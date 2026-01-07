@@ -230,7 +230,7 @@ function AddLead({ open, handleClose, editData, }) {
     
 
     axios
-      .post(`${apiPath.devPath}/api/clients/addLead`, formData)
+      .post(`${apiPath.prodPath}/api/clients/addLead`, formData)
       .then((res) => {
         console.log(res.data);
         Swal.fire({
@@ -247,6 +247,8 @@ function AddLead({ open, handleClose, editData, }) {
           text: "Something went wrong with the data fetching",
         });
       });
+
+      
   };
   const dataReset = () => {
     setClientName("");
