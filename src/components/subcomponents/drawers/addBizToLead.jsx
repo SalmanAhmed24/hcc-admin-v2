@@ -247,6 +247,8 @@ function AddLead({ open, handleClose, editData, }) {
           text: "Something went wrong with the data fetching",
         });
       });
+
+      
   };
   const dataReset = () => {
     setClientName("");
