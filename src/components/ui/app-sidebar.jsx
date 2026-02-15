@@ -51,16 +51,16 @@ function AppSideBar() {
         >
           <DashboardIcon /> Dashboard
         </Link>
-        {/* <Link
-          href={"/employees"}
+        <Link
+          href={"/contacts"}
           className={
-            pathname == "/employees"
+            pathname == "/contacts"
               ? "active-link pt-3 pb-3 pl-[30px] text-center flex flex-row items-end gap-4"
               : "text-[#E1C9FF] pt-3 pl-[30px] pb-3 text-center flex flex-row items-end gap-4"
           }
         >
-          <PeopleOutlineIcon /> Employees
-        </Link> */}
+          <PeopleOutlineIcon /> Contacts
+        </Link>
         <Link
           href={"/clients"}
           className={

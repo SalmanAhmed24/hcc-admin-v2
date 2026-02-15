@@ -36,10 +36,6 @@ function AddCLient({ open, handleClose, addEmp, edit, editData, editEmp }) {
   const [inputTerritoryValue, setInputTerritoryValue] = useState("");
   const [inputValue, setInputValue] = useState("");
   const [inputStatusValue, setInputStatusValue] = useState("");
-  // const [files, setFiles] = useState([]);
-  // const [fileCategory, setFileCategory] = useState("");
-  // const [fileCategoryOpt, setFileCategoryOpt] = useState("");
-  // const [inputFileCatagory, setInputFileCatagory] = useState("");
   const [empOpt, setEmpOpt] = useState([]);
   const [territoryManager, setTerritoryManager] = useState("");
   const [inputTerritoryManager, setInputTerritoryManager] = useState("");

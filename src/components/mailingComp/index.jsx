@@ -59,7 +59,6 @@ function MailingComp({ picklistName }) {
   const fetchData = useCallback(async (page = 1) => {
     console.log("fetchData called with usernameId:", usernameId);
     
-    // If we need usernameId for Inbox but it's not available, don't fetch
     if (picklistName === "Inbox" && !usernameId) {
       console.log("Skipping fetch - usernameId not available yet");
       return;
