@@ -137,7 +137,7 @@ useEffect(() => {
                 onClick={handleEditContact}
                 variant="outline"
                 size="sm"
-                className="border-[#2D2640] text-gray-300 hover:bg-[#1F1833] bg-[#6D28D9]"
+                className="border-[#2D2640] text-gray-300 hover:bg-white hover:text-black bg-[#6D28D9]"
               >
                 <Edit  className="h-4 w-4 mr-2" />
                 Edit
@@ -146,7 +146,7 @@ useEffect(() => {
                 onClick={handleDeleteContact}
                 variant="outline"
                 size="sm"
-                className="border-red-900 text-red-400 hover:bg-red-950 bg-[#6D28D9]"
+                className="border-red-900 text-red-400 hover:bg-white hover:text-black bg-[#6D28D9]"
               >
                 <Trash2 className="h-4 w-4 mr-2" />
                 Archive

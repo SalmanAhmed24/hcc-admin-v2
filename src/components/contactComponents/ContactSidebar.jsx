@@ -17,6 +17,7 @@ import {
   Tag,
 } from "lucide-react";
 import SendEmailViaGmail from "../subcomponents/drawers/mailingDrawer";
+import moment from "moment";
 
 export default function ContactSidebar({ contact, onUpdate }) {
   const [openBulkMailModal, setOpenBulkMailModal] = useState(false);
@@ -135,7 +136,7 @@ export default function ContactSidebar({ contact, onUpdate }) {
             onClick={openEmail}
             variant="outline"
             size="sm"
-            className="border-[#2D2640] bg-[#6D28D9] text-gray-300 hover:bg-[#1F1833]"
+            className="border-[#2D2640] bg-[#6D28D9] text-gray-300 hover:bg-white hover:text-black"
           >
             <Mail className="h-4 w-4 mr-2" />
             Email
@@ -146,7 +147,7 @@ export default function ContactSidebar({ contact, onUpdate }) {
               onClick={openPhone}
               variant="outline"
               size="sm"
-              className="border-[#2D2640] bg-[#6D28D9] text-gray-300 hover:bg-[#1F1833]"
+              className="border-[#2D2640] bg-[#6D28D9] text-gray-300 hover:bg-white hover:text-black"
             >
               <Phone className="h-4 w-4 mr-2" />
               Call
@@ -158,7 +159,7 @@ export default function ContactSidebar({ contact, onUpdate }) {
               onClick={openWhatsApp}
               variant="outline"
               size="sm"
-              className="border-[#2D2640] bg-[#6D28D9] text-gray-300 hover:bg-[#1F1833]"
+              className="border-[#2D2640] bg-[#6D28D9] text-gray-300 hover:bg-white hover:text-black"
             >
               <MessageCircle className="h-4 w-4 mr-2" />
               WhatsApp
@@ -170,7 +171,7 @@ export default function ContactSidebar({ contact, onUpdate }) {
               onClick={openLinkedIn}
               variant="outline"
               size="sm"
-              className="border-[#2D2640] bg-[#6D28D9] text-gray-300 hover:bg-[#1F1833]"
+              className="border-[#2D2640] bg-[#6D28D9] text-gray-300 hover:bg-white hover:text-black"
             >
               <Linkedin className="h-4 w-4 mr-2" />
               LinkedIn
@@ -182,7 +183,7 @@ export default function ContactSidebar({ contact, onUpdate }) {
               onClick={openTwitter}
               variant="outline"
               size="sm"
-              className="border-[#2D2640] bg-[#6D28D9] text-gray-300 hover:bg-[#2D2640]"
+              className="border-[#2D2640] bg-[#6D28D9] text-gray-300 hover:bg-white hover:text-black"
             >
               <Twitter className="h-4 w-4 mr-2" />
               Twitter
@@ -194,7 +195,7 @@ export default function ContactSidebar({ contact, onUpdate }) {
               onClick={openWebsite}
               variant="outline"
               size="sm"
-              className="border-[#2D2640] bg-[#6D28D9] text-gray-300 hover:bg-[#1F1833]"
+              className="border-[#2D2640] bg-[#6D28D9] text-gray-300 hover:bg-white hover:text-black"
             >
               <Globe className="h-4 w-4 mr-2" />
               Website
@@ -235,7 +236,7 @@ export default function ContactSidebar({ contact, onUpdate }) {
               <div className="flex-1">
                 <p className="text-xs text-gray-400 mb-1">Became Lead</p>
                 <p className="text-sm text-white">
-                  {new Date(contact.lifeCycle.becameLeadDate).toLocaleDateString()}
+                  {moment(contact.lifeCycle.becameLeadDate).format("MM-DD-YYYY")}
                 </p>
               </div>
             </div>
