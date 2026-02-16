@@ -5,11 +5,11 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import React, { useState, useEffect } from "react";
-import useStore from "@/store/store";
+// import useStore from "@/store/store";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/store";
 import MailingComp from "@/components/mailingComp";
-import SendBulkEmailViaGmail from "@/components/subcomponents/drawers/bulkEmialDrawer";
+// import SendBulkEmailViaGmail from "@/components/subcomponents/drawers/bulkEmialDrawer";
 
 function MailingPage() {
   const [value, setValue] = useState("Inbox");

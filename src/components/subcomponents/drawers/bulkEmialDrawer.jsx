@@ -182,6 +182,8 @@ export default function SendBulkEmailViaGmail({ open, handleClose, emails = [], 
 
   const hccEmail = user?.user?.hccEmail || " ";
   const id = user?.user?._id;
+  const senderName = `${user?.user?.firstName} ${user?.user?.secondName}` 
+  const senderTitle = user?.user?.title || "Business Growth Consultant";
 
   useEffect(() => {
     async function templateOptions() {
@@ -214,6 +216,19 @@ export default function SendBulkEmailViaGmail({ open, handleClose, emails = [], 
   const handleUpload = async (e) => {
     e.preventDefault();
     try {
+      let templateData2 = {
+        title : "Good Day From Hill Country",
+        recipientName : recipientName,
+        body : body,
+        additionalText : "Thank You for your Time",
+        senderName : senderName,
+        senderTitle : senderTitle,
+        companyName : "Hill Country Coders",
+        companyAddress : "Cedar Park Texas USA",
+        companyWebsite : "https://www.hillcountrycoders.com"
+      };
+
+
       const formData = new FormData();
       if (Array.isArray(to)) {
        formData.append("recipients", JSON.stringify(to));
@@ -223,7 +238,7 @@ export default function SendBulkEmailViaGmail({ open, handleClose, emails = [], 
       formData.append('subject', subject);
       formData.append('body', body);
       if (templateId?.value) formData.append('templateId', templateId.value);
-      if (templateData) formData.append('templateData', JSON.stringify(templateData));
+      formData.append("templateData", JSON.stringify(templateData2));
       attachments.forEach((file) => formData.append('attachments', file));
 
       const response = await axios.post(`${apiPath.prodPath3}/api/bulkEmail/sendBulkEmail/${id}`, formData, {

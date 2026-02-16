@@ -1,22 +1,13 @@
 "use client";
 import React, { useState, useEffect, use } from "react";
-import Image from "next/image";
-import useStore from "@/store/store";
 import { useRouter } from "next/navigation";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import AppSideBar from "@/components/ui/app-sidebar";
 import useAuthStore from "@/store/store";
 import Navbar from "@/components/ui/Navbar";
 import NewClientWidget from "@/components/dashboardWidgets/AccountExecutive/newClientWidget";
-import axios from "axios";
-import { apiPath } from "@/utils/routes";
-import Swal from "sweetalert2";
 import ResearchCompleteClient from "@/components/dashboardWidgets/AccountExecutive/reseachCompleteAcc";
 import TaskAccordion from "@/components/dashboardWidgets/AccountExecutive/newTaskAccordion";
-
-
-
-
 
 export default function Home() {
   const isUserLoggedIn = useAuthStore((state) => state.isLoggedIn);

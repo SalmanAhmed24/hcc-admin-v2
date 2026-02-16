@@ -11,7 +11,7 @@ import { Drawer } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import Select from "react-select";
 
-const SendEmailViaGmail = ({ open, handleClose, email, item }) => {
+const SendEmailViaGmail = ({ open, handleClose, email, item, recipientName }) => {
   
   const user = useAuthStore((state) => state.user);
   const [body, setBody] = useState("");
@@ -24,6 +24,8 @@ const SendEmailViaGmail = ({ open, handleClose, email, item }) => {
 
   const hccEmail = user?.user?.hccEmail || " ";
   const id = user?.user?._id;
+  const senderName = `${user?.user?.firstName} ${user?.user?.secondName}` 
+  const senderTitle = user?.user?.title || "Business Growth Consultant";
 
 
   
@@ -58,18 +60,30 @@ const SendEmailViaGmail = ({ open, handleClose, email, item }) => {
     e.preventDefault();
       const formData = new FormData();
 
+      let templateData2 = {
+        title : "Good Day From Hill Country",
+        recipientName : recipientName,
+        body : body,
+        additionalText : "Thank You for your Time",
+        senderName : senderName,
+        senderTitle : senderTitle,
+        companyName : "Hill Country Coders",
+        companyAddress : "Cedar Park Texas USA",
+        companyWebsite : "https://www.hillcountrycoders.com"
+      };
+
       formData.append("to", to);
       formData.append("subject", subject);
       formData.append("body", body);
       formData.append("templateId", templateId.value);
-      formData.append("templateData", templateData);
+      formData.append("templateData", JSON.stringify(templateData2));
       attachments.forEach((file) => {
         formData.append("attachments", file);
       });
 
 
         try {
-            const response = await axios.post(`${apiPath.prodPath}/api/appGmail/send/${id}`, formData);
+            const response = await axios.post(`${apiPath.devPath}/api/appGmail/send/${id}`, formData);
             console.log(response.data);
         } catch (error) {
             console.error("Error sending email:", error);
