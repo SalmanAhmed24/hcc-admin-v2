@@ -1,9 +1,7 @@
-// lib/apolloClient.js
 import { ApolloClient, InMemoryCache, HttpLink, from } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
 import useAuthStore from "@/store/store";
 
-// Error handling link
 const errorLink = onError(({ graphQLErrors, networkError, operation }) => {
   if (graphQLErrors) {
     graphQLErrors.forEach(({ message, locations, path }) => {
@@ -17,13 +15,12 @@ const errorLink = onError(({ graphQLErrors, networkError, operation }) => {
   }
 });
 
-// Create HTTP link
 const httpLink = new HttpLink({
-  uri: process.env.NEXT_PUBLIC_GRAPHQL_URL || "http://localhost:8080/graphql",
+  uri:  "https://hcc-adam-backend.vercel.app" || "http://localhost:8080/graphql",
   credentials: "include",
 });
+// 
 
-// Auth middleware link (correct approach)
 import  { setContext }  from "@apollo/client/link/context";
 
 const authLink = setContext((_, { headers }) => {
@@ -49,10 +46,9 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
-// Create Apollo Client
 const createApolloClient = () => {
   return new ApolloClient({
-    link: from([errorLink, authLink, httpLink]), // Correct order: error -> auth -> http
+    link: from([errorLink, authLink, httpLink]),
     cache: new InMemoryCache({
       typePolicies: {
         Query: {
@@ -71,7 +67,6 @@ const createApolloClient = () => {
   });
 };
 
-// Singleton pattern for Next.js
 let apolloClient = null;
 
 export function getApolloClient() {

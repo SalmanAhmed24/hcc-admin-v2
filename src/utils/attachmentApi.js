@@ -12,9 +12,6 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 //   return null;
 // };
 
-/**
- * Upload single attachment to contact
- */
 export const uploadContactAttachment = async (contactId, file, category, description, id) => { 
   const formData = new FormData();
   formData.append('file', file);
@@ -45,9 +42,6 @@ export const uploadContactAttachment = async (contactId, file, category, descrip
   return await response.json();
 };
 
-/**
- * Upload multiple attachments to contact
- */
 export const uploadMultipleContactAttachments = async (contactId, files, category, description, id) => {
   const formData = new FormData();
   
@@ -83,9 +77,6 @@ formData.append('id', id);
   return await response.json();
 };
 
-/**
- * Get all attachments for a contact
- */
 export const getContactAttachments = async (contactId) => {
 //   const token = getAuthToken();
 
@@ -108,9 +99,6 @@ export const getContactAttachments = async (contactId) => {
   return await response.json();
 };
 
-/**
- * Get download URL for attachment
- */
 export const getAttachmentDownloadUrl = async (contactId, attachmentId, expiresIn = 3600) => {
 //   const token = getAuthToken();
 
@@ -133,9 +121,6 @@ export const getAttachmentDownloadUrl = async (contactId, attachmentId, expiresI
   return await response.json();
 };
 
-/**
- * Delete attachment
- */
 export const deleteContactAttachment = async (contactId, attachmentId) => {
 //   const token = getAuthToken();
 
@@ -158,9 +143,6 @@ export const deleteContactAttachment = async (contactId, attachmentId) => {
   return await response.json();
 };
 
-/**
- * Update attachment metadata
- */
 export const updateAttachmentMetadata = async (contactId, attachmentId, updates) => {
 //   const token = getAuthToken();
 

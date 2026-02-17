@@ -25,6 +25,7 @@ import {
 import { formatDistanceToNow } from "date-fns";
 import AddDealDrawer from "./AddDealDrawer";
 import Swal from "sweetalert2";
+import moment from "moment";
 
 export default function DealsSection({ contact, onUpdate }) {
   const [addDealOpen, setAddDealOpen] = useState(false);
@@ -196,7 +197,7 @@ return (
               <p className="text-gray-400 mb-1">Close Date</p>
               <div className="flex items-center text-white">
                 <Calendar className="h-4 w-4 mr-2 text-gray-500" />
-                {new Date(deal.closeDate).toLocaleDateString()}
+                {moment(deal.closeDate).format("MM-DD-YYYY")}
               </div>
             </div>
           </div>

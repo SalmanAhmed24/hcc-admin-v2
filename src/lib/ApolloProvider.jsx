@@ -1,4 +1,3 @@
-// lib/ApolloProvider.jsx
 "use client";
 
 import React from "react";

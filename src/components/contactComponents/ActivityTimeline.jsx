@@ -27,6 +27,7 @@ import {
 import { formatDistanceToNow } from "date-fns";
 import AddActivityDrawer from "./AddActivityDrawer";
 import Swal from "sweetalert2";
+import moment from "moment";
 
 export default function ActivityTimeline({ contact, onUpdate }) {
   const [addActivityOpen, setAddActivityOpen] = useState(false);
@@ -251,8 +252,8 @@ export default function ActivityTimeline({ contact, onUpdate }) {
                         {activity.type === "task" && activity.taskDueDate && (
                           <p className="text-gray-500 text-xs mt-2">
                             Due:{" "}
-                            {new Date(activity.taskDueDate).toLocaleDateString()}
-                          </p>
+                            { moment(activity.taskDueDate).format("MM-DD-YYYY")}
+                          </p> 
                         )}
                         <div className="flex items-center gap-2 mt-2 text-xs text-gray-500">
                           <span>

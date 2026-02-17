@@ -146,7 +146,7 @@ const handleSelectReactChange = (label, value) => {
 
     if(!edit){
       variables = {
-      id: contact._id,
+      // id: contact._id,
       basicInfo: {
         firstName: formData.firstName,
         lastName: formData.lastName,
@@ -176,9 +176,7 @@ const handleSelectReactChange = (label, value) => {
         stage: formData.lifecycleStage,
         leadStatus: formData.leadStatus,
         source: formData.source,
-        tags: formData.tags
-          ? formData.tags.split(",").map((t) => t.trim()).filter(t => t !== "")
-          : [],
+        tags: formData.tags || [],
       },
       ownerId: currentUserId || null,
     };
@@ -344,7 +342,7 @@ const handleSelectReactChange = (label, value) => {
                     name="firstName"
                     value={formData.firstName}
                     onChange={handleInputChange}
-                    className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526]"
+                    className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526] text-white"
                     placeholder="John"
                     required
                   />
@@ -355,7 +353,7 @@ const handleSelectReactChange = (label, value) => {
                     name="lastName"
                     value={formData.lastName}
                     onChange={handleInputChange}
-                    className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526]"
+                    className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526] text-white"
                     placeholder="Doe"
                     required
                   />
@@ -366,7 +364,7 @@ const handleSelectReactChange = (label, value) => {
                     name="salutation"
                     value={formData.salutation}
                     onChange={handleInputChange}
-                    className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526]"
+                    className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526] text-white"
                     placeholder="Mr./Ms./Dr."
                   />
                 </div>
@@ -379,7 +377,7 @@ const handleSelectReactChange = (label, value) => {
                   type="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526]"
+                  className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526] text-white"
                   placeholder="john@example.com"
                   required
                 />
@@ -391,7 +389,7 @@ const handleSelectReactChange = (label, value) => {
                   type="email"
                   value={formData.alternateEmail}
                   onChange={handleInputChange}
-                  className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526]"
+                  className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526] text-white"
                   placeholder="john@example.com"
                 />
               </div>
@@ -405,7 +403,7 @@ const handleSelectReactChange = (label, value) => {
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526]"
+                    className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526] text-white"
                     placeholder="+1 (555) 123-4567"
                   />
                 </div>
@@ -415,7 +413,7 @@ const handleSelectReactChange = (label, value) => {
                     name="mobilePhone"
                     value={formData.mobilePhone}
                     onChange={handleInputChange}
-                    className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526]"
+                    className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526] text-white"
                     placeholder="+1 (555) 987-6543"
                   />
                 </div>
@@ -429,14 +427,14 @@ const handleSelectReactChange = (label, value) => {
                 name="street"
                 value={formData.street}
                 onChange={handleInputChange}
-                className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526]"
+                className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526] text-white"
                 placeholder="Street Address"
               />
               <Input
                 name="street2"
                 value={formData.street2}
                 onChange={handleInputChange2}
-                className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526]"
+                className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526] text-white"
                 placeholder="Street Address 2"
               />
               <div className="grid grid-cols-2 gap-4">
@@ -444,14 +442,14 @@ const handleSelectReactChange = (label, value) => {
                   name="city"
                   value={formData.city}
                   onChange={handleInputChange}
-                  className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526]"
+                  className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526] text-white"
                   placeholder="City"
                 />
                 <Input
                   name="state"
                   value={formData.state}
                   onChange={handleInputChange}
-                  className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526]"
+                  className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526] text-white"
                   placeholder="State"
                 />
                 
@@ -461,14 +459,14 @@ const handleSelectReactChange = (label, value) => {
                   name="postalCode"
                   value={formData.postalCode}
                   onChange={handleInputChange}
-                  className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526]"
+                  className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526] text-white"
                   placeholder="Zipcode"
                 />
                 <Input
                   name="country"
                   value={formData.country}
                   onChange={handleInputChange}
-                  className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526]"
+                  className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526] text-white"
                   placeholder="Country"
                 />
               </div>
@@ -482,42 +480,42 @@ const handleSelectReactChange = (label, value) => {
                 name="linkedIn"
                 value={formData.linkedIn}
                 onChange={handleInputChange}
-                className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526]"
+                className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526] text-white"
                 placeholder="LinkedIn URL"
               />
               <Input
                 name="twitter"
                 value={formData.twitter}
                 onChange={handleInputChange}
-                className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526]"
+                className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526] text-white"
                 placeholder="Twitter URL"
               />
               <Input
                 name="website"
                 value={formData.website}
                 onChange={handleInputChange}
-                className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526]"
+                className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526] text-white"
                 placeholder="Website URL"
               />
               <Input
                 name="github"
                 value={formData.github}
                 onChange={handleInputChange}
-                className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526]"
+                className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526] text-white"
                 placeholder="GitHub URL"
               />
               <Input
                 name="instagram"
                 value={formData.instagram}
                 onChange={handleInputChange}
-                className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526]"
+                className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526] text-white"
                 placeholder="Instagram URL"
               />
               <Input
                 name="facebook"
                 value={formData.facebook}
                 onChange={handleInputChange}
-                className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526]"
+                className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526] text-white"
                 placeholder="Facebook URL"
               />
             </div>
