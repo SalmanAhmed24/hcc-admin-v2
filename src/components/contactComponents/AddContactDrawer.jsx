@@ -146,7 +146,7 @@ const handleSelectReactChange = (label, value) => {
 
     if(!edit){
       variables = {
-      id: contact._id,
+      // id: contact._id,
       basicInfo: {
         firstName: formData.firstName,
         lastName: formData.lastName,
@@ -176,9 +176,7 @@ const handleSelectReactChange = (label, value) => {
         stage: formData.lifecycleStage,
         leadStatus: formData.leadStatus,
         source: formData.source,
-        tags: formData.tags
-          ? formData.tags.split(",").map((t) => t.trim()).filter(t => t !== "")
-          : [],
+        tags: formData.tags || [],
       },
       ownerId: currentUserId || null,
     };

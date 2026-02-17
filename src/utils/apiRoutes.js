@@ -1,5 +1,6 @@
 
-const API_BASE_URL = "https://hcc-adam-backend.vercel.app" || "http://localhost:8080";
+const API_BASE_URL =  "http://localhost:8080";
+// "https://hcc-adam-backend.vercel.app" ||
 
 export const apiPath = {
   prodPath: API_BASE_URL,

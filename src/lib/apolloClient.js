@@ -16,9 +16,10 @@ const errorLink = onError(({ graphQLErrors, networkError, operation }) => {
 });
 
 const httpLink = new HttpLink({
-  uri: "https://hcc-adam-backend.vercel.app" || "http://localhost:8080/graphql",
+  uri:  "https://hcc-adam-backend.vercel.app" || "http://localhost:8080/graphql",
   credentials: "include",
 });
+// 
 
 import  { setContext }  from "@apollo/client/link/context";
 
