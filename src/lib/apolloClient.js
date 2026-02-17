@@ -16,7 +16,7 @@ const errorLink = onError(({ graphQLErrors, networkError, operation }) => {
 });
 
 const httpLink = new HttpLink({
-  uri:  "https://hcc-adam-backend.vercel.app" || "http://localhost:8080/graphql",
+  uri:  process.env.NEXT_PUBLIC_API_URL_GRAPHQL || "http://localhost:8080/graphql",
   credentials: "include",
 });
 // 
