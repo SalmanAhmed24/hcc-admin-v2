@@ -27,7 +27,7 @@ export const apiPath = {
  */
 
 // Your deployed backend base URL (no trailing slash)
-export const prodPath = "https://hcc-adam-backend.vercel.app" || "http://localhost:8080/api";
+export const prodPath = "https://hcc-adam-backend.vercel.app/api" || "http://localhost:8080/api";
 
 // Local development backend (useful to switch quickly)
 export const devPath = "http://localhost:8080/api";
