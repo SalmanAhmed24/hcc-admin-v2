@@ -1,0 +1,195 @@
+/**
+ * ============================================================
+ * TIPTAP EDITOR STYLES — styles/tiptap.css
+ * ============================================================
+ *
+ * Import this in your global CSS or layout.jsx:
+ *   import "@/styles/tiptap.css";
+ *
+ * These styles control how the Tiptap editor content looks.
+ * The .tiptap-editor class is applied to the EditorContent wrapper
+ * in RichTextEditor.jsx.
+ * ============================================================
+ */
+
+/* ── EDITOR CONTAINER ────────────────────────────────────── */
+.tiptap-editor .ProseMirror {
+  outline: none;
+  min-height: 100%;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.75;
+  color: #cbd5e1;
+  caret-color: #d97706;
+}
+
+/* ── PLACEHOLDER ─────────────────────────────────────────── */
+.tiptap-editor .ProseMirror .is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #1e2d40;
+  pointer-events: none;
+  height: 0;
+  font-style: normal;
+}
+
+/* ── SELECTION ───────────────────────────────────────────── */
+.tiptap-editor .ProseMirror ::selection {
+  background: #d9770630;
+}
+
+/* ── HEADINGS ────────────────────────────────────────────── */
+.tiptap-editor .ProseMirror h1 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #e2e8f0;
+  letter-spacing: -0.4px;
+  margin: 24px 0 12px;
+  line-height: 1.25;
+}
+.tiptap-editor .ProseMirror h2 {
+  font-size: 20px;
+  font-weight: 650;
+  color: #e2e8f0;
+  letter-spacing: -0.3px;
+  margin: 20px 0 10px;
+  line-height: 1.3;
+}
+.tiptap-editor .ProseMirror h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #cbd5e1;
+  margin: 16px 0 8px;
+  line-height: 1.35;
+}
+
+/* ── PARAGRAPHS ──────────────────────────────────────────── */
+.tiptap-editor .ProseMirror p {
+  margin: 0 0 12px;
+}
+.tiptap-editor .ProseMirror p:last-child {
+  margin-bottom: 0;
+}
+
+/* ── BOLD / ITALIC / UNDERLINE / STRIKE ─────────────────── */
+.tiptap-editor .ProseMirror strong {
+  font-weight: 650;
+  color: #e2e8f0;
+}
+.tiptap-editor .ProseMirror em {
+  color: #94a3b8;
+}
+.tiptap-editor .ProseMirror u {
+  text-decoration-color: #475569;
+}
+.tiptap-editor .ProseMirror s {
+  text-decoration-color: #334155;
+  color: #475569;
+}
+
+/* ── INLINE CODE ─────────────────────────────────────────── */
+.tiptap-editor .ProseMirror code {
+  font-family: 'DM Mono', 'Fira Code', monospace;
+  font-size: 12px;
+  background: #111827;
+  border: 1px solid #1e2538;
+  border-radius: 4px;
+  padding: 1px 5px;
+  color: #34d399;
+}
+
+/* ── CODE BLOCK ──────────────────────────────────────────── */
+.tiptap-editor .ProseMirror pre {
+  background: #0d1117;
+  border: 1px solid #1e2538;
+  border-radius: 8px;
+  padding: 16px 18px;
+  margin: 16px 0;
+  overflow-x: auto;
+}
+.tiptap-editor .ProseMirror pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+/* ── BLOCKQUOTE ──────────────────────────────────────────── */
+.tiptap-editor .ProseMirror blockquote {
+  border-left: 3px solid #d97706;
+  margin: 16px 0;
+  padding: 8px 0 8px 16px;
+  color: #64748b;
+  font-style: italic;
+}
+
+/* ── LISTS ───────────────────────────────────────────────── */
+.tiptap-editor .ProseMirror ul,
+.tiptap-editor .ProseMirror ol {
+  padding-left: 22px;
+  margin: 8px 0 12px;
+}
+.tiptap-editor .ProseMirror li {
+  margin: 4px 0;
+  color: #94a3b8;
+}
+.tiptap-editor .ProseMirror ul li::marker {
+  color: #d97706;
+}
+.tiptap-editor .ProseMirror ol li::marker {
+  color: #d97706;
+  font-weight: 600;
+}
+
+/* ── HORIZONTAL RULE ─────────────────────────────────────── */
+.tiptap-editor .ProseMirror hr {
+  border: none;
+  border-top: 1px solid #1e2538;
+  margin: 24px 0;
+}
+
+/* ── LINKS ───────────────────────────────────────────────── */
+.tiptap-editor .ProseMirror a {
+  color: #38bdf8;
+  text-decoration: underline;
+  text-decoration-color: #38bdf830;
+  text-underline-offset: 2px;
+  transition: color 0.15s;
+}
+.tiptap-editor .ProseMirror a:hover {
+  color: #7dd3fc;
+  text-decoration-color: #7dd3fc60;
+}
+
+/* ── IMAGES ──────────────────────────────────────────────── */
+.tiptap-editor .ProseMirror img {
+  max-width: 100%;
+  border-radius: 8px;
+  border: 1px solid #1e2538;
+  margin: 12px 0;
+}
+.tiptap-editor .ProseMirror img.ProseMirror-selectednode {
+  outline: 2px solid #d97706;
+}
+
+/* ── TEXT ALIGN ──────────────────────────────────────────── */
+.tiptap-editor .ProseMirror [style*="text-align: left"]   { text-align: left; }
+.tiptap-editor .ProseMirror [style*="text-align: center"] { text-align: center; }
+.tiptap-editor .ProseMirror [style*="text-align: right"]  { text-align: right; }
+
+/* ── HIGHLIGHT ───────────────────────────────────────────── */
+.tiptap-editor .ProseMirror mark {
+  border-radius: 3px;
+  padding: 1px 2px;
+}
+
+/* ── FOCUS RING (accessibility) ──────────────────────────── */
+.tiptap-editor .ProseMirror:focus-visible {
+  outline: none;
+}
+
+/* ── SCROLLBAR ───────────────────────────────────────────── */
+.tiptap-editor ::-webkit-scrollbar { width: 4px; }
+.tiptap-editor ::-webkit-scrollbar-track { background: transparent; }
+.tiptap-editor ::-webkit-scrollbar-thumb { background: #1e2538; border-radius: 4px; }

@@ -1,4 +1,5 @@
 import "./globals.css";
+import "@/styles/tiptap.css";
 import { Poppins } from "next/font/google";
 import ApolloProvider from "@/lib/ApolloProvider"; // or your path
 export const metadata = {
