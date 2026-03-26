@@ -199,7 +199,7 @@ useEffect(() => {
       <div className="flex w-full flex-row flex-wrap justify-between">
         <div className="w-full flex flex-row gap-2 mb-[24px] h-[34px]">
           <Image src="/CustomerSidebar.png" alt="client" width={40} height={31.7} priority/>
-          <h1 className="font-satoshi font-semibold text-2xl ml-[20px]">Leads/Clients</h1>
+          <h1 className="font-satoshi font-semibold text-2xl ml-[20px]">Companies</h1>
         </div>
         <div className="flex flex-row gap-4 items-start border-none w-full">
           <form onSubmit={handleSearch} className="flex flex-row gap-4 w-full items-center">

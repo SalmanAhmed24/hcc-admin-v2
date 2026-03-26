@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { InputAdornment, TextField, IconButton } from "@mui/material";
-import { Search, SearchIcon } from "lucide-react";
+import { NotebookTabsIcon, Search, SearchIcon } from "lucide-react";
 import { Settings, Task } from "@mui/icons-material";
 import Link from "next/link";
 import Image from "next/image";
@@ -45,9 +45,9 @@ const Navbar = ({ onSearch }) => {
       
         
       <div className="mr-4 ml-2 justify-center flex flex-row gap-1">
-        <button className="h-[24px] w-[24px]  mr-4 text-[#2D245B]" onClick={() => setOpen(true)}>
-          <TaskIcon />
-        </button>
+        <Link className="h-[24px] w-[24px]  mr-4 text-[#2D245B]" href="/notes">
+          <NotebookTabsIcon />
+        </Link>
         <Link href="/settings" className="h-[24px] w-[24px]  text-[#2D245B]">
           <Settings/>
         </Link>

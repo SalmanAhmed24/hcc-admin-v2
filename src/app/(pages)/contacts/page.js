@@ -34,6 +34,7 @@ export default function ContactsPage() {
     },
     fetchPolicy: "cache-and-network",
   });
+  console.log("Contacts Query Data:", data?.contacts);
 
   const contacts = data?.contacts?.edges?.map((edge) => edge.node) || [];
   const pageInfo = data?.contacts?.pageInfo || {};
