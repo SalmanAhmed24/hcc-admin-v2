@@ -34,6 +34,8 @@ export const devPath = "http://localhost:8080/api";
 
 // ── Notes endpoints ──────────────────────────────────────────
 
+
+
 export const NOTE_ROUTES = {
   // GET  /notes?entityId=&entityType=&page=&limit=
   list: `${prodPath}/notes`,
