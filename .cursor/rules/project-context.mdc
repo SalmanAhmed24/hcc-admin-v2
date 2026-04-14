@@ -1,0 +1,35 @@
+---
+description: Core project context for hcc-admin-v2
+alwaysApply: true
+---
+
+# Project: hcc-admin-v2 (Frontend)
+
+## Stack
+- Next.js App Router, React 19, JavaScript only (NO TypeScript)
+- State: Zustand with sessionStorage persist (src/store/store.js)
+- UI: Tailwind CSS + SCSS + MUI + Radix UI
+- Editors: Tiptap (rich text), Excalidraw (whiteboard)
+
+## Data Fetching Patterns (THREE coexist — match the file you're in)
+- **GraphQL/Apollo**: contacts domain only (src/graphql/contactQueries.js, contactMutations.js)
+- **SWR + dedicated service/hook**: Notes module only (src/services/noteApi.js, src/hooks/useNotes.js, src/hooks/useMentions.js)
+- **Direct axios + apiPath**: all other modules — call REST APIs directly inside components
+
+## API URL Pattern
+- Legacy modules use `apiPath.prodPath` from `src/utils/routes.js` — KEEP THIS in files that already use it
+- Newer utils use `NEXT_PUBLIC_API_URL` from `.env`
+- NEVER migrate URL patterns mid-feature — match what the file already uses
+
+## Auth
+- Login API call: `src/app/(auth)/login/page.js`
+- Auth state management: `src/store/store.js`
+- URL constants: `src/utils/routes.js` (primary), `src/utils/apiRoutes.js` (secondary)
+- Auth is client-side redirect only — no middleware.ts route protection exists
+
+## Key Directories
+- Pages: `src/app/(pages)/`
+- Reusable UI: `src/components/ui/`
+- Feature components: `src/components/subcomponents/`
+- Drawers: `src/components/subcomponents/drawers/`
+- Tables: `src/components/subcomponents/tables/`
