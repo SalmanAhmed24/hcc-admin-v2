@@ -53,7 +53,7 @@ function TaskNavTab({ open, handleClose }) {
     const taskPriority = await axios.get(`${apiPath.prodPath}/api/picklist/taskPriority/getAlltaskPriority`)
     .then((res) => {
       const priorityArr = res.data.taskPriority;
-      console.log(priorityArr)
+      // console.log(priorityArr)
       return priorityArr;
     });
     ;

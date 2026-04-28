@@ -15,7 +15,6 @@ const Navbar = ({ onSearch }) => {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const user = useAuthStore((state)=> state.user);
-  console.log(user);
   const handleSearch = () => {
     if (onSearch) {
       onSearch(query);

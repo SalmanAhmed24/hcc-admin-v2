@@ -1,105 +1,133 @@
- import React from 'react'
- 
- const ClientBasicInfo = ({ item, open }) => {
-   return (
-     <>
-     <div className="flex flex-wrap flex-row gap-10 justify-start ml-14">
-           <div className="w-1/4 flex flex-col gap-2">
-              <label className="font-satoshi font-semibold text-xl">Company/Client Name</label>
-              <p className="font-satoshi text-md">{item.clientName}</p>
-            </div>
-            <div className="w-1/4 flex flex-col gap-2">
-              <label className="font-satoshi font-semibold text-xl">Primary Contact Name</label>
-              <p className="font-satoshi text-md">
-                {item.secondName == "" ? "N/A" : item.primaryContact}
-              </p>
-            </div>
-            <div className="w-1/4 flex flex-col gap-2">
-              <label className="font-satoshi font-semibold text-xl">Email</label>
-              <p className="font-satoshi text-md">{item.email}</p>
-            </div>
-            <div className="w-1/4 flex flex-col gap-2">
-              <label className="font-satoshi font-semibold text-xl">Website</label>
-              <p className="font-satoshi text-md">{item.websiteAddress}</p>
-            </div>
-            <div className="w-1/4 flex flex-col gap-2">
-              <label className="font-satoshi font-semibold text-xl">Phone</label>
-              <p className="font-satoshi text-md">{item.phone == "" ? "N/A" : item.phone}</p>
-            </div>
-            <div className="w-1/4 flex flex-col gap-2">
-              <label className="font-satoshi font-semibold text-xl">Cell</label>
-              <p className="font-satoshi text-md">{item.cell == "" ? "N/A" : item.cell}</p>
-            </div>
-            <div className="w-1/4 flex flex-col gap-2">
-              <label className="font-satoshi font-semibold text-xl">Address 1</label>
-              <p className="font-satoshi text-md">
-                {item.address1 == "" ? "N/A" : item.address1}
-              </p>
-            </div>
-            <div className="w-1/4 flex flex-col gap-2">
-              <label className="font-satoshi font-semibold text-xl">Address 2</label>
-              <p className="font-satoshi text-md">
-                {item.address2 == "" ? "N/A" : item.address2}
-              </p>
-            </div>
-            <div className="w-1/4 flex flex-col gap-2">
-              <label className="font-satoshi font-semibold text-xl">Zip Code</label>
-              <p className="font-satoshi text-md">
-                {item.zipCode == "" ? "N/A" : item.zipCode}
-              </p>
-            </div>
-            <div className="w-1/4 flex flex-col gap-2">
-              <label className="font-satoshi font-semibold text-xl">City</label>
-              <p className="font-satoshi text-md">{item.city == "" ? "N/A" : item.city}</p>
-            </div>
-            <div className="w-1/4 flex flex-col gap-2">
-              <label className="font-satoshi font-semibold text-xl">State</label>
-              <p className="font-satoshi text-md">{item.state == "" ? "N/A" : item.state}</p>
-            </div>
-            <div className="w-1/4 flex flex-col gap-2">
-              <label className="font-satoshi font-semibold text-xl">Fax #</label>
-              <p className="font-satoshi text-md">{item.fax}</p>
-            </div>
-            <div className="w-1/4 flex flex-col gap-2">
-              <label className="font-satoshi font-semibold text-xl">Territory</label>
-              <p className="font-satoshi text-md">{item.territory}</p>
-            </div>
-            <div className="w-1/4 flex flex-col gap-2">
-              <label className="font-satoshi font-semibold text-xl">Territory Manager</label>
-              <p className="font-satoshi text-md">{item.territoryManager}</p>
-            </div>
-            <div className="w-1/4 flex flex-col gap-2">
-              <label className="font-satoshi font-semibold text-xl">Assigned To</label>
-              <p className="font-satoshi text-md">{item.assignedTo}</p>
-            </div>
-            <div className="w-1/4 flex flex-col gap-2">
-              <label className="font-satoshi font-semibold text-xl">Assigned By</label>
-              <p className="font-satoshi text-md">{item.assignee}</p>
-            </div>
-            <div className="w-1/4 flex flex-col gap-2">
-              <label className="font-satoshi font-semibold text-xl">Lead Status</label>
-              <p className="font-satoshi text-md">{item.leadStatus}</p>
-            </div>
-            <div className="w-1/4 flex flex-col gap-2">
-              <label className="font-satoshi font-semibold text-xl">Client Need Category</label>
-              <p className="font-satoshi text-md">{item.needCategory.categoryName + " " + item.needCategory.categoryCode}</p>
-            </div>
-            <div className="w-1/4 flex flex-col gap-2">
-              <label className="font-satoshi font-semibold text-xl">Client Need Sub-Category</label>
-              <p className="font-satoshi text-md">{item.needCategory.subCategory.subCategoryName + " " + item.needCategory.subCategory.subCategoryCode}</p>
-            </div>
-     </div>
-      
-     </>
-   )
- }
- 
- export default ClientBasicInfo
- 
- 
- 
- 
- 
- 
- 
- 
+import React from 'react'
+
+const ClientBasicInfo = ({ item, open }) => {
+  const Field = ({ label, value }) => (
+    <div style={{
+      background: 'var(--color-background-secondary, #f7f7f5)',
+      borderRadius: '8px',
+      padding: '10px 14px',
+      borderLeft: '2.5px solid #AFA9EC'
+    }}>
+      <label style={{
+        display: 'block', fontSize: '11px', fontWeight: 600,
+        color: '#888', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '4px'
+      }}>
+        {label}
+      </label>
+      <p style={{
+        margin: 0, fontSize: '14px', fontWeight: 500,
+        color: value ? '#1a1a1a' : '#aaa',
+        fontStyle: value ? 'normal' : 'italic'
+      }}>
+        {value || 'N/A'}
+      </p>
+    </div>
+  )
+
+  const GroupHeader = ({ title }) => (
+    <div style={{
+      display: 'flex', alignItems: 'center', gap: '8px',
+      marginBottom: '14px', paddingBottom: '8px',
+      borderBottom: '1.5px solid #EEEDFE'
+    }}>
+      <span style={{
+        fontSize: '11px', fontWeight: 600, textTransform: 'uppercase',
+        letterSpacing: '0.08em', color: '#534AB7'
+      }}>
+        {title}
+      </span>
+    </div>
+  )
+
+  const grid = {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',
+    gap: '12px 24px'
+  }
+
+  const group = { marginBottom: '24px' }
+
+  return (
+    <div style={{
+      background: '#fff', border: '0.5px solid #e5e5e0',
+      borderRadius: '12px', padding: '24px 28px'
+    }}>
+
+      {/* ── Contact ── */}
+      <div style={group}>
+        <GroupHeader title="Contact" />
+        <div style={grid}>
+          <Field label="Company / Client name" value={item.clientName} />
+          <Field label="Primary contact name"  value={item.secondName === '' ? null : item.primaryContact} />
+          <Field label="Email"                 value={item.email} />
+          <Field label="Website"               value={item.websiteAddress} />
+          <Field label="Phone"                 value={item.phone} />
+          <Field label="Cell"                  value={item.cell} />
+          <Field label="Fax"                   value={item.fax} />
+        </div>
+      </div>
+
+      {/* ── Address ── */}
+      <div style={group}>
+        <GroupHeader title="Address" />
+        <div style={grid}>
+          <Field label="Address 1" value={item.address1} />
+          <Field label="Address 2" value={item.address2} />
+          <Field label="City"      value={item.city} />
+          <Field label="State"     value={item.state} />
+          <Field label="Zip code"  value={item.zipCode} />
+        </div>
+      </div>
+
+      {/* ── Assignment ──
+          CHANGED: territoryManager, assignedTo, and assignee are now
+          UserRef objects { id: ObjectId, name: string } on the model.
+          Read the .name snapshot for display — do not render the whole object.
+
+          item.territoryManager.name  (was: item.territoryManager)
+          item.assignedTo.name        (was: item.assignedTo)
+          item.assignee.name          (was: item.assignee)
+      */}
+      <div style={group}>
+        <GroupHeader title="Assignment" />
+        <div style={grid}>
+          <Field label="Territory"         value={item.territory} />
+          <Field label="Territory manager" value={item.territoryManager?.name} />
+          <Field label="Assigned to"       value={item.assignedTo?.name} />
+          <Field label="Assigned by"       value={item.assignee?.name} />
+        </div>
+      </div>
+
+      {/* ── Client need ── */}
+      <div style={group}>
+        <GroupHeader title="Client need" />
+        <div style={grid}>
+          <Field label="Need category"
+            value={`${item.needCategory.categoryName} ${item.needCategory.categoryCode}`} />
+          <Field label="Need sub-category"
+            value={`${item.needCategory.subCategory.subCategoryName} ${item.needCategory.subCategory.subCategoryCode}`} />
+        </div>
+      </div>
+
+      {/* ── Badges ── */}
+      <div style={{
+        display: 'flex', gap: '8px', flexWrap: 'wrap',
+        marginTop: '20px', paddingTop: '18px',
+        borderTop: '0.5px solid #e5e5e0'
+      }}>
+        <span style={{ background: '#E1F5EE', color: '#085041', fontSize: '12px', fontWeight: 500, padding: '4px 12px', borderRadius: '99px' }}>
+          Lead status: {item.leadStatus}
+        </span>
+        <span style={{ background: '#EEEDFE', color: '#3C3489', fontSize: '12px', fontWeight: 500, padding: '4px 12px', borderRadius: '99px' }}>
+          Category · {item.needCategory.categoryCode}
+        </span>
+        <span style={{ background: '#E6F1FB', color: '#0C447C', fontSize: '12px', fontWeight: 500, padding: '4px 12px', borderRadius: '99px' }}>
+          Sub-category · {item.needCategory.subCategory.subCategoryCode}
+        </span>
+      </div>
+
+    </div>
+  )
+}
+
+export default ClientBasicInfo

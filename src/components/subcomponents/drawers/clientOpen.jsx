@@ -15,7 +15,7 @@ import Interactions from "../clientTabs/Interactions";
 import ClientNotes from "../clientTabs/ClientNotes";
 import { ArrowBack } from "@mui/icons-material";
 import ClientBasicInfo from "../clientTabs/ClientBasicInfo";
-import ClientActivityTimeline from "../clientTabs/ClientActivity";
+// import ClientActivityTimeline from "../clientTabs/ClientActivity";
 
 
 
@@ -85,9 +85,9 @@ function ClientDetails({ open, handleClose, item }) {
                 <TabsContent value="Notes">
                 <ClientNotes item={clientItem} open={open} />
                 </TabsContent>
-                <TabsContent value="Activity">
+                {/* <TabsContent value="Activity">
                 <ClientActivityTimeline item={clientItem} open={open} />
-                </TabsContent>
+                </TabsContent> */}
               </Tabs>
                   
               </div>
