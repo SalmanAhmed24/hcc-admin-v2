@@ -202,6 +202,7 @@ function MailingComp({ picklistName }) {
   const handleAuth = () => {
     window.location.assign("https://api-hccbackendcrm.com/auth/google");
   };
+  // api-hccbackendcrm.com
 
   const handleEmailTemplateModal = () => {
     setEmailTemplateModal(true);
