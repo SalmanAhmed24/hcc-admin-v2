@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { Suspense, useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import AppSideBar from "@/components/ui/app-sidebar";
@@ -20,6 +20,10 @@ import ClientsFilterBar from "../components/clients/ClientsFilterBar";
 import ClientsPagination from "../components/clients/ClientsPagination";
 import AssignResearchDrawer from "../components/clients/AssignResearchDrawer";
 import apiClient from "@/lib/apiClient";
+import ClientDetails from "@/components/subcomponents/drawers/clientOpen";
+import AddCLient from "@/components/subcomponents/drawers/addClient";
+import axios from "axios";
+import { apiPath } from "@/utils/routes";
 
 function DashboardCard({
   title,
@@ -34,7 +38,6 @@ function DashboardCard({
 }) {
   const [expanded, setExpanded] = useState(defaultExpanded);
 
-  // CHANGED: "half" was calc(50%-10px) — increased by 30 percentage points to calc(80%-10px)
   const widthClass = {
     full:  "w-full",
     half:  "w-full lg:w-[calc(65%-10px)]",
@@ -117,13 +120,39 @@ function DashboardCard({
   );
 }
 
-export default function Home() {
-  const isUserLoggedIn = useAuthStore((state) => state.isLoggedIn);
-  const hasHydrated    = useAuthStore((state) => state.hasHydrated);
-  const router         = useRouter();
-  const user           = useAuthStore((state) => state.user);
+/* ─────────────────────────────────────────────────────────────────────
+ * Fallback shown while Suspense resolves.
+ * Matches the existing full-page loading style used in the auth check.
+ * ───────────────────────────────────────────────────────────────────── */
+function ClientsCardFallback() {
+  return (
+    <div className="space-y-2.5 px-5 py-4">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <div
+          key={i}
+          className="h-[72px] rounded-[12px] bg-[rgba(35,28,70,0.5)] border border-[rgba(69,44,149,0.2)] animate-pulse"
+          style={{ animationDelay: `${i * 80}ms` }}
+        />
+      ))}
+    </div>
+  );
+}
 
+/* ─────────────────────────────────────────────────────────────────────
+ * ClientsCardInner — extracted from Home so it can sit inside a
+ * <Suspense> boundary. Contains everything that calls useClients()
+ * (which internally calls useSearchParams()).
+ *
+ * Receives no props — reads auth/role state from its own hooks, exactly
+ * as the original code did inside Home.
+ * ───────────────────────────────────────────────────────────────────── */
+function ClientsCardInner() {
+  const router = useRouter();
   const { role } = useCurrentUser();
+  const [empId, setEmpId] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
+  const [item, setItem] = useState(null);
+  const [empModal, setEmpModal] = useState(false);
 
   const {
     clients,
@@ -145,18 +174,24 @@ export default function Home() {
 
   const [assignDrawer, setAssignDrawer] = useState({ open: false, client: null });
 
-  useEffect(() => {
-    if (!hasHydrated) return;
-    if (!isUserLoggedIn) router.push("/login");
-  }, [isUserLoggedIn, hasHydrated, router]);
-
-  const handleOpen = useCallback((client) => {
-    router.push(`/clients/${client._id}`);
-  }, [router]);
+  const editEmp = (data) => {
+    axios
+      .put(`${apiPath.prodPath}/api/clients/edit/${empId}`, data)
+      .then(() => mutate())
+      .catch((err) => console.error(err));
+  };
 
   const handleEdit = useCallback((client) => {
-    router.push(`/clients/${client._id}/edit`);
-  }, [router]);
+    setEmpId(client._id);
+    setEmpModal(true);
+    setItem(client);
+  }, []);
+
+  const handleOpen = useCallback((client) => {
+    setItem(client);
+    setEmpId(client._id);
+    setOpenModal(true);
+  }, []);
 
   const handleDelete = useCallback(async (client) => {
     const confirmed = window.confirm(
@@ -232,6 +267,170 @@ export default function Home() {
   };
   const title = titles[role] || titles.BGC;
 
+  return (
+    <>
+      <DashboardCard
+        title={title.main}
+        accent={title.accent}
+        count={pagination.total}
+        countLabel="clients"
+        icon={<Users className="w-4 h-4" />}
+        isSyncing={isValidating && !isLoading}
+        defaultExpanded={true}
+        defaultWidth="half"
+      >
+        {/* Filter bar */}
+        <div className="px-5 pt-4 pb-3 border-b border-[rgba(127,86,217,0.12)]">
+          <ClientsFilterBar
+            searchInput={searchInput}
+            handleSearchChange={handleSearchChange}
+            commitSearch={commitSearch}
+            activeFilters={activeFilters}
+            setFilter={setFilter}
+            removeFilter={removeFilter}
+            clearFilters={clearFilters}
+            isSearchPending={isSearchPending}
+            total={pagination.total}
+            mutate={mutate}
+          />
+        </div>
+
+        {/* Client rows */}
+        <div className="px-5 py-4">
+
+          {/* Loading skeleton */}
+          {isLoading && (
+            <div className="space-y-2.5">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="h-[72px] rounded-[12px] bg-[rgba(35,28,70,0.5)] border border-[rgba(69,44,149,0.2)] animate-pulse"
+                  style={{ animationDelay: `${i * 80}ms` }}
+                />
+              ))}
+            </div>
+          )}
+
+          {/* Error */}
+          {error && !isLoading && (
+            <div className="flex flex-col items-center justify-center py-10 gap-3">
+              <AlertCircle className="w-9 h-9 text-[#F87171]" />
+              <p className="text-[#FCA5A5] text-sm text-center max-w-sm">
+                {error.message || "Failed to load clients."}
+              </p>
+              <button
+                onClick={() => mutate()}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-[10px] text-[13px] font-medium bg-gradient-to-b from-[#9B74F0] to-[#6B42C8] text-white cursor-pointer"
+              >
+                <RefreshCw className="w-3.5 h-3.5" />
+                Retry
+              </button>
+            </div>
+          )}
+
+          {/* Empty */}
+          {!isLoading && !error && clients.length === 0 && (
+            <div className="flex flex-col items-center justify-center py-10 gap-3">
+              <Users className="w-10 h-10 text-[#6F618F]" />
+              <p className="text-[#A99BD4] text-sm">
+                {Object.keys(activeFilters).length > 0 || searchInput
+                  ? "No clients match your filters."
+                  : "No clients found."}
+              </p>
+              {(Object.keys(activeFilters).length > 0 || searchInput) && (
+                <button
+                  onClick={clearFilters}
+                  className="text-[12px] text-[#B797FF] hover:underline cursor-pointer"
+                >
+                  Clear all filters
+                </button>
+              )}
+            </div>
+          )}
+
+          {/* List */}
+          {!isLoading && !error && clients.length > 0 && (
+            <div
+              className="space-y-2"
+              style={{
+                opacity: isValidating && !isLoading ? 0.6 : 1,
+                transition: "opacity 0.2s",
+              }}
+            >
+              {clients.map((client) => (
+                <ClientRowCard
+                  key={client._id}
+                  client={client}
+                  onOpen={handleOpen}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                  onAddToResearch={handleAddToResearch}
+                  onAssignResearch={handleAssignResearch}
+                  onOpenResearch={handleOpenResearch}
+                  onPauseResearch={handlePauseResearch}
+                  onSubmitResearch={handleSubmitResearch}
+                  onUnassignResearch={handleUnassignResearch}
+                />
+              ))}
+            </div>
+          )}
+
+          {empModal && item && empId === item._id && (
+            <AddCLient
+              open={empModal}
+              handleClose={() => setEmpModal(false)}
+              edit={true}
+              editData={item}
+              editEmp={editEmp}
+            />
+          )}
+          {openModal && item && empId === item._id && (
+            <ClientDetails
+              open={openModal}
+              handleClose={() => setOpenModal(false)}
+              item={item}
+            />
+          )}
+        </div>
+
+        {/* Pagination */}
+        {!isLoading && !error && clients.length > 0 && (
+          <div className="px-5 pb-4 pt-1 border-t border-[rgba(127,86,217,0.12)]">
+            <ClientsPagination
+              pagination={pagination}
+              onPageChange={setPage}
+            />
+          </div>
+        )}
+      </DashboardCard>
+
+      {/* Drawer — lives outside DashboardCard so it can overlay the full page */}
+      <AssignResearchDrawer
+        open={assignDrawer.open}
+        onOpenChange={(open) => setAssignDrawer((prev) => ({ ...prev, open }))}
+        client={assignDrawer.client}
+        onSuccess={() => mutate()}
+      />
+    </>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Home — default export. Auth gate lives here (no useSearchParams
+ * dependency), so it does NOT need to be inside the Suspense boundary.
+ * Only the clients card (ClientsCardInner) is wrapped.
+ * ───────────────────────────────────────────────────────────────────── */
+export default function Home() {
+  const isUserLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const hasHydrated    = useAuthStore((state) => state.hasHydrated);
+  const router         = useRouter();
+  const user           = useAuthStore((state) => state.user);
+
+  useEffect(() => {
+    if (!hasHydrated) return;
+    if (!isUserLoggedIn) router.push("/login");
+  }, [isUserLoggedIn, hasHydrated, router]);
+
   if (!hasHydrated) {
     return (
       <div className="flex items-center justify-center w-full h-dvh bg-[#191526]">
@@ -262,136 +461,14 @@ export default function Home() {
         <div className="flex-1 overflow-y-auto overflow-x-hidden px-6 py-6">
           <div className="flex flex-row flex-wrap gap-5 items-start">
 
-            {/* ── CARD 1: Clients list ── */}
-            <DashboardCard
-              title={title.main}
-              accent={title.accent}
-              count={pagination.total}
-              countLabel="clients"
-              icon={<Users className="w-4 h-4" />}
-              isSyncing={isValidating && !isLoading}
-              defaultExpanded={true}
-              defaultWidth="half"
-            >
-              {/* Filter bar */}
-              <div className="px-5 pt-4 pb-3 border-b border-[rgba(127,86,217,0.12)]">
-                <ClientsFilterBar
-                  searchInput={searchInput}
-                  handleSearchChange={handleSearchChange}
-                  commitSearch={commitSearch}
-                  activeFilters={activeFilters}
-                  setFilter={setFilter}
-                  removeFilter={removeFilter}
-                  clearFilters={clearFilters}
-                  isSearchPending={isSearchPending}
-                  total={pagination.total}
-                  mutate={mutate}
-                />
-              </div>
-
-              {/* Client rows */}
-              <div className="px-5 py-4">
-
-                {/* Loading skeleton */}
-                {isLoading && (
-                  <div className="space-y-2.5">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <div
-                        key={i}
-                        className="h-[72px] rounded-[12px] bg-[rgba(35,28,70,0.5)] border border-[rgba(69,44,149,0.2)] animate-pulse"
-                        style={{ animationDelay: `${i * 80}ms` }}
-                      />
-                    ))}
-                  </div>
-                )}
-
-                {/* Error */}
-                {error && !isLoading && (
-                  <div className="flex flex-col items-center justify-center py-10 gap-3">
-                    <AlertCircle className="w-9 h-9 text-[#F87171]" />
-                    <p className="text-[#FCA5A5] text-sm text-center max-w-sm">
-                      {error.message || "Failed to load clients."}
-                    </p>
-                    <button
-                      onClick={() => mutate()}
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-[10px] text-[13px] font-medium bg-gradient-to-b from-[#9B74F0] to-[#6B42C8] text-white cursor-pointer"
-                    >
-                      <RefreshCw className="w-3.5 h-3.5" />
-                      Retry
-                    </button>
-                  </div>
-                )}
-
-                {/* Empty */}
-                {!isLoading && !error && clients.length === 0 && (
-                  <div className="flex flex-col items-center justify-center py-10 gap-3">
-                    <Users className="w-10 h-10 text-[#6F618F]" />
-                    <p className="text-[#A99BD4] text-sm">
-                      {Object.keys(activeFilters).length > 0 || searchInput
-                        ? "No clients match your filters."
-                        : "No clients found."}
-                    </p>
-                    {(Object.keys(activeFilters).length > 0 || searchInput) && (
-                      <button
-                        onClick={clearFilters}
-                        className="text-[12px] text-[#B797FF] hover:underline cursor-pointer"
-                      >
-                        Clear all filters
-                      </button>
-                    )}
-                  </div>
-                )}
-
-                {/* List */}
-                {!isLoading && !error && clients.length > 0 && (
-                  <div
-                    className="space-y-2"
-                    style={{
-                      opacity: isValidating && !isLoading ? 0.6 : 1,
-                      transition: "opacity 0.2s",
-                    }}
-                  >
-                    {clients.map((client) => (
-                      <ClientRowCard
-                        key={client._id}
-                        client={client}
-                        onOpen={handleOpen}
-                        onEdit={handleEdit}
-                        onDelete={handleDelete}
-                        onAddToResearch={handleAddToResearch}
-                        onAssignResearch={handleAssignResearch}
-                        onOpenResearch={handleOpenResearch}
-                        onPauseResearch={handlePauseResearch}
-                        onSubmitResearch={handleSubmitResearch}
-                        onUnassignResearch={handleUnassignResearch}
-                      />
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Pagination */}
-              {!isLoading && !error && clients.length > 0 && (
-                <div className="px-5 pb-4 pt-1 border-t border-[rgba(127,86,217,0.12)]">
-                  <ClientsPagination
-                    pagination={pagination}
-                    onPageChange={setPage}
-                  />
-                </div>
-              )}
-            </DashboardCard>
+            {/* ── CARD 1: Clients list — wrapped in Suspense ── */}
+            <Suspense fallback={<ClientsCardFallback />}>
+              <ClientsCardInner />
+            </Suspense>
 
           </div>
         </div>
       </main>
-
-      {/* Drawer */}
-      <AssignResearchDrawer
-        open={assignDrawer.open}
-        onOpenChange={(open) => setAssignDrawer((prev) => ({ ...prev, open }))}
-        client={assignDrawer.client}
-        onSuccess={() => mutate()}
-      />
     </div>
   );
 }

@@ -5,7 +5,7 @@ export const apiPath = {
   devpath2: "http://localhost:5000",
   prodPath3: "https://api-hccbackendcrm.com",
 };
-//   
+//   "https://hcc-adam-backend.vercel.app"
 
 /**
  * ============================================================

@@ -23,14 +23,21 @@
  *   URL params → useClients hook → SWR key → API fetch → data
  *   User interaction → handler → update URL → useClients re-reads → SWR refetch
  *
+ * SUSPENSE FIX:
+ *   useSearchParams() (called inside useClients) requires a <Suspense>
+ *   boundary during Next.js static generation at build time. During local
+ *   dev this isn't enforced, but Vercel's `next build` will crash without it.
+ *   Solution: split into ClientsPageShellInner (the real component) and a
+ *   thin ClientsPageShell wrapper that adds the <Suspense> boundary.
+ *   The default export is the wrapper — all existing imports are unaffected.
+ *
  * FILE LOCATION: src/components/clients/ClientsPageShell.jsx
  */
 
 "use client";
 
-import { useState, useCallback } from "react";
+import { Suspense, useState, useCallback } from "react";
 import { Loader2, AlertCircle, Users, RefreshCw } from "lucide-react";
-// import axios from "axios";
 import { apiPath } from "@/utils/routes";
 import { useClients } from "@/hooks/useClients";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
@@ -40,7 +47,23 @@ import ClientsPagination from "./ClientsPagination";
 import AssignResearchDrawer from "./AssignResearchDrawer";
 import apiClient from "@/lib/apiClient";
 
-export default function ClientsPageShell() {
+/* ─────────────────────────────────────────────────────────────────────
+ * Fallback shown while Suspense resolves (e.g. during SSG / hydration)
+ * ───────────────────────────────────────────────────────────────────── */
+function ShellFallback() {
+  return (
+    <div className="flex items-center justify-center w-full h-full py-16">
+      <div className="w-5 h-5 border-2 border-[#B797FF] border-t-transparent rounded-full animate-spin" />
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Inner component — contains ALL the original logic unchanged.
+ * Renamed from ClientsPageShell → ClientsPageShellInner so it is
+ * no longer the default export. Nothing else changes inside.
+ * ───────────────────────────────────────────────────────────────────── */
+function ClientsPageShellInner() {
   const { role } = useCurrentUser();
 
   // ── Data hook ──
@@ -347,5 +370,19 @@ export default function ClientsPageShell() {
         onSuccess={() => mutate()}
       />
     </>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Default export — thin Suspense wrapper.
+ * This is what page.jsx imports. The <Suspense> boundary satisfies
+ * Next.js's requirement that any component tree using useSearchParams()
+ * is wrapped during static generation.
+ * ───────────────────────────────────────────────────────────────────── */
+export default function ClientsPageShell() {
+  return (
+    <Suspense fallback={<ShellFallback />}>
+      <ClientsPageShellInner />
+    </Suspense>
   );
 }

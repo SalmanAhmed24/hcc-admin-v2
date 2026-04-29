@@ -66,7 +66,7 @@ function ClientDetails({ open, handleClose, item }) {
                   <TabsTrigger value="pics">Pics/Files</TabsTrigger>
                   <TabsTrigger value="Interactions">Interactions</TabsTrigger>
                   <TabsTrigger value="Notes">Notes</TabsTrigger>
-                  <TabsTrigger value="Activity">Activity</TabsTrigger>
+                  {/* <TabsTrigger value="Activity">Activity</TabsTrigger> */}
                 </TabsList>
                 <TabsContent value="Basic Info">
                   <div className="w-full h-full">
