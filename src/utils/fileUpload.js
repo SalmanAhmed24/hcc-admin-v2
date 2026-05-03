@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+const API_BASE_URL =  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 // 
 export const uploadFiles = async (files, category = "general") => {
   try {
