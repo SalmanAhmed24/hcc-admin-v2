@@ -34,7 +34,6 @@ function AddEmployee({ open, handleClose, addEmp, edit, editData, editEmp }) {
   const [city, setCity] = useState("");
   const [inputValueCity, setInputValueCity] = useState("");
 
-  
   useEffect(() => {
     getUserTypes();
     getZipCodes();
@@ -95,20 +94,19 @@ function AddEmployee({ open, handleClose, addEmp, edit, editData, editEmp }) {
     setZipCode("");
     setUsername("");
   };
-  function getUserTypes(){
+  function getUserTypes() {
     setRoleLoader(true);
     axios
       .get(`${apiPath.prodPath}/api/picklist/usertypes/getusertypes`)
       .then((res) => {
-        const sortedData = res.data
-          .map((i) => {
-            return {
-              label: i.userTypeCategory,
-              value: i.userTypeCategory,
-            };
-          });
+        const sortedData = res.data.map((i) => {
+          return {
+            label: i.userTypeCategory,
+            value: i.userTypeCategory,
+          };
+        });
 
-          console.log(sortedData);
+        console.log(sortedData);
         setRoleOpt(sortedData);
         setRoleLoader(false);
       })
@@ -116,7 +114,7 @@ function AddEmployee({ open, handleClose, addEmp, edit, editData, editEmp }) {
         console.log(err);
         setRoleLoader(false);
       });
-  };
+  }
   // const getZipCodes = () => {
   //   setZipCodeLoader(true);
   //   axios
@@ -146,10 +144,10 @@ function AddEmployee({ open, handleClose, addEmp, edit, editData, editEmp }) {
   const customStyles = {
     control: (provided) => ({
       ...provided,
-      backgroundColor: "#191526", 
-      color: "white", 
-      borderRadius: "12px",       
-      padding: "5px",            
+      backgroundColor: "#191526",
+      color: "white",
+      borderRadius: "12px",
+      padding: "5px",
       borderColor: "#452C95",
       "&:hover": {
         borderColor: "darkviolet",
@@ -158,36 +156,36 @@ function AddEmployee({ open, handleClose, addEmp, edit, editData, editEmp }) {
     menu: (provided) => ({
       ...provided,
       backgroundColor: "#191526",
-      borderRadius: "12px",       
-      padding: "5px", 
+      borderRadius: "12px",
+      padding: "5px",
     }),
     option: (provided, state) => ({
       ...provided,
-      backgroundColor: state.isSelected ? "darkviolet" : "#191526", 
+      backgroundColor: state.isSelected ? "darkviolet" : "#191526",
       color: "white",
       "&:hover": {
         backgroundColor: "darkviolet",
       },
-      borderRadius: "12px",       
+      borderRadius: "12px",
       padding: "5px",
     }),
     singleValue: (provided) => ({
       ...provided,
-      color: "white", 
+      color: "white",
     }),
   };
-   
+
   const getZipCodes = async (search = "") => {
-    setZipCodeLoader(true); 
+    setZipCodeLoader(true);
     try {
       const res = await axios.get(
         `${apiPath.prodPath}/api/picklist/zipcodes/getzipcodes`,
         {
           params: {
-            search, 
-            limit: 50, 
+            search,
+            limit: 50,
           },
-        }
+        },
       );
       const sortedData = res.data.zipCodes.map((i) => ({
         label: i.zipCode,
@@ -195,11 +193,11 @@ function AddEmployee({ open, handleClose, addEmp, edit, editData, editEmp }) {
         city: i.city,
         state: i.state,
       }));
-      setZipCodeOpt(sortedData); 
+      setZipCodeOpt(sortedData);
     } catch (err) {
       console.log(err);
     } finally {
-      setZipCodeLoader(false); 
+      setZipCodeLoader(false);
     }
   };
 
@@ -207,25 +205,21 @@ function AddEmployee({ open, handleClose, addEmp, edit, editData, editEmp }) {
     if (inputValue) {
       getZipCodes(inputValue);
     } else {
-      setZipCodeOpt([]); 
+      setZipCodeOpt([]);
     }
   }, 300);
 
-  
   const handleInputChange = (newInputValue) => {
-    setInputValue(newInputValue); 
+    setInputValue(newInputValue);
     debouncedGetZipCodes(newInputValue);
   };
 
   const handleInputCityChange = (newInputValue) => {
-    setInputValueCity(newInputValue); 
+    setInputValueCity(newInputValue);
   };
-   const handleChangeCity = (v) => {
-     setCity(v);
-   };
-
-
-
+  const handleChangeCity = (v) => {
+    setCity(v);
+  };
 
   const fileHandler = (event) => {
     setAvatar(event.target.files[0]);
@@ -237,26 +231,26 @@ function AddEmployee({ open, handleClose, addEmp, edit, editData, editEmp }) {
   console.log("##$$", zipCodeOpt);
   return (
     <>
-          <Drawer
-            className="bg-all-modals"
-            anchor="left" 
-            open={open}
-            onClose={handleClose}
-            PaperProps={{
-              sx: {
-                width: "1142px",  
-                height: "dvh", 
-                position: "absolute",
-                left: "15%",
-                top: "1%",
-                transform: "translate(-50%, -50%)",
-                borderRadius: "16px", 
-                boxShadow: 3, 
-                marginTop : "30px",
-                marginBottom: "30px",
-              },
-            }}
-           >
+      <Drawer
+        className="bg-all-modals"
+        anchor="left"
+        open={open}
+        onClose={handleClose}
+        PaperProps={{
+          sx: {
+            width: "1142px",
+            height: "dvh",
+            position: "absolute",
+            left: "15%",
+            top: "1%",
+            transform: "translate(-50%, -50%)",
+            borderRadius: "16px",
+            boxShadow: 3,
+            marginTop: "30px",
+            marginBottom: "30px",
+          },
+        }}
+      >
         <div className="p-10 flex flex-col bg-[#2D245B] flex-wrap">
           <div className="flex flex-row justify-end">
             <CloseIcon
@@ -308,7 +302,6 @@ function AddEmployee({ open, handleClose, addEmp, edit, editData, editEmp }) {
             </div>
 
             <div className="flex flex-row gap-4 w-full items-center justify-between pb-6 border-b-[1px] border-[#7F56D9]">
-              
               <div className="flex flex-col gap-2 w-1/3">
                 <label className="font-satoshi text-md">Phone</label>
                 <input
@@ -321,36 +314,34 @@ function AddEmployee({ open, handleClose, addEmp, edit, editData, editEmp }) {
                 />
               </div>
               <div className="flex flex-col gap-2 w-1/3">
-                  <label className="font-satoshi text-md">Cell</label>
-                  <input
-                    type="text"
-                    className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526]"
-                    value={cell}
-                    onChange={(e) => setCell(e.target.value)}
-                    placeholder="Enter Cell"
-                    name="cell"
+                <label className="font-satoshi text-md">Cell</label>
+                <input
+                  type="text"
+                  className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526]"
+                  value={cell}
+                  onChange={(e) => setCell(e.target.value)}
+                  placeholder="Enter Cell"
+                  name="cell"
+                />
+              </div>
+              <div className="flex flex-col gap-2 w-1/3">
+                <label className="font-satoshi text-md">User Types</label>
+                {roleLoader ? (
+                  <p className="text-white text-lg">Loading...</p>
+                ) : (
+                  <Select
+                    options={roleOpt}
+                    value={role}
+                    onChange={(v) => setRole(v)}
+                    placeholder="Select Role"
+                    required={true}
+                    styles={customStyles}
+                    id="role-select-cus"
+                    name="role"
                   />
-                </div>
-                <div className="flex flex-col gap-2 w-1/3">
-                  <label className="font-satoshi text-md">User Types</label>
-                  {roleLoader ? (
-                    <p className="text-white text-lg">Loading...</p>
-                  ) : (
-                    <Select
-                      options={roleOpt}
-                      value={role}
-                      onChange={(v) => setRole(v)}
-                      placeholder="Select Role"
-                      required={true}
-                      styles={customStyles}
-                      id="role-select-cus"
-                      name="role"
-                    />
-                  )}
-                </div>
+                )}
+              </div>
             </div>
-            
-
 
             <div className="flex flex-row gap-4 w-full items-center justify-between pb-6 border-b-[1px] border-[#7F56D9]">
               <div className="flex flex-col gap-2 w-1/3">
@@ -389,9 +380,9 @@ function AddEmployee({ open, handleClose, addEmp, edit, editData, editEmp }) {
             </div>
 
             <div className="flex flex-row gap-4 w-full items-center justify-between pb-6 border-b-[1px] border-[rgb(127,86,217)]">
-            <div className="flex flex-col gap-2 w-1/3">
+              <div className="flex flex-col gap-2 w-1/3">
                 <label className="font-satoshi text-md">ZipCode</label>
-                {                  
+                {
                   <Select
                     options={zipCodeOpt}
                     value={zipCode}
@@ -399,13 +390,15 @@ function AddEmployee({ open, handleClose, addEmp, edit, editData, editEmp }) {
                     inputValue={inputValue}
                     onChange={(v) => {
                       setZipCode(v);
-                      setCityOpt(v.city.map((item)=> {
-                        const sorts = {
-                          label:item,
-                          value:item
-                        }
-                        return sorts;
-                      }));
+                      setCityOpt(
+                        v.city.map((item) => {
+                          const sorts = {
+                            label: item,
+                            value: item,
+                          };
+                          return sorts;
+                        }),
+                      );
                       setState(v.state);
                     }}
                     placeholder="Select ZipCode"
@@ -418,16 +411,16 @@ function AddEmployee({ open, handleClose, addEmp, edit, editData, editEmp }) {
               <div className="flex flex-col gap-2 w-1/3">
                 <label className="font-satoshi text-md">City</label>
                 <Select
-                    options={cityOpt}
-                    value={city}
-                    onInputChange={handleInputCityChange}
-                    inputValue={inputValueCity}
-                    onChange={handleChangeCity}
-                    placeholder="Select City"
-                    styles={customStyles}
-                    id="role-select-cus"
-                    name="City"
-                  />
+                  options={cityOpt}
+                  value={city}
+                  onInputChange={handleInputCityChange}
+                  inputValue={inputValueCity}
+                  onChange={handleChangeCity}
+                  placeholder="Select City"
+                  styles={customStyles}
+                  id="role-select-cus"
+                  name="City"
+                />
               </div>
               <div className="flex flex-col gap-2 w-1/3">
                 <label className="font-satoshi text-md">State</label>
@@ -441,63 +434,62 @@ function AddEmployee({ open, handleClose, addEmp, edit, editData, editEmp }) {
                 />
               </div>
             </div>
-            
-            
+
             <div className="flex flex-row gap-4 w-full items-center justify-between pb-6 border-b-[1px] border-[#7F56D9]">
+              <div className="flex flex-col gap-2 w-1/3">
+                <label className="font-satoshi text-md">Username</label>
+                <input
+                  type="text"
+                  className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526]"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="Enter Username"
+                  name="username"
+                  required={true}
+                />
+              </div>
+              {edit ? (
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={newPassFlag}
+                      onChange={handleNewPassFlag}
+                      inputProps={{ "aria-label": "controlled" }}
+                      value={"new"}
+                    />
+                  }
+                  label="New Password"
+                />
+              ) : null}
+              {newPassFlag ? (
                 <div className="flex flex-col gap-2 w-1/3">
-                  <label className="font-satoshi text-md">Username</label>
+                  <label className="font-satoshi text-md">Password</label>
                   <input
-                    type="text"
+                    type="password"
                     className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526]"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    placeholder="Enter Username"
-                    name="username"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="New Enter Password"
+                    name="password"
                     required={true}
                   />
                 </div>
-                {edit ? (
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={newPassFlag}
-                        onChange={handleNewPassFlag}
-                        inputProps={{ "aria-label": "controlled" }}
-                        value={"new"}
-                      />
-                    }
-                    label="New Password"
-                  />
-                ) : null}
-                {newPassFlag ? (
-                  <div className="flex flex-col gap-2 w-1/3">
-                    <label className="font-satoshi text-md">Password</label>
-                    <input
-                      type="password"
-                      className="p-2 border-[#452C95] rounded-[8px] focus-within:outline-none border-[1px] bg-[#191526]"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="New Enter Password"
-                      name="password"
-                      required={true}
-                    />
-                  </div>
-                ) : null}
-                {edit ? null : (
-                  <div className="flex flex-col gap-2 w-1/3">
-                    <label className="font-satoshi text-md">Password</label>
-                    <input
-                      type="password"
-                      className="p-2 focus-within:outline-none border-[1px] border-[#452C95] rounded-[8px] bg-[#191526]"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Enter Password"
-                      name="password"
-                      required={true}
-                    />
-                  </div>
-                )}
+              ) : null}
+              {edit ? null : (
                 <div className="flex flex-col gap-2 w-1/3">
+                  <label className="font-satoshi text-md">Password</label>
+                  <input
+                    type="password"
+                    className="p-2 focus-within:outline-none border-[1px] border-[#452C95] rounded-[8px] bg-[#191526]"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Enter Password"
+                    name="password"
+                    required={true}
+                  />
+                </div>
+              )}
+              <div className="flex flex-col gap-2 w-1/3">
                 <label className="font-satoshi text-md">Avatar</label>
                 <input
                   name="avatar"
@@ -508,7 +500,7 @@ function AddEmployee({ open, handleClose, addEmp, edit, editData, editEmp }) {
                 />
               </div>
             </div>
-             
+
             <div className="flex flex-col items-end gap-2 w-full">
               <input
                 type="submit"
