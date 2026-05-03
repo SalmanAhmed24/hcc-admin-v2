@@ -24,6 +24,9 @@ import ClientDetails from "@/components/subcomponents/drawers/clientOpen";
 import AddCLient from "@/components/subcomponents/drawers/addClient";
 import axios from "axios";
 import { apiPath } from "@/utils/routes";
+import ResearchDrawer from "@/components/clients/ResearchDrawer";
+import ResearchClientsCard from "@/components/clients/ResearchClientsCard";
+
 
 function DashboardCard({
   title,
@@ -153,6 +156,7 @@ function ClientsCardInner() {
   const [openModal, setOpenModal] = useState(false);
   const [item, setItem] = useState(null);
   const [empModal, setEmpModal] = useState(false);
+  const [researchDrawer, setResearchDrawer] = useState({ open: false, client: null });
 
   const {
     clients,
@@ -179,6 +183,10 @@ function ClientsCardInner() {
       .put(`${apiPath.prodPath}/api/clients/edit/${empId}`, data)
       .then(() => mutate())
       .catch((err) => console.error(err));
+  };
+
+  const handleOpenResearch = (client) => {
+    setResearchDrawer({ open: true, client });
   };
 
   const handleEdit = useCallback((client) => {
@@ -219,9 +227,9 @@ function ClientsCardInner() {
     setAssignDrawer({ open: true, client });
   }, []);
 
-  const handleOpenResearch = useCallback((client) => {
-    router.push(`/clients/${client._id}?tab=research`);
-  }, [router]);
+  // const handleOpenResearch = useCallback((client) => {
+  //   router.push(`/clients/${client._id}?tab=research`);
+  // }, [router]);
 
   const handlePauseResearch = useCallback(async (client) => {
     try {
@@ -391,6 +399,14 @@ function ClientsCardInner() {
               item={item}
             />
           )}
+          {researchDrawer.open && researchDrawer.client && (
+            <ResearchDrawer
+              open={researchDrawer.open}
+              onOpenChange={(open) => setResearchDrawer((p) => ({ ...p, open }))}
+              client={researchDrawer.client}
+              onSuccess={() => mutate()}
+            />)
+              }
         </div>
 
         {/* Pagination */}
@@ -464,6 +480,7 @@ export default function Home() {
             {/* ── CARD 1: Clients list — wrapped in Suspense ── */}
             <Suspense fallback={<ClientsCardFallback />}>
               <ClientsCardInner />
+              <ResearchClientsCard />
             </Suspense>
 
           </div>

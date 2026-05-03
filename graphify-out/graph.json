@@ -1,0 +1,1724 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "label": "AssignResearchDrawer.jsx",
+      "file_type": "code",
+      "source_file": "AssignResearchDrawer.jsx",
+      "source_location": "L1",
+      "id": "assignresearchdrawer_jsx",
+      "community": 11,
+      "norm_label": "assignresearchdrawer.jsx"
+    },
+    {
+      "label": "AssignResearchDrawer()",
+      "file_type": "code",
+      "source_file": "AssignResearchDrawer.jsx",
+      "source_location": "L118",
+      "id": "clients_assignresearchdrawer_assignresearchdrawer",
+      "community": 11,
+      "norm_label": "assignresearchdrawer()"
+    },
+    {
+      "label": "ClientCardActions.jsx",
+      "file_type": "code",
+      "source_file": "ClientCardActions.jsx",
+      "source_location": "L1",
+      "id": "clientcardactions_jsx",
+      "community": 8,
+      "norm_label": "clientcardactions.jsx"
+    },
+    {
+      "label": "ClientCardActions()",
+      "file_type": "code",
+      "source_file": "ClientCardActions.jsx",
+      "source_location": "L43",
+      "id": "clients_clientcardactions_clientcardactions",
+      "community": 8,
+      "norm_label": "clientcardactions()"
+    },
+    {
+      "label": "ActionBtn()",
+      "file_type": "code",
+      "source_file": "ClientCardActions.jsx",
+      "source_location": "L194",
+      "id": "clients_clientcardactions_actionbtn",
+      "community": 8,
+      "norm_label": "actionbtn()"
+    },
+    {
+      "label": "ClientRowCard.jsx",
+      "file_type": "code",
+      "source_file": "ClientRowCard.jsx",
+      "source_location": "L1",
+      "id": "clientrowcard_jsx",
+      "community": 4,
+      "norm_label": "clientrowcard.jsx"
+    },
+    {
+      "label": "hashString()",
+      "file_type": "code",
+      "source_file": "ClientRowCard.jsx",
+      "source_location": "L62",
+      "id": "clients_clientrowcard_hashstring",
+      "community": 4,
+      "norm_label": "hashstring()"
+    },
+    {
+      "label": "getInitials()",
+      "file_type": "code",
+      "source_file": "ClientRowCard.jsx",
+      "source_location": "L70",
+      "id": "clients_clientrowcard_getinitials",
+      "community": 4,
+      "norm_label": "getinitials()"
+    },
+    {
+      "label": "getStatusStyle()",
+      "file_type": "code",
+      "source_file": "ClientRowCard.jsx",
+      "source_location": "L87",
+      "id": "clients_clientrowcard_getstatusstyle",
+      "community": 4,
+      "norm_label": "getstatusstyle()"
+    },
+    {
+      "label": "ClientRowCard()",
+      "file_type": "code",
+      "source_file": "ClientRowCard.jsx",
+      "source_location": "L93",
+      "id": "clients_clientrowcard_clientrowcard",
+      "community": 4,
+      "norm_label": "clientrowcard()"
+    },
+    {
+      "label": "ClientsFilterBar.jsx",
+      "file_type": "code",
+      "source_file": "ClientsFilterBar.jsx",
+      "source_location": "L1",
+      "id": "clientsfilterbar_jsx",
+      "community": 5,
+      "norm_label": "clientsfilterbar.jsx"
+    },
+    {
+      "label": "ClientsFilterBar()",
+      "file_type": "code",
+      "source_file": "ClientsFilterBar.jsx",
+      "source_location": "L83",
+      "id": "clients_clientsfilterbar_clientsfilterbar",
+      "community": 5,
+      "norm_label": "clientsfilterbar()"
+    },
+    {
+      "label": "FilterPillDropdown()",
+      "file_type": "code",
+      "source_file": "ClientsFilterBar.jsx",
+      "source_location": "L213",
+      "id": "clients_clientsfilterbar_filterpilldropdown",
+      "community": 5,
+      "norm_label": "filterpilldropdown()"
+    },
+    {
+      "label": "AddFilterPill()",
+      "file_type": "code",
+      "source_file": "ClientsFilterBar.jsx",
+      "source_location": "L260",
+      "id": "clients_clientsfilterbar_addfilterpill",
+      "community": 5,
+      "norm_label": "addfilterpill()"
+    },
+    {
+      "label": "ClientsPageShell.jsx",
+      "file_type": "code",
+      "source_file": "ClientsPageShell.jsx",
+      "source_location": "L1",
+      "id": "clientspageshell_jsx",
+      "community": 6,
+      "norm_label": "clientspageshell.jsx"
+    },
+    {
+      "label": "ShellFallback()",
+      "file_type": "code",
+      "source_file": "ClientsPageShell.jsx",
+      "source_location": "L53",
+      "id": "clients_clientspageshell_shellfallback",
+      "community": 6,
+      "norm_label": "shellfallback()"
+    },
+    {
+      "label": "ClientsPageShellInner()",
+      "file_type": "code",
+      "source_file": "ClientsPageShell.jsx",
+      "source_location": "L66",
+      "id": "clients_clientspageshell_clientspageshellinner",
+      "community": 6,
+      "norm_label": "clientspageshellinner()"
+    },
+    {
+      "label": "ClientsPageShell()",
+      "file_type": "code",
+      "source_file": "ClientsPageShell.jsx",
+      "source_location": "L382",
+      "id": "clients_clientspageshell_clientspageshell",
+      "community": 6,
+      "norm_label": "clientspageshell()"
+    },
+    {
+      "label": "ClientsPagination.jsx",
+      "file_type": "code",
+      "source_file": "ClientsPagination.jsx",
+      "source_location": "L1",
+      "id": "clientspagination_jsx",
+      "community": 7,
+      "norm_label": "clientspagination.jsx"
+    },
+    {
+      "label": "ClientsPagination()",
+      "file_type": "code",
+      "source_file": "ClientsPagination.jsx",
+      "source_location": "L26",
+      "id": "clients_clientspagination_clientspagination",
+      "community": 7,
+      "norm_label": "clientspagination()"
+    },
+    {
+      "label": "PageBtn()",
+      "file_type": "code",
+      "source_file": "ClientsPagination.jsx",
+      "source_location": "L91",
+      "id": "clients_clientspagination_pagebtn",
+      "community": 7,
+      "norm_label": "pagebtn()"
+    },
+    {
+      "label": "buildPageNumbers()",
+      "file_type": "code",
+      "source_file": "ClientsPagination.jsx",
+      "source_location": "L113",
+      "id": "clients_clientspagination_buildpagenumbers",
+      "community": 7,
+      "norm_label": "buildpagenumbers()"
+    },
+    {
+      "label": "DrawerShell.jsx",
+      "file_type": "code",
+      "source_file": "DrawerShell.jsx",
+      "source_location": "L1",
+      "id": "drawershell_jsx",
+      "community": 3,
+      "norm_label": "drawershell.jsx"
+    },
+    {
+      "label": "DrawerShell()",
+      "file_type": "code",
+      "source_file": "DrawerShell.jsx",
+      "source_location": "L16",
+      "id": "clients_drawershell_drawershell",
+      "community": 3,
+      "norm_label": "drawershell()"
+    },
+    {
+      "label": "primaryBtnStyle()",
+      "file_type": "code",
+      "source_file": "DrawerShell.jsx",
+      "source_location": "L158",
+      "id": "clients_drawershell_primarybtnstyle",
+      "community": 3,
+      "norm_label": "primarybtnstyle()"
+    },
+    {
+      "label": "ghostBtnStyle()",
+      "file_type": "code",
+      "source_file": "DrawerShell.jsx",
+      "source_location": "L177",
+      "id": "clients_drawershell_ghostbtnstyle",
+      "community": 2,
+      "norm_label": "ghostbtnstyle()"
+    },
+    {
+      "label": "aiBtnStyle()",
+      "file_type": "code",
+      "source_file": "DrawerShell.jsx",
+      "source_location": "L193",
+      "id": "clients_drawershell_aibtnstyle",
+      "community": 3,
+      "norm_label": "aibtnstyle()"
+    },
+    {
+      "label": "SectionLabel()",
+      "file_type": "code",
+      "source_file": "DrawerShell.jsx",
+      "source_location": "L212",
+      "id": "clients_drawershell_sectionlabel",
+      "community": 0,
+      "norm_label": "sectionlabel()"
+    },
+    {
+      "label": "Field()",
+      "file_type": "code",
+      "source_file": "DrawerShell.jsx",
+      "source_location": "L229",
+      "id": "clients_drawershell_field",
+      "community": 0,
+      "norm_label": "field()"
+    },
+    {
+      "label": "Input()",
+      "file_type": "code",
+      "source_file": "DrawerShell.jsx",
+      "source_location": "L253",
+      "id": "clients_drawershell_input",
+      "community": 0,
+      "norm_label": "input()"
+    },
+    {
+      "label": "Textarea()",
+      "file_type": "code",
+      "source_file": "DrawerShell.jsx",
+      "source_location": "L266",
+      "id": "clients_drawershell_textarea",
+      "community": 3,
+      "norm_label": "textarea()"
+    },
+    {
+      "label": "Toggle()",
+      "file_type": "code",
+      "source_file": "DrawerShell.jsx",
+      "source_location": "L278",
+      "id": "clients_drawershell_toggle",
+      "community": 0,
+      "norm_label": "toggle()"
+    },
+    {
+      "label": "MetricCard()",
+      "file_type": "code",
+      "source_file": "DrawerShell.jsx",
+      "source_location": "L312",
+      "id": "clients_drawershell_metriccard",
+      "community": 0,
+      "norm_label": "metriccard()"
+    },
+    {
+      "label": "AiBanner()",
+      "file_type": "code",
+      "source_file": "DrawerShell.jsx",
+      "source_location": "L342",
+      "id": "clients_drawershell_aibanner",
+      "community": 3,
+      "norm_label": "aibanner()"
+    },
+    {
+      "label": "formatRelative()",
+      "file_type": "code",
+      "source_file": "DrawerShell.jsx",
+      "source_location": "L386",
+      "id": "clients_drawershell_formatrelative",
+      "community": 3,
+      "norm_label": "formatrelative()"
+    },
+    {
+      "label": "ResearchClientsCard.jsx",
+      "file_type": "code",
+      "source_file": "ResearchClientsCard.jsx",
+      "source_location": "L1",
+      "id": "researchclientscard_jsx",
+      "community": 1,
+      "norm_label": "researchclientscard.jsx"
+    },
+    {
+      "label": "StatusBadge()",
+      "file_type": "code",
+      "source_file": "ResearchClientsCard.jsx",
+      "source_location": "L90",
+      "id": "clients_researchclientscard_statusbadge",
+      "community": 1,
+      "norm_label": "statusbadge()"
+    },
+    {
+      "label": "PriorityBadge()",
+      "file_type": "code",
+      "source_file": "ResearchClientsCard.jsx",
+      "source_location": "L111",
+      "id": "clients_researchclientscard_prioritybadge",
+      "community": 1,
+      "norm_label": "prioritybadge()"
+    },
+    {
+      "label": "NameCell()",
+      "file_type": "code",
+      "source_file": "ResearchClientsCard.jsx",
+      "source_location": "L127",
+      "id": "clients_researchclientscard_namecell",
+      "community": 1,
+      "norm_label": "namecell()"
+    },
+    {
+      "label": "UserCell()",
+      "file_type": "code",
+      "source_file": "ResearchClientsCard.jsx",
+      "source_location": "L145",
+      "id": "clients_researchclientscard_usercell",
+      "community": 1,
+      "norm_label": "usercell()"
+    },
+    {
+      "label": "UnassignResearchDrawer()",
+      "file_type": "code",
+      "source_file": "ResearchClientsCard.jsx",
+      "source_location": "L168",
+      "id": "clients_researchclientscard_unassignresearchdrawer",
+      "community": 1,
+      "norm_label": "unassignresearchdrawer()"
+    },
+    {
+      "label": "ActionButton()",
+      "file_type": "code",
+      "source_file": "ResearchClientsCard.jsx",
+      "source_location": "L327",
+      "id": "clients_researchclientscard_actionbutton",
+      "community": 1,
+      "norm_label": "actionbutton()"
+    },
+    {
+      "label": "ResearchRow()",
+      "file_type": "code",
+      "source_file": "ResearchClientsCard.jsx",
+      "source_location": "L419",
+      "id": "clients_researchclientscard_researchrow",
+      "community": 1,
+      "norm_label": "researchrow()"
+    },
+    {
+      "label": "TableHeader()",
+      "file_type": "code",
+      "source_file": "ResearchClientsCard.jsx",
+      "source_location": "L479",
+      "id": "clients_researchclientscard_tableheader",
+      "community": 1,
+      "norm_label": "tableheader()"
+    },
+    {
+      "label": "StatusFilterBar()",
+      "file_type": "code",
+      "source_file": "ResearchClientsCard.jsx",
+      "source_location": "L518",
+      "id": "clients_researchclientscard_statusfilterbar",
+      "community": 1,
+      "norm_label": "statusfilterbar()"
+    },
+    {
+      "label": "ResearchClientsCard()",
+      "file_type": "code",
+      "source_file": "ResearchClientsCard.jsx",
+      "source_location": "L567",
+      "id": "clients_researchclientscard_researchclientscard",
+      "community": 1,
+      "norm_label": "researchclientscard()"
+    },
+    {
+      "label": "ResearchDrawer.jsx",
+      "file_type": "code",
+      "source_file": "ResearchDrawer.jsx",
+      "source_location": "L1",
+      "id": "researchdrawer_jsx",
+      "community": 12,
+      "norm_label": "researchdrawer.jsx"
+    },
+    {
+      "label": "ResearchDrawer()",
+      "file_type": "code",
+      "source_file": "ResearchDrawer.jsx",
+      "source_location": "L67",
+      "id": "clients_researchdrawer_researchdrawer",
+      "community": 12,
+      "norm_label": "researchdrawer()"
+    },
+    {
+      "label": "ResearchStatusBadge.jsx",
+      "file_type": "code",
+      "source_file": "ResearchStatusBadge.jsx",
+      "source_location": "L1",
+      "id": "researchstatusbadge_jsx",
+      "community": 9,
+      "norm_label": "researchstatusbadge.jsx"
+    },
+    {
+      "label": "ResearchStatusBadge()",
+      "file_type": "code",
+      "source_file": "ResearchStatusBadge.jsx",
+      "source_location": "L63",
+      "id": "clients_researchstatusbadge_researchstatusbadge",
+      "community": 9,
+      "norm_label": "researchstatusbadge()"
+    },
+    {
+      "label": "PriorityChip()",
+      "file_type": "code",
+      "source_file": "ResearchStatusBadge.jsx",
+      "source_location": "L123",
+      "id": "clients_researchstatusbadge_prioritychip",
+      "community": 9,
+      "norm_label": "prioritychip()"
+    },
+    {
+      "label": "TabCompanyInfo.jsx",
+      "file_type": "code",
+      "source_file": "research\\tabs\\TabCompanyInfo.jsx",
+      "source_location": "L1",
+      "id": "research_tabs_tabcompanyinfo_jsx",
+      "community": 0,
+      "norm_label": "tabcompanyinfo.jsx"
+    },
+    {
+      "label": "deleteBtn()",
+      "file_type": "code",
+      "source_file": "research\\tabs\\TabCompanyInfo.jsx",
+      "source_location": "L24",
+      "id": "tabs_tabcompanyinfo_deletebtn",
+      "community": 0,
+      "norm_label": "deletebtn()"
+    },
+    {
+      "label": "TabCompanyInfo()",
+      "file_type": "code",
+      "source_file": "research\\tabs\\TabCompanyInfo.jsx",
+      "source_location": "L37",
+      "id": "tabs_tabcompanyinfo_tabcompanyinfo",
+      "community": 0,
+      "norm_label": "tabcompanyinfo()"
+    },
+    {
+      "label": "TabCompetitors.jsx",
+      "file_type": "code",
+      "source_file": "research\\tabs\\TabCompetitors.jsx",
+      "source_location": "L1",
+      "id": "research_tabs_tabcompetitors_jsx",
+      "community": 2,
+      "norm_label": "tabcompetitors.jsx"
+    },
+    {
+      "label": "TabCompetitors()",
+      "file_type": "code",
+      "source_file": "research\\tabs\\TabCompetitors.jsx",
+      "source_location": "L17",
+      "id": "tabs_tabcompetitors_tabcompetitors",
+      "community": 2,
+      "norm_label": "tabcompetitors()"
+    },
+    {
+      "label": "TabKeywords.jsx",
+      "file_type": "code",
+      "source_file": "research\\tabs\\TabKeywords.jsx",
+      "source_location": "L1",
+      "id": "research_tabs_tabkeywords_jsx",
+      "community": 2,
+      "norm_label": "tabkeywords.jsx"
+    },
+    {
+      "label": "diffColor()",
+      "file_type": "code",
+      "source_file": "research\\tabs\\TabKeywords.jsx",
+      "source_location": "L19",
+      "id": "tabs_tabkeywords_diffcolor",
+      "community": 2,
+      "norm_label": "diffcolor()"
+    },
+    {
+      "label": "TabKeywords()",
+      "file_type": "code",
+      "source_file": "research\\tabs\\TabKeywords.jsx",
+      "source_location": "L27",
+      "id": "tabs_tabkeywords_tabkeywords",
+      "community": 2,
+      "norm_label": "tabkeywords()"
+    },
+    {
+      "label": "TabLocalSeo.jsx",
+      "file_type": "code",
+      "source_file": "research\\tabs\\TabLocalSeo.jsx",
+      "source_location": "L1",
+      "id": "research_tabs_tablocalseo_jsx",
+      "community": 0,
+      "norm_label": "tablocalseo.jsx"
+    },
+    {
+      "label": "TabLocalSeo()",
+      "file_type": "code",
+      "source_file": "research\\tabs\\TabLocalSeo.jsx",
+      "source_location": "L17",
+      "id": "tabs_tablocalseo_tablocalseo",
+      "community": 0,
+      "norm_label": "tablocalseo()"
+    },
+    {
+      "label": "TabOpportunity.jsx",
+      "file_type": "code",
+      "source_file": "research\\tabs\\TabOpportunity.jsx",
+      "source_location": "L1",
+      "id": "research_tabs_tabopportunity_jsx",
+      "community": 2,
+      "norm_label": "tabopportunity.jsx"
+    },
+    {
+      "label": "ScoreBar()",
+      "file_type": "code",
+      "source_file": "research\\tabs\\TabOpportunity.jsx",
+      "source_location": "L19",
+      "id": "tabs_tabopportunity_scorebar",
+      "community": 2,
+      "norm_label": "scorebar()"
+    },
+    {
+      "label": "TabOpportunity()",
+      "file_type": "code",
+      "source_file": "research\\tabs\\TabOpportunity.jsx",
+      "source_location": "L36",
+      "id": "tabs_tabopportunity_tabopportunity",
+      "community": 2,
+      "norm_label": "tabopportunity()"
+    },
+    {
+      "label": "TabSeoMetrics.jsx",
+      "file_type": "code",
+      "source_file": "research\\tabs\\TabSeoMetrics.jsx",
+      "source_location": "L1",
+      "id": "research_tabs_tabseometrics_jsx",
+      "community": 0,
+      "norm_label": "tabseometrics.jsx"
+    },
+    {
+      "label": "TabSeoMetrics()",
+      "file_type": "code",
+      "source_file": "research\\tabs\\TabSeoMetrics.jsx",
+      "source_location": "L31",
+      "id": "tabs_tabseometrics_tabseometrics",
+      "community": 2,
+      "norm_label": "tabseometrics()"
+    },
+    {
+      "label": "TabSocialMedia.jsx",
+      "file_type": "code",
+      "source_file": "research\\tabs\\TabSocialMedia.jsx",
+      "source_location": "L1",
+      "id": "research_tabs_tabsocialmedia_jsx",
+      "community": 0,
+      "norm_label": "tabsocialmedia.jsx"
+    },
+    {
+      "label": "TabSocialMedia()",
+      "file_type": "code",
+      "source_file": "research\\tabs\\TabSocialMedia.jsx",
+      "source_location": "L25",
+      "id": "tabs_tabsocialmedia_tabsocialmedia",
+      "community": 0,
+      "norm_label": "tabsocialmedia()"
+    },
+    {
+      "label": "TabSubmit.jsx",
+      "file_type": "code",
+      "source_file": "research\\tabs\\TabSubmit.jsx",
+      "source_location": "L1",
+      "id": "research_tabs_tabsubmit_jsx",
+      "community": 10,
+      "norm_label": "tabsubmit.jsx"
+    },
+    {
+      "label": "ScoreMini()",
+      "file_type": "code",
+      "source_file": "research\\tabs\\TabSubmit.jsx",
+      "source_location": "L14",
+      "id": "tabs_tabsubmit_scoremini",
+      "community": 10,
+      "norm_label": "scoremini()"
+    },
+    {
+      "label": "TabSubmit()",
+      "file_type": "code",
+      "source_file": "research\\tabs\\TabSubmit.jsx",
+      "source_location": "L30",
+      "id": "tabs_tabsubmit_tabsubmit",
+      "community": 10,
+      "norm_label": "tabsubmit()"
+    },
+    {
+      "label": "TabSummary.jsx",
+      "file_type": "code",
+      "source_file": "research\\tabs\\TabSummary.jsx",
+      "source_location": "L1",
+      "id": "research_tabs_tabsummary_jsx",
+      "community": 0,
+      "norm_label": "tabsummary.jsx"
+    },
+    {
+      "label": "TabSummary()",
+      "file_type": "code",
+      "source_file": "research\\tabs\\TabSummary.jsx",
+      "source_location": "L10",
+      "id": "tabs_tabsummary_tabsummary",
+      "community": 0,
+      "norm_label": "tabsummary()"
+    }
+  ],
+  "links": [
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "AssignResearchDrawer.jsx",
+      "source_location": "L118",
+      "weight": 1.0,
+      "source": "assignresearchdrawer_jsx",
+      "target": "clients_assignresearchdrawer_assignresearchdrawer",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ClientCardActions.jsx",
+      "source_location": "L43",
+      "weight": 1.0,
+      "source": "clientcardactions_jsx",
+      "target": "clients_clientcardactions_clientcardactions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ClientCardActions.jsx",
+      "source_location": "L194",
+      "weight": 1.0,
+      "source": "clientcardactions_jsx",
+      "target": "clients_clientcardactions_actionbtn",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ClientRowCard.jsx",
+      "source_location": "L62",
+      "weight": 1.0,
+      "source": "clientrowcard_jsx",
+      "target": "clients_clientrowcard_hashstring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ClientRowCard.jsx",
+      "source_location": "L70",
+      "weight": 1.0,
+      "source": "clientrowcard_jsx",
+      "target": "clients_clientrowcard_getinitials",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ClientRowCard.jsx",
+      "source_location": "L87",
+      "weight": 1.0,
+      "source": "clientrowcard_jsx",
+      "target": "clients_clientrowcard_getstatusstyle",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ClientRowCard.jsx",
+      "source_location": "L93",
+      "weight": 1.0,
+      "source": "clientrowcard_jsx",
+      "target": "clients_clientrowcard_clientrowcard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "ClientRowCard.jsx",
+      "source_location": "L109",
+      "weight": 1.0,
+      "source": "clients_clientrowcard_clientrowcard",
+      "target": "clients_clientrowcard_hashstring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "ClientRowCard.jsx",
+      "source_location": "L108",
+      "weight": 1.0,
+      "source": "clients_clientrowcard_clientrowcard",
+      "target": "clients_clientrowcard_getinitials",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "ClientRowCard.jsx",
+      "source_location": "L178",
+      "weight": 1.0,
+      "source": "clients_clientrowcard_clientrowcard",
+      "target": "clients_clientrowcard_getstatusstyle",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ClientsFilterBar.jsx",
+      "source_location": "L83",
+      "weight": 1.0,
+      "source": "clientsfilterbar_jsx",
+      "target": "clients_clientsfilterbar_clientsfilterbar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ClientsFilterBar.jsx",
+      "source_location": "L213",
+      "weight": 1.0,
+      "source": "clientsfilterbar_jsx",
+      "target": "clients_clientsfilterbar_filterpilldropdown",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ClientsFilterBar.jsx",
+      "source_location": "L260",
+      "weight": 1.0,
+      "source": "clientsfilterbar_jsx",
+      "target": "clients_clientsfilterbar_addfilterpill",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ClientsPageShell.jsx",
+      "source_location": "L53",
+      "weight": 1.0,
+      "source": "clientspageshell_jsx",
+      "target": "clients_clientspageshell_shellfallback",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ClientsPageShell.jsx",
+      "source_location": "L66",
+      "weight": 1.0,
+      "source": "clientspageshell_jsx",
+      "target": "clients_clientspageshell_clientspageshellinner",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ClientsPageShell.jsx",
+      "source_location": "L382",
+      "weight": 1.0,
+      "source": "clientspageshell_jsx",
+      "target": "clients_clientspageshell_clientspageshell",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ClientsPagination.jsx",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "clientspagination_jsx",
+      "target": "clients_clientspagination_clientspagination",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ClientsPagination.jsx",
+      "source_location": "L91",
+      "weight": 1.0,
+      "source": "clientspagination_jsx",
+      "target": "clients_clientspagination_pagebtn",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ClientsPagination.jsx",
+      "source_location": "L113",
+      "weight": 1.0,
+      "source": "clientspagination_jsx",
+      "target": "clients_clientspagination_buildpagenumbers",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "ClientsPagination.jsx",
+      "source_location": "L37",
+      "weight": 1.0,
+      "source": "clients_clientspagination_clientspagination",
+      "target": "clients_clientspagination_buildpagenumbers",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "DrawerShell.jsx",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "drawershell_jsx",
+      "target": "clients_drawershell_drawershell",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "DrawerShell.jsx",
+      "source_location": "L158",
+      "weight": 1.0,
+      "source": "drawershell_jsx",
+      "target": "clients_drawershell_primarybtnstyle",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "DrawerShell.jsx",
+      "source_location": "L177",
+      "weight": 1.0,
+      "source": "drawershell_jsx",
+      "target": "clients_drawershell_ghostbtnstyle",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "DrawerShell.jsx",
+      "source_location": "L193",
+      "weight": 1.0,
+      "source": "drawershell_jsx",
+      "target": "clients_drawershell_aibtnstyle",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "DrawerShell.jsx",
+      "source_location": "L212",
+      "weight": 1.0,
+      "source": "drawershell_jsx",
+      "target": "clients_drawershell_sectionlabel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "DrawerShell.jsx",
+      "source_location": "L229",
+      "weight": 1.0,
+      "source": "drawershell_jsx",
+      "target": "clients_drawershell_field",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "DrawerShell.jsx",
+      "source_location": "L253",
+      "weight": 1.0,
+      "source": "drawershell_jsx",
+      "target": "clients_drawershell_input",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "DrawerShell.jsx",
+      "source_location": "L266",
+      "weight": 1.0,
+      "source": "drawershell_jsx",
+      "target": "clients_drawershell_textarea",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "DrawerShell.jsx",
+      "source_location": "L278",
+      "weight": 1.0,
+      "source": "drawershell_jsx",
+      "target": "clients_drawershell_toggle",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "DrawerShell.jsx",
+      "source_location": "L312",
+      "weight": 1.0,
+      "source": "drawershell_jsx",
+      "target": "clients_drawershell_metriccard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "DrawerShell.jsx",
+      "source_location": "L342",
+      "weight": 1.0,
+      "source": "drawershell_jsx",
+      "target": "clients_drawershell_aibanner",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "DrawerShell.jsx",
+      "source_location": "L386",
+      "weight": 1.0,
+      "source": "drawershell_jsx",
+      "target": "clients_drawershell_formatrelative",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "DrawerShell.jsx",
+      "source_location": "L30",
+      "weight": 1.0,
+      "source": "clients_drawershell_drawershell",
+      "target": "clients_drawershell_formatrelative",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "DrawerShell.jsx",
+      "source_location": "L132",
+      "weight": 1.0,
+      "source": "clients_drawershell_drawershell",
+      "target": "clients_drawershell_ghostbtnstyle",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "DrawerShell.jsx",
+      "source_location": "L142",
+      "weight": 1.0,
+      "source": "clients_drawershell_drawershell",
+      "target": "clients_drawershell_primarybtnstyle",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabSeoMetrics.jsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "research_tabs_tabseometrics_jsx",
+      "target": "clients_drawershell_primarybtnstyle",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabCompanyInfo.jsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "research_tabs_tabcompanyinfo_jsx",
+      "target": "clients_drawershell_ghostbtnstyle",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabCompetitors.jsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "research_tabs_tabcompetitors_jsx",
+      "target": "clients_drawershell_ghostbtnstyle",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabKeywords.jsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "research_tabs_tabkeywords_jsx",
+      "target": "clients_drawershell_ghostbtnstyle",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabOpportunity.jsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "research_tabs_tabopportunity_jsx",
+      "target": "clients_drawershell_ghostbtnstyle",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabSeoMetrics.jsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "research_tabs_tabseometrics_jsx",
+      "target": "clients_drawershell_ghostbtnstyle",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabSummary.jsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "research_tabs_tabsummary_jsx",
+      "target": "clients_drawershell_ghostbtnstyle",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "research\\tabs\\TabCompanyInfo.jsx",
+      "source_location": "L134",
+      "weight": 1.0,
+      "source": "tabs_tabcompanyinfo_tabcompanyinfo",
+      "target": "clients_drawershell_ghostbtnstyle"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "research\\tabs\\TabCompetitors.jsx",
+      "source_location": "L112",
+      "weight": 1.0,
+      "source": "tabs_tabcompetitors_tabcompetitors",
+      "target": "clients_drawershell_ghostbtnstyle"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "research\\tabs\\TabKeywords.jsx",
+      "source_location": "L101",
+      "weight": 1.0,
+      "source": "tabs_tabkeywords_tabkeywords",
+      "target": "clients_drawershell_ghostbtnstyle"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "research\\tabs\\TabOpportunity.jsx",
+      "source_location": "L111",
+      "weight": 1.0,
+      "source": "tabs_tabopportunity_tabopportunity",
+      "target": "clients_drawershell_ghostbtnstyle"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "research\\tabs\\TabSeoMetrics.jsx",
+      "source_location": "L68",
+      "weight": 1.0,
+      "source": "tabs_tabseometrics_tabseometrics",
+      "target": "clients_drawershell_ghostbtnstyle"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "DrawerShell.jsx",
+      "source_location": "L359",
+      "weight": 1.0,
+      "source": "clients_drawershell_aibanner",
+      "target": "clients_drawershell_aibtnstyle",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabCompanyInfo.jsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "research_tabs_tabcompanyinfo_jsx",
+      "target": "clients_drawershell_sectionlabel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabCompetitors.jsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "research_tabs_tabcompetitors_jsx",
+      "target": "clients_drawershell_sectionlabel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabKeywords.jsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "research_tabs_tabkeywords_jsx",
+      "target": "clients_drawershell_sectionlabel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabLocalSeo.jsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "research_tabs_tablocalseo_jsx",
+      "target": "clients_drawershell_sectionlabel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabOpportunity.jsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "research_tabs_tabopportunity_jsx",
+      "target": "clients_drawershell_sectionlabel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabSeoMetrics.jsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "research_tabs_tabseometrics_jsx",
+      "target": "clients_drawershell_sectionlabel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabSocialMedia.jsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "research_tabs_tabsocialmedia_jsx",
+      "target": "clients_drawershell_sectionlabel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabSubmit.jsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "research_tabs_tabsubmit_jsx",
+      "target": "clients_drawershell_sectionlabel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabSummary.jsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "research_tabs_tabsummary_jsx",
+      "target": "clients_drawershell_sectionlabel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabCompanyInfo.jsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "research_tabs_tabcompanyinfo_jsx",
+      "target": "clients_drawershell_field",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabCompetitors.jsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "research_tabs_tabcompetitors_jsx",
+      "target": "clients_drawershell_field",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabLocalSeo.jsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "research_tabs_tablocalseo_jsx",
+      "target": "clients_drawershell_field",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabOpportunity.jsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "research_tabs_tabopportunity_jsx",
+      "target": "clients_drawershell_field",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabSeoMetrics.jsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "research_tabs_tabseometrics_jsx",
+      "target": "clients_drawershell_field",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabSocialMedia.jsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "research_tabs_tabsocialmedia_jsx",
+      "target": "clients_drawershell_field",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabSummary.jsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "research_tabs_tabsummary_jsx",
+      "target": "clients_drawershell_field",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabCompanyInfo.jsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "research_tabs_tabcompanyinfo_jsx",
+      "target": "clients_drawershell_input",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabLocalSeo.jsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "research_tabs_tablocalseo_jsx",
+      "target": "clients_drawershell_input",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabSeoMetrics.jsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "research_tabs_tabseometrics_jsx",
+      "target": "clients_drawershell_input",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabSocialMedia.jsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "research_tabs_tabsocialmedia_jsx",
+      "target": "clients_drawershell_input",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabLocalSeo.jsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "research_tabs_tablocalseo_jsx",
+      "target": "clients_drawershell_toggle",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabSeoMetrics.jsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "research_tabs_tabseometrics_jsx",
+      "target": "clients_drawershell_toggle",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabLocalSeo.jsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "research_tabs_tablocalseo_jsx",
+      "target": "clients_drawershell_metriccard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabSeoMetrics.jsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "research_tabs_tabseometrics_jsx",
+      "target": "clients_drawershell_metriccard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabCompetitors.jsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "research_tabs_tabcompetitors_jsx",
+      "target": "clients_drawershell_aibanner",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabSeoMetrics.jsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "research_tabs_tabseometrics_jsx",
+      "target": "clients_drawershell_aibanner",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabSummary.jsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "research_tabs_tabsummary_jsx",
+      "target": "clients_drawershell_aibanner",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ResearchClientsCard.jsx",
+      "source_location": "L90",
+      "weight": 1.0,
+      "source": "researchclientscard_jsx",
+      "target": "clients_researchclientscard_statusbadge",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ResearchClientsCard.jsx",
+      "source_location": "L111",
+      "weight": 1.0,
+      "source": "researchclientscard_jsx",
+      "target": "clients_researchclientscard_prioritybadge",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ResearchClientsCard.jsx",
+      "source_location": "L127",
+      "weight": 1.0,
+      "source": "researchclientscard_jsx",
+      "target": "clients_researchclientscard_namecell",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ResearchClientsCard.jsx",
+      "source_location": "L145",
+      "weight": 1.0,
+      "source": "researchclientscard_jsx",
+      "target": "clients_researchclientscard_usercell",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ResearchClientsCard.jsx",
+      "source_location": "L168",
+      "weight": 1.0,
+      "source": "researchclientscard_jsx",
+      "target": "clients_researchclientscard_unassignresearchdrawer",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ResearchClientsCard.jsx",
+      "source_location": "L327",
+      "weight": 1.0,
+      "source": "researchclientscard_jsx",
+      "target": "clients_researchclientscard_actionbutton",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ResearchClientsCard.jsx",
+      "source_location": "L419",
+      "weight": 1.0,
+      "source": "researchclientscard_jsx",
+      "target": "clients_researchclientscard_researchrow",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ResearchClientsCard.jsx",
+      "source_location": "L479",
+      "weight": 1.0,
+      "source": "researchclientscard_jsx",
+      "target": "clients_researchclientscard_tableheader",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ResearchClientsCard.jsx",
+      "source_location": "L518",
+      "weight": 1.0,
+      "source": "researchclientscard_jsx",
+      "target": "clients_researchclientscard_statusfilterbar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ResearchClientsCard.jsx",
+      "source_location": "L567",
+      "weight": 1.0,
+      "source": "researchclientscard_jsx",
+      "target": "clients_researchclientscard_researchclientscard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ResearchDrawer.jsx",
+      "source_location": "L67",
+      "weight": 1.0,
+      "source": "researchdrawer_jsx",
+      "target": "clients_researchdrawer_researchdrawer",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ResearchStatusBadge.jsx",
+      "source_location": "L63",
+      "weight": 1.0,
+      "source": "researchstatusbadge_jsx",
+      "target": "clients_researchstatusbadge_researchstatusbadge",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ResearchStatusBadge.jsx",
+      "source_location": "L123",
+      "weight": 1.0,
+      "source": "researchstatusbadge_jsx",
+      "target": "clients_researchstatusbadge_prioritychip",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabCompanyInfo.jsx",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "research_tabs_tabcompanyinfo_jsx",
+      "target": "tabs_tabcompanyinfo_deletebtn",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabCompanyInfo.jsx",
+      "source_location": "L37",
+      "weight": 1.0,
+      "source": "research_tabs_tabcompanyinfo_jsx",
+      "target": "tabs_tabcompanyinfo_tabcompanyinfo",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabCompetitors.jsx",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "research_tabs_tabcompetitors_jsx",
+      "target": "tabs_tabcompetitors_tabcompetitors",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabKeywords.jsx",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "research_tabs_tabkeywords_jsx",
+      "target": "tabs_tabkeywords_diffcolor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabKeywords.jsx",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "research_tabs_tabkeywords_jsx",
+      "target": "tabs_tabkeywords_tabkeywords",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabLocalSeo.jsx",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "research_tabs_tablocalseo_jsx",
+      "target": "tabs_tablocalseo_tablocalseo",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabOpportunity.jsx",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "research_tabs_tabopportunity_jsx",
+      "target": "tabs_tabopportunity_scorebar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabOpportunity.jsx",
+      "source_location": "L36",
+      "weight": 1.0,
+      "source": "research_tabs_tabopportunity_jsx",
+      "target": "tabs_tabopportunity_tabopportunity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabSeoMetrics.jsx",
+      "source_location": "L31",
+      "weight": 1.0,
+      "source": "research_tabs_tabseometrics_jsx",
+      "target": "tabs_tabseometrics_tabseometrics",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabSocialMedia.jsx",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "research_tabs_tabsocialmedia_jsx",
+      "target": "tabs_tabsocialmedia_tabsocialmedia",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabSubmit.jsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "research_tabs_tabsubmit_jsx",
+      "target": "tabs_tabsubmit_scoremini",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabSubmit.jsx",
+      "source_location": "L30",
+      "weight": 1.0,
+      "source": "research_tabs_tabsubmit_jsx",
+      "target": "tabs_tabsubmit_tabsubmit",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "research\\tabs\\TabSummary.jsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "research_tabs_tabsummary_jsx",
+      "target": "tabs_tabsummary_tabsummary",
+      "confidence_score": 1.0
+    }
+  ],
+  "hyperedges": []
+}

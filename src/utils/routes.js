@@ -1,6 +1,7 @@
+
 export const apiPath = {
   devPath: "http://localhost:8080",
-  prodPath: "https://hcc-adam-backend.vercel.app",
+  prodPath: process.env.NEXT_PUBLIC_API_URL,
   prodPath2: "https://google-scraper-inky.vercel.app",
   devpath2: "http://localhost:5000",
   prodPath3: "https://api-hccbackendcrm.com",
@@ -26,13 +27,13 @@ export const apiPath = {
  * ============================================================
  */
 
-// Your deployed backend base URL (no trailing slash)
-export const prodPath =  "http://localhost:8080/api";
+// Your deployed backend base URL (no trailing slash) `${process.env.NEXT_PUBLIC_API_URL}/api` ||
+export const prodPath =   `${process.env.NEXT_PUBLIC_API_URL}/api` || "http://localhost:8080/api";
 
-// Local development backend (useful to switch quickly) "https://hcc-adam-backend.vercel.app/api" ||
+// Local development backend (useful to switch quickly) 
 export const devPath = "http://localhost:8080/api";
 
-// ── Notes endpoints ──────────────────────────────────────────
+// ── Notes endpoints ────────────────────────────────────────── `${process.env.NEXT_PUBLIC_API_URL}/api` ||
 
 
 
@@ -114,4 +115,33 @@ export const CLIENT_ROUTES = {
 
   // Activities
   activities: (id) => `${prodPath}/clients/${id}/activities`,       // GET
+
+  // ═══════════════════════════════════════════════════════════════════════════
+// ADD THESE TO: src/utils/routes.js
+// Add inside your existing CLIENT_ROUTES object
+// ═══════════════════════════════════════════════════════════════════════════
+
+// ── Research Report (new) ────────────────────────────────────────────────
+
+// GET  /:id/research/report
+// Returns full report subdoc + client fields for pre-filling the drawer
+researchReport: (id) => `${prodPath}/clients/${id}/research/report`,
+
+// PATCH /:id/research/report/:tab
+// Saves a single drawer tab as draft
+// tab = "company" | "seo" | "localseo" | "keywords" | "competitors" | "opportunity" | "summary"
+researchReportTab: (id, tab) => `${prodPath}/clients/${id}/research/report/${tab}`, // /addResearchSocialMedia/:id
+
+// POST /:id/research/report/complete
+// Submits research, transitions status → "Research Complete", notifies team
+researchReportComplete: (id) => `${prodPath}/clients/${id}/research/report/complete`,
+
+// GET /:id/research/report/export
+// Streams the .docx file as a download
+researchReportExport: (id) => `${prodPath}/clients/${id}/research/report/export`,
+
+// GET  /:id/seo/history          → full time-series array
+// POST /:id/seo/history          → append a snapshot
+seoHistory:       (id) => `${prodPath}/clients/${id}/seo/history`,
+seoHistoryAppend: (id) => `${prodPath}/clients/${id}/seo/history`,
 };

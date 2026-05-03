@@ -1,0 +1,78 @@
+{
+  "C:\\Users\\KLH\\Desktop\\projects\\hcc-admin-v2\\src\\components\\clients\\AssignResearchDrawer.jsx": {
+    "mtime": 1777244042.9219036,
+    "hash": "f493e95612594bb7b70020ebd5027f09"
+  },
+  "C:\\Users\\KLH\\Desktop\\projects\\hcc-admin-v2\\src\\components\\clients\\ClientCardActions.jsx": {
+    "mtime": 1777187154.234811,
+    "hash": "d5a6becda2082112678e93a2987b1663"
+  },
+  "C:\\Users\\KLH\\Desktop\\projects\\hcc-admin-v2\\src\\components\\clients\\ClientRowCard.jsx": {
+    "mtime": 1777187174.8365257,
+    "hash": "cf1a00175e1b55e00b542ad042dac96d"
+  },
+  "C:\\Users\\KLH\\Desktop\\projects\\hcc-admin-v2\\src\\components\\clients\\ClientsFilterBar.jsx": {
+    "mtime": 1776758495.4042573,
+    "hash": "99ac87c352dab90c71467deb78fd148a"
+  },
+  "C:\\Users\\KLH\\Desktop\\projects\\hcc-admin-v2\\src\\components\\clients\\ClientsPageShell.jsx": {
+    "mtime": 1777444323.2777948,
+    "hash": "a90565280e3747d85493ca839f00ec13"
+  },
+  "C:\\Users\\KLH\\Desktop\\projects\\hcc-admin-v2\\src\\components\\clients\\ClientsPagination.jsx": {
+    "mtime": 1776758512.734829,
+    "hash": "5332a4c7b90048a4397d925c1ba2b51a"
+  },
+  "C:\\Users\\KLH\\Desktop\\projects\\hcc-admin-v2\\src\\components\\clients\\DrawerShell.jsx": {
+    "mtime": 1777628735.773608,
+    "hash": "cc067ba7b3a536af439bfc563442d1e2"
+  },
+  "C:\\Users\\KLH\\Desktop\\projects\\hcc-admin-v2\\src\\components\\clients\\ResearchClientsCard.jsx": {
+    "mtime": 1777768138.0496087,
+    "hash": "7161d38c69ecbbf92e869f6f3c81269e"
+  },
+  "C:\\Users\\KLH\\Desktop\\projects\\hcc-admin-v2\\src\\components\\clients\\ResearchDrawer.jsx": {
+    "mtime": 1777630940.7165027,
+    "hash": "be3c19fc7441e3a6c6fc55d26bd06e6c"
+  },
+  "C:\\Users\\KLH\\Desktop\\projects\\hcc-admin-v2\\src\\components\\clients\\ResearchStatusBadge.jsx": {
+    "mtime": 1776758457.555063,
+    "hash": "3aa9ae71c39abb5fccffce8699a80752"
+  },
+  "C:\\Users\\KLH\\Desktop\\projects\\hcc-admin-v2\\src\\components\\clients\\research\\tabs\\TabCompanyInfo.jsx": {
+    "mtime": 1777631556.2801347,
+    "hash": "e68b288b416357b754a1e19c0528ffe8"
+  },
+  "C:\\Users\\KLH\\Desktop\\projects\\hcc-admin-v2\\src\\components\\clients\\research\\tabs\\TabCompetitors.jsx": {
+    "mtime": 1777629608.7839541,
+    "hash": "77690c1f038167b9ec7e219c81bd472e"
+  },
+  "C:\\Users\\KLH\\Desktop\\projects\\hcc-admin-v2\\src\\components\\clients\\research\\tabs\\TabKeywords.jsx": {
+    "mtime": 1777629608.7839541,
+    "hash": "c67a1a0ba53ec2b4574ef4c58240ebb9"
+  },
+  "C:\\Users\\KLH\\Desktop\\projects\\hcc-admin-v2\\src\\components\\clients\\research\\tabs\\TabLocalSeo.jsx": {
+    "mtime": 1777629608.7839541,
+    "hash": "26600cf7f980ac86569521e4624da1b4"
+  },
+  "C:\\Users\\KLH\\Desktop\\projects\\hcc-admin-v2\\src\\components\\clients\\research\\tabs\\TabOpportunity.jsx": {
+    "mtime": 1777629608.7839541,
+    "hash": "4215a897c453ce4ceb1c8f1608e59398"
+  },
+  "C:\\Users\\KLH\\Desktop\\projects\\hcc-admin-v2\\src\\components\\clients\\research\\tabs\\TabSeoMetrics.jsx": {
+    "mtime": 1777629608.7839541,
+    "hash": "38a16396ac9a0d6b7d4c22b7c7a4537b"
+  },
+  "C:\\Users\\KLH\\Desktop\\projects\\hcc-admin-v2\\src\\components\\clients\\research\\tabs\\TabSocialMedia.jsx": {
+    "mtime": 1777629608.7839541,
+    "hash": "40e3501afbf8f73166dfe52a8be3bcc4"
+  },
+  "C:\\Users\\KLH\\Desktop\\projects\\hcc-admin-v2\\src\\components\\clients\\research\\tabs\\TabSubmit.jsx": {
+    "mtime": 1777629608.7839541,
+    "hash": "9b9469a8bc4e1dc7b84614717bb772a6"
+  },
+  "C:\\Users\\KLH\\Desktop\\projects\\hcc-admin-v2\\src\\components\\clients\\research\\tabs\\TabSummary.jsx": {
+    "mtime": 1777629608.7839541,
+    "hash": "4b7d003de1282e1aaaea51af3bf229ed"
+  }
+}

@@ -65,10 +65,10 @@ export function useCurrentUser() {
 
     // ── Research workflow permissions ──
     canSendToResearch:  isBGC || isManager,
-    canAssignResearch:  isManager,
-    canSubmitResearch:  isTaskTeam,
+    canAssignResearch:  isManager || isTaskTeam,
+    canSubmitResearch:  isTaskTeam || isBGC,
     canPauseResearch:   isTaskTeam,
-    canUnassignResearch: isManager,
+    canUnassignResearch: isManager || isTaskTeam,
     canViewResearch:    isBGC || isManager || isTaskTeam,
 
     // ── CRUD permissions ──
