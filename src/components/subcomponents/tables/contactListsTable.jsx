@@ -29,6 +29,7 @@ export default function ContactListsTable() {
   const [openCreateDrawer, setOpenCreateDrawer] = useState(false);
   const [bulkDrawerOpen, setBulkDrawerOpen] = useState(false);
   const [selectedList, setSelectedList] = useState(null);
+  const [deletingId, setDeletingId] = useState(null);
 
   const fetchLists = useCallback(async () => {
     if (!userId) return;
@@ -49,6 +50,43 @@ export default function ContactListsTable() {
   useEffect(() => {
     fetchLists();
   }, [fetchLists]);
+
+  const handleDeleteList = async (list) => {
+    if (!userId || !list?._id) {
+      Swal.fire("Error", "Invalid user or contact list.", "error");
+      return;
+    }
+
+    const confirmResult = await Swal.fire({
+      title: "Delete contact list?",
+      text: `This will permanently delete "${list.name}".`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#6b7280",
+      confirmButtonText: "Yes, delete it",
+    });
+
+    if (!confirmResult.isConfirmed) return;
+
+    setDeletingId(list._id);
+    try {
+      await axios.delete(`${apiPath.prodPath3}/api/contact-lists/${userId}/${list._id}`);
+      setContactLists((prevLists) => prevLists.filter((item) => item._id !== list._id));
+      Swal.fire("Deleted", "Contact list deleted successfully.", "success");
+    } catch (error) {
+      const status = error?.response?.status;
+      if (status === 404) {
+        Swal.fire("Not Found", "List not found or already deleted.", "error");
+      } else if (status === 400) {
+        Swal.fire("Invalid Request", "Invalid request. Please retry.", "error");
+      } else {
+        Swal.fire("Error", "Failed to delete contact list.", "error");
+      }
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
   return (
     <div className="mt-5 w-full">
@@ -82,7 +120,7 @@ export default function ContactListsTable() {
                 <TableHead className="text-[#E1C9FF]">Description</TableHead>
                 <TableHead className="text-[#E1C9FF]">Members</TableHead>
                 <TableHead className="text-[#E1C9FF]">Created</TableHead>
-                <TableHead className="text-[#E1C9FF]">Bulk Send</TableHead>
+                <TableHead className="text-[#E1C9FF]">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -104,15 +142,24 @@ export default function ContactListsTable() {
                     {list.createdAt ? moment(list.createdAt).format("MMM DD, YYYY") : "-"}
                   </TableCell>
                   <TableCell>
-                    <Button
-                      className="bg-[#452C95] text-white hover:opacity-80 text-xs px-3 py-1"
-                      onClick={() => {
-                        setSelectedList(list);
-                        setBulkDrawerOpen(true);
-                      }}
-                    >
-                      Send Bulk
-                    </Button>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        className="bg-[#452C95] text-white hover:opacity-80 text-xs px-3 py-1"
+                        onClick={() => {
+                          setSelectedList(list);
+                          setBulkDrawerOpen(true);
+                        }}
+                      >
+                        Send Bulk
+                      </Button>
+                      <Button
+                        className="bg-[#7f1d1d] text-white hover:opacity-80 text-xs px-3 py-1 disabled:opacity-60"
+                        onClick={() => handleDeleteList(list)}
+                        disabled={deletingId === list._id}
+                      >
+                        {deletingId === list._id ? "Deleting..." : "Delete"}
+                      </Button>
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}
