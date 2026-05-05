@@ -24,7 +24,6 @@ import React, { useState } from "react";
 import AddCLient from "../drawers/addClient";
 import ClientDetails from "../drawers/clientOpen";
 import Pagination from "@mui/material/Pagination";
-import { notificationTypes } from "@/lib/types";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 function EmployeeTable({
@@ -58,7 +57,6 @@ function EmployeeTable({
         {
           researchTag: true,
           researchPriority: priority,
-          notificationType: notificationTypes.RESEARCH_REQUESTED,
         },
         {
           headers: {

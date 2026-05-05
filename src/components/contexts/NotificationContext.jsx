@@ -11,6 +11,7 @@ import React, {
 import Swal from "sweetalert2";
 import { useToast } from "@/hooks/use-toast";
 import { usePathname } from "next/navigation";
+import apiClient from "@/lib/apiClient";
 
 const NotificationContext = createContext(null);
 
@@ -24,7 +25,9 @@ export const NotificationProvider = ({ children, userId }) => {
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [sseConnected, setSseConnected] = useState(false);
-
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const { toast } = useToast();
 
   const eventSourceRef = useRef(null);
@@ -46,11 +49,26 @@ export const NotificationProvider = ({ children, userId }) => {
     }
   }, []);
 
+  const loadMore = async () => {
+    if (!hasMore || loadingMore) return;
+
+    setLoadingMore(true);
+    const nextPage = page + 1;
+
+    await fetchNotifications(nextPage);
+
+    setPage(nextPage);
+    setLoadingMore(false);
+  };
+
   // =========================
   // FETCH SSE TOKEN
   // =========================
   const fetchSseToken = async () => {
     try {
+      /*  const res = await apiClient.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/sse-token`,
+      ); */
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/sse-token`,
         {
@@ -73,18 +91,27 @@ export const NotificationProvider = ({ children, userId }) => {
   // =========================
   // FETCH NOTIFICATIONS
   // =========================
-  const fetchNotifications = useCallback(async () => {
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/notifications/${userId}`,
-      );
+  const fetchNotifications = useCallback(
+    async (pageToLoad = 1) => {
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/notifications/${userId}?page=${pageToLoad}&limit=10`,
+        );
 
-      const data = await res.json();
-      setNotifications(data.data || []);
-    } catch (err) {
-      console.error("Fetch notifications error:", err);
-    }
-  }, [userId]);
+        const data = await res.json();
+        if (pageToLoad === 1) {
+          setNotifications(data.data || []);
+        } else {
+          setNotifications((prev) => [...prev, ...(data.data || [])]);
+        }
+
+        setHasMore(data.hasMore);
+      } catch (err) {
+        console.error("Fetch notifications error:", err);
+      }
+    },
+    [userId],
+  );
 
   // =========================
   // MARK SINGLE AS READ ✅
@@ -167,6 +194,7 @@ export const NotificationProvider = ({ children, userId }) => {
             status: "UNREAD",
             createdAt: data.createdAt,
             priority: data.priority,
+            client: data.client,
           };
 
           setNotifications((prev) => {
@@ -204,7 +232,8 @@ export const NotificationProvider = ({ children, userId }) => {
   useEffect(() => {
     if (!userId) return;
 
-    fetchNotifications();
+    setPage(1);
+    fetchNotifications(1);
     connectSSE();
 
     return () => {
@@ -212,7 +241,7 @@ export const NotificationProvider = ({ children, userId }) => {
         eventSourceRef.current.close();
       }
     };
-  }, [userId, fetchNotifications, connectSSE]);
+  }, [userId]);
 
   // =========================
   // UNREAD COUNT
@@ -231,6 +260,9 @@ export const NotificationProvider = ({ children, userId }) => {
         refresh: fetchNotifications,
         markAsRead,
         markAllAsRead,
+        loadMore,
+        hasMore,
+        loadingMore,
       }}
     >
       {children}

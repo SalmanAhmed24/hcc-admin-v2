@@ -26,6 +26,7 @@ import axios from "axios";
 import { apiPath } from "@/utils/routes";
 import ResearchDrawer from "@/components/clients/ResearchDrawer";
 import ResearchClientsCard from "@/components/clients/ResearchClientsCard";
+import Notifications from "@/components/notifications";
 
 function DashboardCard({
   title,

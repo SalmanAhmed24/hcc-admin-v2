@@ -1,5 +1,5 @@
 "use client";
-
+import { useRef } from "react";
 import { useNotifications } from "../contexts/NotificationContext";
 
 const Notifications = ({ drawer = false }) => {
@@ -8,7 +8,22 @@ const Notifications = ({ drawer = false }) => {
     unreadCount = 0,
     markAllAsRead,
     markAsRead,
+    loadMore,
+    hasMore,
+    loadingMore,
   } = useNotifications();
+  const scrollRef = useRef(null);
+
+  const handleScroll = () => {
+    const el = scrollRef.current;
+    if (!el || !hasMore || loadingMore) return;
+
+    const threshold = 150; // px before bottom
+
+    if (el.scrollHeight - el.scrollTop <= el.clientHeight + threshold) {
+      loadMore();
+    }
+  };
 
   return (
     <div
@@ -55,7 +70,11 @@ const Notifications = ({ drawer = false }) => {
       </div>
 
       {/* ================= BODY ================= */}
-      <div className="flex-1 overflow-y-auto">
+      <div
+        ref={scrollRef}
+        onScroll={handleScroll}
+        className="flex-1 overflow-y-auto"
+      >
         {notifications.length === 0 ? (
           <div className="h-full flex items-center justify-center text-[#6F618F] text-sm">
             No notifications
@@ -81,7 +100,7 @@ const Notifications = ({ drawer = false }) => {
                 {/* TITLE + PRIORITY + UNREAD DOT */}
                 <div className="flex justify-between items-start gap-3">
                   <div className="flex items-center gap-2">
-                    {/* 🔵 UNREAD DOT */}
+                    {/*  UNREAD DOT */}
                     {n.status === "UNREAD" && (
                       <span className="w-2 h-2 rounded-full bg-[#B797FF]" />
                     )}
@@ -121,6 +140,11 @@ const Notifications = ({ drawer = false }) => {
               </div>
             );
           })
+        )}
+        {loadingMore && (
+          <div className="text-center text-xs text-[#6F618F] py-2">
+            Loading more...
+          </div>
         )}
       </div>
     </div>

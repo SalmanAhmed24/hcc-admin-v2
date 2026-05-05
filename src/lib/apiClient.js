@@ -9,7 +9,7 @@ apiClient.interceptors.request.use((config) => {
   const user = useAuthStore.getState().user;
   const token = user?.jwtToken;
   if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+    config.headers.authorization = `Bearer ${token}`;
   }
   return config;
 });
