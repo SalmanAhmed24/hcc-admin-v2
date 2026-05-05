@@ -220,15 +220,13 @@ const SendEmailViaGmail = ({ open, handleClose, email = "", item, recipientName 
       formData.append(
         "templateData",
         JSON.stringify({
-          title: "Good Day From Hill Country",
-          recipientName: resolvedTestEmail,
-          body,
-          additionalText: "Thank You for your Time",
+          firstName: resolvedTestEmail.split("@")[0],
+          lastName: "",
+          company: "",
+          email: resolvedTestEmail,
           senderName,
           senderTitle,
-          companyName: "Hill Country Coders",
-          companyAddress: "Cedar Park Texas USA",
-          companyWebsite: "https://www.hillcountrycoders.com",
+          bookingLink: "#",
         }),
       );
       attachments.forEach((file) => formData.append("attachments", file));
@@ -265,16 +263,20 @@ const SendEmailViaGmail = ({ open, handleClose, email = "", item, recipientName 
       formData.append("body", body);
       formData.append("service", service);
       if (templateId) formData.append("templateId", templateId);
-      formData.append("templateData", JSON.stringify({
-        title: "Good Day From Hill Country",
-        recipientName: recipientName || to[0] || "",
-        body,
-        additionalText: "Thank You for your Time",
-        senderName, senderTitle,
-        companyName: "Hill Country Coders",
-        companyAddress: "Cedar Park Texas USA",
-        companyWebsite: "https://www.hillcountrycoders.com",
-      }));
+      formData.append(
+        "templateData",
+        JSON.stringify({
+          firstName: recipientName
+            ? recipientName.split(" ")[0]
+            : (to[0] || "").split("@")[0],
+          lastName: recipientName ? recipientName.split(" ").slice(1).join(" ") : "",
+          company: "",
+          email: to[0] || "",
+          senderName,
+          senderTitle,
+          bookingLink: "#",
+        }),
+      );
       attachments.forEach((file) => formData.append("attachments", file));
 
       await axios.post(`${apiPath.prodPath}/api/appGmail/send/${id}`, formData);
@@ -300,6 +302,10 @@ const SendEmailViaGmail = ({ open, handleClose, email = "", item, recipientName 
         `${apiPath.prodPath3}/api/templates/${templateIdValue}`,
       );
       setTemplateBody(r.data?.data?.body || "");
+      const fetchedSubject = r.data?.data?.subject || "";
+      if (fetchedSubject.trim()) {
+        setSubject(fetchedSubject);
+      }
     } catch (err) {
       setTemplateBody("");
     }

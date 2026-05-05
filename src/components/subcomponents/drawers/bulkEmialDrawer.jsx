@@ -581,12 +581,16 @@ export default function SendBulkEmailViaGmail({
 
     setSending(true);
     try {
-      const recipientsWithData = [
+      const testMember = listMembers.find(
+        (m) => (m.email || "").toLowerCase() === resolvedTestEmail.toLowerCase(),
+      );
+
+      const recipientsData = [
         {
           email: resolvedTestEmail,
-          firstName: resolvedTestEmail.split("@")[0],
-          lastName: "",
-          company: "",
+          firstName: testMember?.firstName || resolvedTestEmail.split("@")[0],
+          lastName: testMember?.lastName || "",
+          company: testMember?.company || "",
           senderName,
           senderTitle,
           bookingLink: "#",
@@ -600,7 +604,7 @@ export default function SendBulkEmailViaGmail({
       formData.append("service", service);
       if (templateId?.value || templateId)
         formData.append("templateId", templateId?.value || templateId);
-      formData.append("recipientsData", JSON.stringify(recipientsWithData));
+      formData.append("recipientsData", JSON.stringify(recipientsData));
       attachments.forEach((file) => formData.append("attachments", file));
 
       await axios.post(
@@ -661,6 +665,10 @@ export default function SendBulkEmailViaGmail({
         `${apiPath.prodPath3}/api/templates/${templateIdValue}`,
       );
       setTemplateBody(r.data?.data?.body || "");
+      const fetchedSubject = r.data?.data?.subject || "";
+      if (fetchedSubject.trim()) {
+        setSubject(fetchedSubject);
+      }
     } catch (err) {
       setTemplateBody("");
     }

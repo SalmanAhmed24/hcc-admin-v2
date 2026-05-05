@@ -35,6 +35,27 @@ export default function TemplatesTable() {
     fetchTemplates();
   }, [fetchTemplates]);
 
+  const handleDeleteTemplate = async (e, templateId) => {
+    e.stopPropagation();
+    const result = await Swal.fire({
+      title: "Delete template?",
+      text: "This cannot be undone.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#6b7280",
+      confirmButtonText: "Yes, delete it",
+    });
+    if (!result.isConfirmed) return;
+    try {
+      await axios.delete(`${apiPath.prodPath3}/api/templates/${templateId}`);
+      Swal.fire({ icon: "success", text: "Template deleted", timer: 1500, showConfirmButton: false });
+      fetchTemplates();
+    } catch (err) {
+      Swal.fire("Error", "Failed to delete template", "error");
+    }
+  };
+
   const mergeTags = useMemo(() => {
     const body = previewTemplate?.body || "";
     const pattern = /\{\{(\w+)\}\}/g;
@@ -105,6 +126,21 @@ export default function TemplatesTable() {
                   <p className="text-xs text-[#B797FF]">
                     usageCount: {Number(template?.usageCount || 0)}
                   </p>
+                  <button
+                    onClick={(e) => handleDeleteTemplate(e, template._id)}
+                    style={{
+                      marginTop: 8,
+                      padding: "4px 12px",
+                      borderRadius: 8,
+                      border: "1px solid rgba(248,113,113,0.4)",
+                      background: "rgba(248,113,113,0.08)",
+                      color: "#FCA5A5",
+                      fontSize: 12,
+                      cursor: "pointer",
+                    }}
+                  >
+                    Delete
+                  </button>
                 </div>
               );
             })}

@@ -102,6 +102,23 @@ export default function TemplateBuilderDrawer({ open, handleClose, refreshData }
       Swal.fire("Warning", "Template body cannot be empty", "warning");
       return;
     }
+    const ALLOWED_TAGS = new Set([
+      "firstName", "lastName", "company", "email",
+      "bookingLink", "senderName", "senderTitle",
+    ]);
+
+    const usedTags = [...body.matchAll(/\{\{(\w+)\}\}/g)].map((m) => m[1]);
+    const unknownTags = [...new Set(usedTags.filter((t) => !ALLOWED_TAGS.has(t)))];
+
+    if (unknownTags.length > 0) {
+      Swal.fire(
+        "Unknown merge tags",
+        `These tags are not supported and will not be replaced:\n${unknownTags.map((t) => "{{" + t + "}}").join(", ")}\n\nAllowed tags: {{firstName}}, {{lastName}}, {{company}}, {{email}}, {{bookingLink}}, {{senderName}}, {{senderTitle}}`,
+        "warning"
+      );
+      setSaving(false);
+      return;
+    }
     setSaving(true);
     try {
       await axios.post(`${apiPath.prodPath3}/api/templates`, {
