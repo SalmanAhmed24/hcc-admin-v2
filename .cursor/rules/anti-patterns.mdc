@@ -1,0 +1,40 @@
+---
+description: Anti-patterns and preservation rules for hcc-admin-v2
+alwaysApply: true
+---
+
+# Anti-Patterns — NEVER Do These
+
+## Preservation Rules (CRITICAL)
+- NEVER modify a file unless explicitly instructed to
+- NEVER refactor, rename, or reorganize existing working code while implementing a new feature
+- NEVER change existing component prop signatures or API response handling
+- NEVER add or remove Zustand store fields without explicit instruction
+- ALWAYS ask before touching:
+  - src/app/(auth)/login/page.js
+  - src/store/store.js
+  - src/utils/routes.js
+  - src/utils/apiRoutes.js
+  - src/lib/apolloClient.js
+
+## React Anti-Patterns
+- NEVER use array index as key in lists that can reorder or update
+- NEVER add useEffect for data fetching in modules that already use SWR or Apollo
+- NEVER introduce new state management libraries — Zustand is the standard
+- NEVER use class components
+- NEVER use `var` — use `const` or `let`
+
+## Next.js Anti-Patterns
+- NEVER use `<img>` tag — use `next/image`
+- NEVER use `<a>` tag for internal navigation — use `next/link`
+- NEVER add `'use client'` to a file that doesn't need browser APIs or interactivity
+
+## API / Data Fetching Anti-Patterns
+- NEVER hardcode API URLs inline in components — use apiPath from routes.js
+- NEVER mix GraphQL and REST for the same feature
+- NEVER introduce a new data fetching pattern (e.g. React Query, useSWR) outside the Notes module without explicit approval
+
+## Code Style
+- NEVER use TypeScript syntax in .js/.jsx files
+- NEVER leave console.log statements in committed code
+- NEVER add unused imports or variables
