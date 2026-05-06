@@ -24,12 +24,20 @@ import React, { useState } from "react";
 import AddCLient from "../drawers/addClient";
 import ClientDetails from "../drawers/clientOpen";
 import Pagination from "@mui/material/Pagination";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
-function EmployeeTable({ allEmp, refreshData, currentPage, totalPages, onPageChange }) {
-  const [empModal,  setEmpModal]  = useState(false);
-  const [empId,     setEmpId]     = useState("");
+function EmployeeTable({
+  allEmp,
+  refreshData,
+  currentPage,
+  totalPages,
+  onPageChange,
+}) {
+  const [empModal, setEmpModal] = useState(false);
+  const [empId, setEmpId] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [selectedPriorities, setSelectedPriorities] = useState({});
+  const { userId } = useCurrentUser();
 
   // ── Handlers ──────────────────────────────────────────────────────────────
 
@@ -46,7 +54,15 @@ function EmployeeTable({ allEmp, refreshData, currentPage, totalPages, onPageCha
     try {
       const res = await axios.patch(
         `${apiPath.prodPath}/api/clients/changeResearchTag/${clientId}`,
-        { researchTag: true, researchPriority: priority }
+        {
+          researchTag: true,
+          researchPriority: priority,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${userId}`,
+          },
+        },
       );
       if (res.status === 200) {
         alert("Client added to research successfully");
@@ -107,33 +123,79 @@ function EmployeeTable({ allEmp, refreshData, currentPage, totalPages, onPageCha
         <TableHeader>
           <TableRow className="w-fit h-[58px] font-satoshi text-lg text-[#E1C9FF]">
             <TableHead className="text-[#E1C9FF]">Actions</TableHead>
-            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>Company/Client Name</TableHead>
-            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>Primary Contact Name</TableHead>
-            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>Email</TableHead>
-            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>Created At</TableHead>
-            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>Phone</TableHead>
-            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>Cell</TableHead>
-            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>Research Priority</TableHead>
-            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>Add to Research</TableHead>
-            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>Address 1</TableHead>
-            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>Address 2</TableHead>
-            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>City</TableHead>
-            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>State</TableHead>
-            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>ZipCode</TableHead>
-            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>Website</TableHead>
-            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>Status</TableHead>
-            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>Client Need Category</TableHead>
-            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>Client Need Sub-Category</TableHead>
-            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>Lead Status</TableHead>
-            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>Bus Registration Date</TableHead>
-            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>Territory</TableHead>
+            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>
+              Company/Client Name
+            </TableHead>
+            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>
+              Primary Contact Name
+            </TableHead>
+            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>
+              Email
+            </TableHead>
+            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>
+              Created At
+            </TableHead>
+            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>
+              Phone
+            </TableHead>
+            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>
+              Cell
+            </TableHead>
+            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>
+              Research Priority
+            </TableHead>
+            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>
+              Add to Research
+            </TableHead>
+            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>
+              Address 1
+            </TableHead>
+            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>
+              Address 2
+            </TableHead>
+            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>
+              City
+            </TableHead>
+            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>
+              State
+            </TableHead>
+            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>
+              ZipCode
+            </TableHead>
+            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>
+              Website
+            </TableHead>
+            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>
+              Status
+            </TableHead>
+            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>
+              Client Need Category
+            </TableHead>
+            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>
+              Client Need Sub-Category
+            </TableHead>
+            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>
+              Lead Status
+            </TableHead>
+            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>
+              Bus Registration Date
+            </TableHead>
+            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>
+              Territory
+            </TableHead>
             {/*
               CHANGED headers: labels unchanged, but the data they display
               now comes from UserRef .name instead of a raw string.
             */}
-            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>Territory Manager</TableHead>
-            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>Assigned To</TableHead>
-            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>Assigned By</TableHead>
+            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>
+              Territory Manager
+            </TableHead>
+            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>
+              Assigned To
+            </TableHead>
+            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 250 }}>
+              Assigned By
+            </TableHead>
           </TableRow>
         </TableHeader>
 
@@ -152,22 +214,38 @@ function EmployeeTable({ allEmp, refreshData, currentPage, totalPages, onPageCha
                   <DropdownMenuContent>
                     <DropdownMenuLabel>Actions</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => handleOpenModal(i)}>Open</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleEdit(i)}>Edit</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleDelete(i._id)}>Delete</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleOpenModal(i)}>
+                      Open
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleEdit(i)}>
+                      Edit
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleDelete(i._id)}>
+                      Delete
+                    </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </TableCell>
 
               {/* Plain string fields — unchanged */}
-              <TableCell className="font-satoshi font-medium">{i.clientName}</TableCell>
-              <TableCell className="font-satoshi font-medium">{i.primaryContact}</TableCell>
-              <TableCell className="font-satoshi font-medium">{i.email}</TableCell>
+              <TableCell className="font-satoshi font-medium">
+                {i.clientName}
+              </TableCell>
+              <TableCell className="font-satoshi font-medium">
+                {i.primaryContact}
+              </TableCell>
+              <TableCell className="font-satoshi font-medium">
+                {i.email}
+              </TableCell>
               <TableCell className="font-satoshi font-medium">
                 {moment(i.createdAt).format("MM-DD-YYYY")}
               </TableCell>
-              <TableCell className="font-satoshi font-medium">{i.phone || ""}</TableCell>
-              <TableCell className="font-satoshi font-medium">{i.cell  || ""}</TableCell>
+              <TableCell className="font-satoshi font-medium">
+                {i.phone || ""}
+              </TableCell>
+              <TableCell className="font-satoshi font-medium">
+                {i.cell || ""}
+              </TableCell>
 
               {/* Research priority selector */}
               <TableCell>
@@ -199,29 +277,53 @@ function EmployeeTable({ allEmp, refreshData, currentPage, totalPages, onPageCha
               </TableCell>
 
               {/* Address fields — unchanged */}
-              <TableCell className="font-satoshi font-medium">{i.address1}</TableCell>
-              <TableCell className="font-satoshi font-medium">{i.address2}</TableCell>
-              <TableCell className="font-satoshi font-medium">{i.city}</TableCell>
-              <TableCell className="font-satoshi font-medium">{i.state}</TableCell>
-              <TableCell className="font-satoshi font-medium">{i.zipCode}</TableCell>
-              <TableCell className="font-satoshi font-medium">{i.websiteAddress}</TableCell>
-              <TableCell className="font-satoshi font-medium">{i.status}</TableCell>
+              <TableCell className="font-satoshi font-medium">
+                {i.address1}
+              </TableCell>
+              <TableCell className="font-satoshi font-medium">
+                {i.address2}
+              </TableCell>
+              <TableCell className="font-satoshi font-medium">
+                {i.city}
+              </TableCell>
+              <TableCell className="font-satoshi font-medium">
+                {i.state}
+              </TableCell>
+              <TableCell className="font-satoshi font-medium">
+                {i.zipCode}
+              </TableCell>
+              <TableCell className="font-satoshi font-medium">
+                {i.websiteAddress}
+              </TableCell>
+              <TableCell className="font-satoshi font-medium">
+                {i.status}
+              </TableCell>
 
               {/* Need category — unchanged */}
               <TableCell className="font-satoshi font-medium">
-                {i.needCategory.categoryName + " - " + i.needCategory.categoryCode}
+                {i.needCategory.categoryName +
+                  " - " +
+                  i.needCategory.categoryCode}
               </TableCell>
               <TableCell className="font-satoshi font-medium">
-                {i.needCategory.subCategory.subCategoryName + " - " + i.needCategory.subCategory.subCategoryCode}
+                {i.needCategory.subCategory.subCategoryName +
+                  " - " +
+                  i.needCategory.subCategory.subCategoryCode}
               </TableCell>
 
-              <TableCell className="font-satoshi font-medium">{i.leadStatus}</TableCell>
               <TableCell className="font-satoshi font-medium">
-                {i.busRegDate ? moment(i.busRegDate).format("MM-DD-YYYY") : "N/A"}
+                {i.leadStatus}
+              </TableCell>
+              <TableCell className="font-satoshi font-medium">
+                {i.busRegDate
+                  ? moment(i.busRegDate).format("MM-DD-YYYY")
+                  : "N/A"}
               </TableCell>
 
               {/* territory — plain string, unchanged */}
-              <TableCell className="font-satoshi font-medium">{i.territory}</TableCell>
+              <TableCell className="font-satoshi font-medium">
+                {i.territory}
+              </TableCell>
 
               {/*
                 CHANGED: these three fields are now UserRef objects { id, name }.
@@ -281,7 +383,10 @@ function EmployeeTable({ allEmp, refreshData, currentPage, totalPages, onPageCha
           borderRadius: "20px",
           backgroundColor: "#333",
           ".MuiPaginationItem-root": { color: "white" },
-          ".MuiPaginationItem-root.Mui-selected": { backgroundColor: "#555", color: "white" },
+          ".MuiPaginationItem-root.Mui-selected": {
+            backgroundColor: "#555",
+            color: "white",
+          },
           ".MuiPaginationItem-root:hover": { backgroundColor: "#444" },
         }}
       />

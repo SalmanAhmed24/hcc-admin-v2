@@ -82,12 +82,14 @@ export default function ClientCardActions({
 
   return (
     <div className="flex items-center gap-1.5 justify-end">
-
       {/* ── No Research Done ── */}
       {status === "No Research Done" && (
         <>
           {canSendToResearch && (
-            <ActionBtn variant="primary" onClick={() => onAddToResearch(client)}>
+            <ActionBtn
+              variant="primary"
+              onClick={() => onAddToResearch(client)}
+            >
               <Plus className="w-3 h-3" />
               Add to research
             </ActionBtn>
@@ -105,10 +107,15 @@ export default function ClientCardActions({
       {status === "Research Needed" && (
         <>
           {isBGC && (
-            <span className="text-[11px] text-[#6F618F] italic">In research queue</span>
+            <span className="text-[11px] text-[#6F618F] italic">
+              In research queue
+            </span>
           )}
           {canAssignResearch && (
-            <ActionBtn variant="primary" onClick={() => onAssignResearch(client)}>
+            <ActionBtn
+              variant="primary"
+              onClick={() => onAssignResearch(client)}
+            >
               <UserPlus className="w-3 h-3" />
               Assign research
             </ActionBtn>
@@ -138,7 +145,10 @@ export default function ClientCardActions({
                 <Pause className="w-3 h-3" />
                 Pause
               </ActionBtn>
-              <ActionBtn variant="primary" onClick={() => onOpenResearch(client)}>
+              <ActionBtn
+                variant="primary"
+                onClick={() => onOpenResearch(client)}
+              >
                 <FileText className="w-3 h-3" />
                 Continue
               </ActionBtn>
@@ -164,7 +174,10 @@ export default function ClientCardActions({
           )}
           {/* CHANGED: isMyResearch now uses ObjectId comparison */}
           {isTaskTeam && isMyResearch && (
-            <ActionBtn variant="primary" onClick={() => onPauseResearch(client)}>
+            <ActionBtn
+              variant="primary"
+              onClick={() => onPauseResearch(client)}
+            >
               <Play className="w-3 h-3" />
               Resume
             </ActionBtn>

@@ -26,7 +26,7 @@ import axios from "axios";
 import { apiPath } from "@/utils/routes";
 import ResearchDrawer from "@/components/clients/ResearchDrawer";
 import ResearchClientsCard from "@/components/clients/ResearchClientsCard";
-
+import Notifications from "@/components/notifications";
 
 function DashboardCard({
   title,
@@ -41,11 +41,12 @@ function DashboardCard({
 }) {
   const [expanded, setExpanded] = useState(defaultExpanded);
 
-  const widthClass = {
-    full:  "w-full",
-    half:  "w-full lg:w-[calc(65%-10px)]",
-    third: "w-full lg:w-[calc(33.333%-14px)]",
-  }[defaultWidth] ?? "w-full lg:w-[calc(65%-10px)]";
+  const widthClass =
+    {
+      full: "w-full",
+      half: "w-full lg:w-[calc(65%-10px)]",
+      third: "w-full lg:w-[calc(33.333%-14px)]",
+    }[defaultWidth] ?? "w-full lg:w-[calc(65%-10px)]";
 
   return (
     <div
@@ -107,18 +108,17 @@ function DashboardCard({
             </div>
           )}
           <div className="text-[#6F618F]">
-            {expanded
-              ? <ChevronUp className="w-4 h-4" />
-              : <ChevronDown className="w-4 h-4" />
-            }
+            {expanded ? (
+              <ChevronUp className="w-4 h-4" />
+            ) : (
+              <ChevronDown className="w-4 h-4" />
+            )}
           </div>
         </div>
       </button>
 
       {/* ── Card body ── */}
-      <div className="flex flex-col overflow-hidden">
-        {children}
-      </div>
+      <div className="flex flex-col overflow-hidden">{children}</div>
     </div>
   );
 }
@@ -156,7 +156,10 @@ function ClientsCardInner() {
   const [openModal, setOpenModal] = useState(false);
   const [item, setItem] = useState(null);
   const [empModal, setEmpModal] = useState(false);
-  const [researchDrawer, setResearchDrawer] = useState({ open: false, client: null });
+  const [researchDrawer, setResearchDrawer] = useState({
+    open: false,
+    client: null,
+  });
 
   const {
     clients,
@@ -176,7 +179,10 @@ function ClientsCardInner() {
     mutate,
   } = useClients();
 
-  const [assignDrawer, setAssignDrawer] = useState({ open: false, client: null });
+  const [assignDrawer, setAssignDrawer] = useState({
+    open: false,
+    client: null,
+  });
 
   const editEmp = (data) => {
     axios
@@ -201,27 +207,33 @@ function ClientsCardInner() {
     setOpenModal(true);
   }, []);
 
-  const handleDelete = useCallback(async (client) => {
-    const confirmed = window.confirm(
-      `Delete "${client.companyName || client.clientName}"? This cannot be undone.`
-    );
-    if (!confirmed) return;
-    try {
-      await apiClient.delete(CLIENT_ROUTES.byId(client._id));
-      mutate();
-    } catch (err) {
-      alert(err.response?.data?.message || "Failed to delete client.");
-    }
-  }, [mutate]);
+  const handleDelete = useCallback(
+    async (client) => {
+      const confirmed = window.confirm(
+        `Delete "${client.companyName || client.clientName}"? This cannot be undone.`,
+      );
+      if (!confirmed) return;
+      try {
+        await apiClient.delete(CLIENT_ROUTES.byId(client._id));
+        mutate();
+      } catch (err) {
+        alert(err.response?.data?.message || "Failed to delete client.");
+      }
+    },
+    [mutate],
+  );
 
-  const handleAddToResearch = useCallback(async (client) => {
-    try {
-      await apiClient.post(CLIENT_ROUTES.requestResearch(client._id));
-      mutate();
-    } catch (err) {
-      alert(err.response?.data?.message || "Failed to send for research.");
-    }
-  }, [mutate]);
+  const handleAddToResearch = useCallback(
+    async (client) => {
+      try {
+        await apiClient.post(CLIENT_ROUTES.requestResearch(client._id));
+        mutate();
+      } catch (err) {
+        alert(err.response?.data?.message || "Failed to send for research.");
+      }
+    },
+    [mutate],
+  );
 
   const handleAssignResearch = useCallback((client) => {
     setAssignDrawer({ open: true, client });
@@ -231,39 +243,54 @@ function ClientsCardInner() {
   //   router.push(`/clients/${client._id}?tab=research`);
   // }, [router]);
 
-  const handlePauseResearch = useCallback(async (client) => {
-    try {
-      const isPaused = client.researchStatus === "Research Paused";
-      if (!isPaused) {
-        const reason = window.prompt("Reason for pausing (optional):");
-        await apiClient.post(CLIENT_ROUTES.pauseResearch(client._id), { pauseReason: reason || "" });
-      } else {
-        await apiClient.post(CLIENT_ROUTES.pauseResearch(client._id));
+  const handlePauseResearch = useCallback(
+    async (client) => {
+      try {
+        const isPaused = client.researchStatus === "Research Paused";
+        if (!isPaused) {
+          const reason = window.prompt("Reason for pausing (optional):");
+          await apiClient.post(CLIENT_ROUTES.pauseResearch(client._id), {
+            pauseReason: reason || "",
+          });
+        } else {
+          await apiClient.post(CLIENT_ROUTES.pauseResearch(client._id));
+        }
+        mutate();
+      } catch (err) {
+        alert(
+          err.response?.data?.message || "Failed to pause/resume research.",
+        );
       }
-      mutate();
-    } catch (err) {
-      alert(err.response?.data?.message || "Failed to pause/resume research.");
-    }
-  }, [mutate]);
+    },
+    [mutate],
+  );
 
-  const handleSubmitResearch = useCallback(async (client) => {
-    try {
-      await apiClient.post(CLIENT_ROUTES.submitResearch(client._id));
-      mutate();
-    } catch (err) {
-      alert(err.response?.data?.message || "Failed to submit research.");
-    }
-  }, [mutate]);
+  const handleSubmitResearch = useCallback(
+    async (client) => {
+      try {
+        await apiClient.post(CLIENT_ROUTES.submitResearch(client._id));
+        mutate();
+      } catch (err) {
+        alert(err.response?.data?.message || "Failed to submit research.");
+      }
+    },
+    [mutate],
+  );
 
-  const handleUnassignResearch = useCallback(async (client) => {
-    const reason = window.prompt("Reason for unassigning (optional):");
-    try {
-      await apiClient.post(CLIENT_ROUTES.unassignResearch(client._id), { reason: reason || "" });
-      mutate();
-    } catch (err) {
-      alert(err.response?.data?.message || "Failed to unassign research.");
-    }
-  }, [mutate]);
+  const handleUnassignResearch = useCallback(
+    async (client) => {
+      const reason = window.prompt("Reason for unassigning (optional):");
+      try {
+        await apiClient.post(CLIENT_ROUTES.unassignResearch(client._id), {
+          reason: reason || "",
+        });
+        mutate();
+      } catch (err) {
+        alert(err.response?.data?.message || "Failed to unassign research.");
+      }
+    },
+    [mutate],
+  );
 
   const titles = {
     BGC: { main: "My", accent: "clients" },
@@ -277,6 +304,7 @@ function ClientsCardInner() {
 
   return (
     <>
+      <Notifications />
       <DashboardCard
         title={title.main}
         accent={title.accent}
@@ -305,7 +333,6 @@ function ClientsCardInner() {
 
         {/* Client rows */}
         <div className="px-5 py-4">
-
           {/* Loading skeleton */}
           {isLoading && (
             <div className="space-y-2.5">
@@ -402,20 +429,19 @@ function ClientsCardInner() {
           {researchDrawer.open && researchDrawer.client && (
             <ResearchDrawer
               open={researchDrawer.open}
-              onOpenChange={(open) => setResearchDrawer((p) => ({ ...p, open }))}
+              onOpenChange={(open) =>
+                setResearchDrawer((p) => ({ ...p, open }))
+              }
               client={researchDrawer.client}
               onSuccess={() => mutate()}
-            />)
-              }
+            />
+          )}
         </div>
 
         {/* Pagination */}
         {!isLoading && !error && clients.length > 0 && (
           <div className="px-5 pb-4 pt-1 border-t border-[rgba(127,86,217,0.12)]">
-            <ClientsPagination
-              pagination={pagination}
-              onPageChange={setPage}
-            />
+            <ClientsPagination pagination={pagination} onPageChange={setPage} />
           </div>
         )}
       </DashboardCard>
@@ -438,9 +464,9 @@ function ClientsCardInner() {
  * ───────────────────────────────────────────────────────────────────── */
 export default function Home() {
   const isUserLoggedIn = useAuthStore((state) => state.isLoggedIn);
-  const hasHydrated    = useAuthStore((state) => state.hasHydrated);
-  const router         = useRouter();
-  const user           = useAuthStore((state) => state.user);
+  const hasHydrated = useAuthStore((state) => state.hasHydrated);
+  const router = useRouter();
+  const user = useAuthStore((state) => state.user);
 
   useEffect(() => {
     if (!hasHydrated) return;
@@ -462,7 +488,6 @@ export default function Home() {
 
   return (
     <div className="flex flex-row w-full h-dvh overflow-hidden bg-[#191526]">
-
       {/* Sidebar */}
       <aside className="w-[240px] min-w-[240px] h-full">
         <SidebarProvider>
@@ -476,13 +501,11 @@ export default function Home() {
 
         <div className="flex-1 overflow-y-auto overflow-x-hidden px-6 py-6">
           <div className="flex flex-row flex-wrap gap-5 items-start">
-
             {/* ── CARD 1: Clients list — wrapped in Suspense ── */}
             <Suspense fallback={<ClientsCardFallback />}>
               <ClientsCardInner />
               <ResearchClientsCard />
             </Suspense>
-
           </div>
         </div>
       </main>
