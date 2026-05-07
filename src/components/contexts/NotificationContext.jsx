@@ -8,10 +8,8 @@ import React, {
   useRef,
   useCallback,
 } from "react";
-import Swal from "sweetalert2";
 import { useToast } from "@/hooks/use-toast";
 import { usePathname } from "next/navigation";
-import apiClient from "@/lib/apiClient";
 
 const NotificationContext = createContext(null);
 
@@ -22,13 +20,14 @@ export const useNotifications = () => {
 };
 
 export const NotificationProvider = ({ children, userId }) => {
+  const { toast } = useToast();
+
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [sseConnected, setSseConnected] = useState(false);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
-  const { toast } = useToast();
 
   const eventSourceRef = useRef(null);
   const tabId = useRef(null);
@@ -159,72 +158,92 @@ export const NotificationProvider = ({ children, userId }) => {
   // =========================
   // SSE CONNECTION
   // =========================
+
   const connectSSE = useCallback(async () => {
     if (!userId || !tabId.current) return;
 
-    const token = await fetchSseToken();
-    if (!token) return;
-
-    if (eventSourceRef.current) {
-      eventSourceRef.current.close();
+    // already connected or connecting
+    if (
+      eventSourceRef.current &&
+      (eventSourceRef.current.readyState === EventSource.OPEN ||
+        eventSourceRef.current.readyState === EventSource.CONNECTING)
+    ) {
+      return;
     }
 
-    const url = `${process.env.NEXT_PUBLIC_API_URL}/api/notifications/subscribe/${userId}?sseToken=${token}&tabId=${tabId.current}`;
+    try {
+      const token = await fetchSseToken();
 
-    const es = new EventSource(url);
-    eventSourceRef.current = es;
+      if (!token) return;
 
-    es.onopen = () => {
-      setSseConnected(true);
-      console.log("SSE connected");
-    };
+      const url = `${process.env.NEXT_PUBLIC_API_URL}/api/notifications/subscribe/${userId}?sseToken=${token}&tabId=${tabId.current}`;
 
-    es.onmessage = (event) => {
-      try {
-        const data = JSON.parse(event.data);
+      const es = new EventSource(url);
 
-        if (data.type === "connected" || data.type === "ping") return;
+      eventSourceRef.current = es;
 
-        if (data.type && data.message) {
-          const newNotification = {
-            id: data.id,
-            type: data.type,
-            title: data.title,
-            message: data.message,
-            status: "UNREAD",
-            createdAt: data.createdAt,
-            priority: data.priority,
-            client: data.client,
-          };
+      es.onopen = () => {
+        console.log("SSE connected");
+        setSseConnected(true);
+      };
 
-          setNotifications((prev) => {
-            const exists = prev.some(
-              (n) =>
-                n.id === newNotification.id || n._id === newNotification.id,
-            );
-            if (exists) return prev;
-            return [newNotification, ...prev];
-          });
+      es.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
 
-          toast({
-            title: `${newNotification.title}`,
-            description: `${newNotification.message}`,
-          });
+          // ignore system events
+          if (data.type === "connected" || data.type === "ping") {
+            return;
+          }
+
+          if (data.type && data.message) {
+            const newNotification = {
+              id: data.id,
+              type: data.type,
+              title: data.title,
+              message: data.message,
+              status: "UNREAD",
+              createdAt: data.createdAt,
+              priority: data.priority,
+              client: data.client,
+            };
+
+            setNotifications((prev) => {
+              const exists = prev.some(
+                (n) =>
+                  n.id === newNotification.id || n._id === newNotification.id,
+              );
+
+              if (exists) return prev;
+
+              return [newNotification, ...prev];
+            });
+
+            toast({
+              title: newNotification.title,
+              description: newNotification.message,
+            });
+          }
+        } catch (err) {
+          console.error("SSE parse error:", err);
         }
-      } catch (err) {
-        console.error("SSE parse error:", err);
-      }
-    };
+      };
 
-    es.onerror = () => {
-      setSseConnected(false);
-      es.close();
+      es.onerror = () => {
+        console.log("SSE reconnecting...");
+        setSseConnected(false);
 
-      setTimeout(() => {
-        connectSSE();
-      }, 3000);
-    };
-  }, [userId]);
+        // DO NOT:
+        // close()
+        // reconnect manually
+        // fetch another token
+
+        // browser handles reconnect automatically
+      };
+    } catch (err) {
+      console.error("SSE connect error:", err);
+    }
+  }, [userId, toast]);
   console.log("Notifications:", notifications);
   // =========================
   // INIT
@@ -233,12 +252,15 @@ export const NotificationProvider = ({ children, userId }) => {
     if (!userId) return;
 
     setPage(1);
+
     fetchNotifications(1);
+
     connectSSE();
 
     return () => {
       if (eventSourceRef.current) {
         eventSourceRef.current.close();
+        eventSourceRef.current = null;
       }
     };
   }, [userId]);
