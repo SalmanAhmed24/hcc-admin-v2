@@ -28,13 +28,14 @@ const Notifications = ({ drawer = false }) => {
   return (
     <div
       className={`
-        w-full  ${drawer ? "h-full" : notifications.length > 0 ? "h-[400px]" : "h-[150px]"}
-        flex flex-col
-        rounded-[18px]
-        border border-[rgba(127,86,217,0.22)]
-        bg-[rgba(28,22,52,0.85)]
-        overflow-hidden
-      `}
+    flex-1 min-w-0
+    ${drawer ? "h-full" : notifications.length > 0 ? "h-[600px] max-h-[600px]" : "h-[150px]"}
+    flex flex-col
+    rounded-[18px]
+    border border-[rgba(127,86,217,0.22)]
+    bg-[rgba(28,22,52,0.85)]
+    overflow-hidden
+  `}
     >
       {/* ================= HEADER ================= */}
       <div

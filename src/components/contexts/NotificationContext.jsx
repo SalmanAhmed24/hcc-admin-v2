@@ -21,7 +21,7 @@ export const useNotifications = () => {
 
 export const NotificationProvider = ({ children, userId }) => {
   const { toast } = useToast();
-
+  const reconnectTimeoutRef = useRef(null);
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [sseConnected, setSseConnected] = useState(false);
@@ -229,16 +229,26 @@ export const NotificationProvider = ({ children, userId }) => {
         }
       };
 
-      es.onerror = () => {
-        console.log("SSE reconnecting...");
+      es.onerror = async (err) => {
+        console.log("SSE disconnected", err);
+
         setSseConnected(false);
 
-        // DO NOT:
-        // close()
-        // reconnect manually
-        // fetch another token
+        // close broken connection
+        if (eventSourceRef.current) {
+          eventSourceRef.current.close();
+          eventSourceRef.current = null;
+        }
 
-        // browser handles reconnect automatically
+        // clear previous reconnect
+        if (reconnectTimeoutRef.current) {
+          clearTimeout(reconnectTimeoutRef.current);
+        }
+
+        // reconnect with NEW TOKEN
+        reconnectTimeoutRef.current = setTimeout(() => {
+          connectSSE();
+        }, 5000);
       };
     } catch (err) {
       console.error("SSE connect error:", err);
@@ -258,6 +268,10 @@ export const NotificationProvider = ({ children, userId }) => {
     connectSSE();
 
     return () => {
+      if (reconnectTimeoutRef.current) {
+        clearTimeout(reconnectTimeoutRef.current);
+      }
+
       if (eventSourceRef.current) {
         eventSourceRef.current.close();
         eventSourceRef.current = null;

@@ -303,7 +303,7 @@ function ClientsCardInner() {
   const title = titles[role] || titles.BGC;
 
   return (
-    <>
+    <div className="flex flex-col lg:flex-row-reverse gap-4 items-start">
       <Notifications />
       <DashboardCard
         title={title.main}
@@ -453,7 +453,7 @@ function ClientsCardInner() {
         client={assignDrawer.client}
         onSuccess={() => mutate()}
       />
-    </>
+    </div>
   );
 }
 
