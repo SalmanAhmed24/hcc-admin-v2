@@ -253,7 +253,7 @@ export const NotificationProvider = ({ children, userId }) => {
     } catch (err) {
       console.error("SSE connect error:", err);
     }
-  }, [userId, toast]);
+  }, [userId]);
   console.log("Notifications:", notifications);
   // =========================
   // INIT
