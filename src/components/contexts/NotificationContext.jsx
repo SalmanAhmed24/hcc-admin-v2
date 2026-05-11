@@ -192,7 +192,7 @@ export const NotificationProvider = ({ children, userId }) => {
           const data = JSON.parse(event.data);
 
           // ignore system events
-          if (data.type === "connected" || data.type === "ping") {
+          if (data.type === "connected") {
             return;
           }
 
@@ -229,26 +229,13 @@ export const NotificationProvider = ({ children, userId }) => {
         }
       };
 
-      es.onerror = async (err) => {
-        console.log("SSE disconnected", err);
+      es.onerror = (err) => {
+        console.log("SSE temporary interruption", err);
 
         setSseConnected(false);
 
-        // close broken connection
-        if (eventSourceRef.current) {
-          eventSourceRef.current.close();
-          eventSourceRef.current = null;
-        }
-
-        // clear previous reconnect
-        if (reconnectTimeoutRef.current) {
-          clearTimeout(reconnectTimeoutRef.current);
-        }
-
-        // reconnect with NEW TOKEN
-        reconnectTimeoutRef.current = setTimeout(() => {
-          connectSSE();
-        }, 5000);
+        // DO NOTHING
+        // browser reconnects automatically
       };
     } catch (err) {
       console.error("SSE connect error:", err);
@@ -265,20 +252,28 @@ export const NotificationProvider = ({ children, userId }) => {
 
     fetchNotifications(1);
 
+    // already connected
+    if (eventSourceRef.current) return;
+
     connectSSE();
 
-    return () => {
-      if (reconnectTimeoutRef.current) {
-        clearTimeout(reconnectTimeoutRef.current);
-      }
+    // NO CLEANUP
+  }, [userId]);
 
+  useEffect(() => {
+    const cleanup = () => {
       if (eventSourceRef.current) {
         eventSourceRef.current.close();
         eventSourceRef.current = null;
       }
     };
-  }, [userId]);
 
+    window.addEventListener("beforeunload", cleanup);
+
+    return () => {
+      window.removeEventListener("beforeunload", cleanup);
+    };
+  }, []);
   // =========================
   // UNREAD COUNT
   // =========================
