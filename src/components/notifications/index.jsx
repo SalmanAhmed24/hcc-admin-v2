@@ -1,6 +1,7 @@
 "use client";
 import { useRef } from "react";
 import { useNotifications } from "../contexts/NotificationContext";
+import { RefreshCw } from "lucide-react";
 
 const Notifications = ({ drawer = false }) => {
   const {
@@ -11,6 +12,7 @@ const Notifications = ({ drawer = false }) => {
     loadMore,
     hasMore,
     loadingMore,
+    refresh,
   } = useNotifications();
   const scrollRef = useRef(null);
 
@@ -54,10 +56,10 @@ const Notifications = ({ drawer = false }) => {
             {unreadCount} Unread
           </p>
         </div>
-
-        <button
-          onClick={markAllAsRead}
-          className="
+        <div className="flex gap-2">
+          <button
+            onClick={markAllAsRead}
+            className="
             text-xs px-3 py-1.5
             rounded-[10px]
             border border-[rgba(183,151,255,0.3)]
@@ -65,9 +67,23 @@ const Notifications = ({ drawer = false }) => {
             hover:bg-[rgba(183,151,255,0.1)]
             transition
           "
-        >
-          Mark All Read
-        </button>
+          >
+            Mark All Read
+          </button>
+          <button
+            onClick={() => refresh(1)}
+            className="
+      text-xs px-3 py-1.5
+      rounded-[10px]
+      border border-[rgba(183,151,255,0.3)]
+      text-[#B797FF]
+      hover:bg-[rgba(183,151,255,0.1)]
+      transition
+    "
+          >
+            <RefreshCw size={14} />
+          </button>
+        </div>
       </div>
 
       {/* ================= BODY ================= */}

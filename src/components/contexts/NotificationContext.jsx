@@ -9,7 +9,6 @@ import React, {
   useCallback,
 } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { usePathname } from "next/navigation";
 
 const NotificationContext = createContext(null);
 
@@ -21,7 +20,6 @@ export const useNotifications = () => {
 
 export const NotificationProvider = ({ children, userId }) => {
   const { toast } = useToast();
-  const reconnectTimeoutRef = useRef(null);
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [sseConnected, setSseConnected] = useState(false);
@@ -31,7 +29,6 @@ export const NotificationProvider = ({ children, userId }) => {
 
   const eventSourceRef = useRef(null);
   const tabId = useRef(null);
-  const pathname = usePathname();
   // =========================
   // INIT TAB ID (FIXED)
   // =========================
@@ -99,7 +96,19 @@ export const NotificationProvider = ({ children, userId }) => {
 
         const data = await res.json();
         if (pageToLoad === 1) {
-          setNotifications(data.data || []);
+          setNotifications((prev) => {
+            const merged = [...(data.data || []), ...prev];
+
+            const unique = merged.filter(
+              (item, index, self) =>
+                index ===
+                self.findIndex(
+                  (n) => (n._id || n.id) === (item._id || item.id),
+                ),
+            );
+
+            return unique;
+          });
         } else {
           setNotifications((prev) => [...prev, ...(data.data || [])]);
         }
@@ -158,7 +167,7 @@ export const NotificationProvider = ({ children, userId }) => {
   // =========================
   // SSE CONNECTION
   // =========================
-
+  // TEMPORARILY DISABLED DUE TO VERCEL SSE INSTABILIT
   const connectSSE = useCallback(async () => {
     if (!userId || !tabId.current) return;
 
@@ -245,19 +254,33 @@ export const NotificationProvider = ({ children, userId }) => {
   // =========================
   // INIT
   // =========================
-  useEffect(() => {
+  /*   useEffect(() => {
     if (!userId) return;
 
     setPage(1);
 
     fetchNotifications(1);
 
-    // already connected
     if (eventSourceRef.current) return;
 
     connectSSE();
+  }, [userId]); */
+  useEffect(() => {
+    if (!userId) return;
 
-    // NO CLEANUP
+    setPage(1);
+
+    // Initial fetch
+    fetchNotifications(1);
+
+    const interval = setInterval(() => {
+      if (document.visibilityState === "visible") {
+        fetchNotifications(1);
+      }
+    }, 15000);
+    return () => {
+      clearInterval(interval);
+    };
   }, [userId]);
 
   useEffect(() => {
@@ -288,7 +311,7 @@ export const NotificationProvider = ({ children, userId }) => {
         notifications,
         unreadCount,
         sseConnected,
-        refresh: fetchNotifications,
+        refresh: () => fetchNotifications(1),
         markAsRead,
         markAllAsRead,
         loadMore,
