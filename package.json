@@ -59,6 +59,7 @@
     "react-dom": "^19.2.4",
     "react-dropzone": "^15.0.0",
     "react-select": "^5.9.0",
+    "react-window": "^1.8.11",
     "rxjs": "^7.8.2",
     "sass": "^1.82.0",
     "sweetalert2": "^11.15.2",
