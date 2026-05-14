@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useDeferredValue, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Dialog } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
 import Swal from "sweetalert2";
 import useSWR from "swr";
+import { FixedSizeList } from "react-window";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { apiPath, prodPath } from "@/utils/routes";
@@ -65,6 +66,32 @@ function memberFromClient(client) {
   };
 }
 
+/** Virtual row height: card (~56px) + gap below (pb-2 = 8px) for react-window FixedSizeList */
+const SELECTED_MEMBER_ROW_ITEM_SIZE = 64;
+
+function SelectedMemberListRow({ index, style, data }) {
+  const member = data.members[index];
+  if (!member) return null;
+  return (
+    <div style={style} className="box-border pb-2">
+      <div className="flex h-full min-h-0 items-start justify-between gap-2 rounded-md border border-[#452C95] bg-[#2D245B] p-2">
+        <div className="min-w-0">
+          <p className="text-sm text-white truncate">{member.name || "No Name"}</p>
+          <p className="text-xs text-[#E1C9FF] truncate">{member.email}</p>
+        </div>
+        <button
+          type="button"
+          title="Remove"
+          onClick={() => data.onRemove(member.clientRefId, member.email)}
+          className="shrink-0 p-1 rounded text-[#A99BD4] hover:text-[#FCA5A5] hover:bg-[#231C46]"
+        >
+          <X className="w-4 h-4" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function NewContactListDrawer({ open, handleClose, refreshData }) {
   const { userId, isManager, isTaskTeam } = useCurrentUser();
 
@@ -73,7 +100,11 @@ export default function NewContactListDrawer({ open, handleClose, refreshData })
   const [drawerPage, setDrawerPage] = useState(1);
   const [searchInput, setSearchInput] = useState("");
   const [drawerFilters, setDrawerFilters] = useState({});
-  const [selectedMap, setSelectedMap] = useState({});
+  const selectedMapRef = useRef({});
+  const [selectionVersion, setSelectionVersion] = useState(0);
+  const bumpSelection = useCallback(() => {
+    setSelectionVersion((v) => v + 1);
+  }, []);
   const [saving, setSaving] = useState(false);
   const [selectingAll, setSelectingAll] = useState(false);
   const [selectAllProgress, setSelectAllProgress] = useState(0);
@@ -174,49 +205,76 @@ export default function NewContactListDrawer({ open, handleClose, refreshData })
   }, []);
 
   const resetAll = useCallback(() => {
-    setSelectedMap({});
+    selectedMapRef.current = {};
+    bumpSelection();
     setDrawerFilters({});
     setSearchInput("");
     setDrawerPage(1);
-  }, []);
+  }, [bumpSelection]);
 
-  const selectedMembers = useMemo(() => Object.values(selectedMap), [selectedMap]);
-
-  const toggleClient = useCallback((client) => {
-    const id = client?._id != null ? String(client._id) : "";
-    if (!id || !client?.email) return;
-
-    setSelectedMap((prev) => {
-      if (prev[id]) {
-        const next = { ...prev };
-        delete next[id];
-        return next;
+  const toggleClient = useCallback(
+    (client) => {
+      const id = client?._id != null ? String(client._id) : "";
+      if (!id || !client?.email) return;
+      const map = selectedMapRef.current;
+      if (map[id]) {
+        delete map[id];
+      } else {
+        map[id] = memberFromClient(client);
       }
-      return { ...prev, [id]: memberFromClient(client) };
-    });
-  }, []);
+      bumpSelection();
+    },
+    [bumpSelection]
+  );
 
-  const removeSelected = useCallback((clientRefId, email) => {
-    const key = clientRefId != null ? String(clientRefId) : email;
-    if (!key) return;
-    setSelectedMap((prev) => {
-      const next = { ...prev };
-      delete next[key];
-      return next;
-    });
-  }, []);
+  const removeSelected = useCallback(
+    (clientRefId, email) => {
+      const key = clientRefId != null ? String(clientRefId) : email;
+      if (!key) return;
+      delete selectedMapRef.current[key];
+      bumpSelection();
+    },
+    [bumpSelection]
+  );
 
   const mergeClientsIntoSelection = useCallback((rows) => {
-    setSelectedMap((prev) => {
-      const next = { ...prev };
-      for (const client of rows) {
-        if (!client?.email || client._id == null) continue;
-        const id = String(client._id);
-        next[id] = memberFromClient(client);
-      }
-      return next;
-    });
+    const map = selectedMapRef.current;
+    for (const client of rows) {
+      if (!client?.email || client._id == null) continue;
+      const id = String(client._id);
+      map[id] = memberFromClient(client);
+    }
   }, []);
+
+  const selectedMembers = useMemo(
+    () => Object.values(selectedMapRef.current),
+    [selectionVersion]
+  );
+
+  const selectedListOuterRef = useRef(null);
+  const [selectedListWidth, setSelectedListWidth] = useState(520);
+  const [selectedListHeight, setSelectedListHeight] = useState(400);
+
+  useLayoutEffect(() => {
+    if (!open) return;
+    const el = selectedListOuterRef.current;
+    if (!el) return;
+    const update = () => {
+      const w = Math.max(200, Math.floor(el.clientWidth));
+      const h = Math.max(120, Math.floor(el.clientHeight));
+      setSelectedListWidth(w);
+      setSelectedListHeight(h);
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [open, selectedMembers.length]);
+
+  const selectedListItemData = useMemo(
+    () => ({ members: selectedMembers, onRemove: removeSelected }),
+    [selectedMembers, removeSelected]
+  );
 
   const fetchClientsPage = useCallback(
     async (page, limit) => {
@@ -274,8 +332,9 @@ export default function NewContactListDrawer({ open, handleClose, refreshData })
     } finally {
       setSelectingAll(false);
       setSelectAllProgress(0);
+      bumpSelection();
     }
-  }, [totalCount, selectingAll, fetchClientsPage, mergeClientsIntoSelection]);
+  }, [totalCount, selectingAll, fetchClientsPage, mergeClientsIntoSelection, bumpSelection]);
 
   const cancelSelectAll = useCallback(() => {
     selectAllCancelRef.current = true;
@@ -302,14 +361,15 @@ export default function NewContactListDrawer({ open, handleClose, refreshData })
       await axios.post(`${apiPath.prodPath3}/api/contact-lists/${userId}`, {
         name: name.trim(),
         description: description.trim(),
-        members: selectedMembers,
+        members: Object.values(selectedMapRef.current),
       });
 
       Swal.fire("Saved", "Contact list created successfully", "success");
       setName("");
       setDescription("");
       resetBrowsingState();
-      setSelectedMap({});
+      selectedMapRef.current = {};
+      bumpSelection();
       if (typeof refreshData === "function") {
         refreshData();
       }
@@ -468,7 +528,9 @@ export default function NewContactListDrawer({ open, handleClose, refreshData })
                 clients.map((client, rowIdx) => {
                   const key = client?._id != null ? String(client._id) : `row-${rowIdx}`;
                   const hasEmail = Boolean(client?.email?.trim());
-                  const checked = Boolean(client?._id != null && selectedMap[String(client._id)]);
+                  const checked = Boolean(
+                    client?._id != null && selectedMapRef.current[String(client._id)]
+                  );
                   const muted = !hasEmail;
                   return (
                     <label
@@ -545,29 +607,19 @@ export default function NewContactListDrawer({ open, handleClose, refreshData })
             <h2 className="text-[#B797FF] font-semibold mb-3 shrink-0">
               Selected ({selectedMembers.length})
             </h2>
-            <div className="overflow-auto flex-1 pr-2 min-h-0">
+            <div ref={selectedListOuterRef} className="overflow-hidden flex-1 min-h-0 w-full min-w-0">
               {selectedMembers.length === 0 ? (
                 <p className="text-sm text-[#E1C9FF]">No members selected yet.</p>
               ) : (
-                selectedMembers.map((member) => (
-                  <div
-                    key={`${member.clientRefId || member.email}`}
-                    className="flex items-start justify-between gap-2 p-2 rounded-md bg-[#2D245B] border border-[#452C95] mb-2"
-                  >
-                    <div className="min-w-0">
-                      <p className="text-sm text-white truncate">{member.name || "No Name"}</p>
-                      <p className="text-xs text-[#E1C9FF] truncate">{member.email}</p>
-                    </div>
-                    <button
-                      type="button"
-                      title="Remove"
-                      onClick={() => removeSelected(member.clientRefId, member.email)}
-                      className="shrink-0 p-1 rounded text-[#A99BD4] hover:text-[#FCA5A5] hover:bg-[#231C46]"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-                  </div>
-                ))
+                <FixedSizeList
+                  height={selectedListHeight}
+                  itemCount={selectedMembers.length}
+                  itemSize={SELECTED_MEMBER_ROW_ITEM_SIZE}
+                  width={selectedListWidth}
+                  itemData={selectedListItemData}
+                >
+                  {SelectedMemberListRow}
+                </FixedSizeList>
               )}
             </div>
           </div>
