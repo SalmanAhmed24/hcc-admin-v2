@@ -230,7 +230,7 @@ function FilterPillDropdown({ option, onSelect }) {
           sideOffset={4}
           align="start"
           className={cn(
-            "min-w-[180px] p-1.5 rounded-xl z-50",
+            "min-w-[180px] p-1.5 rounded-xl z-[1400]",
             "bg-gradient-to-b from-[#2D245B] to-[#1E1740]",
             "border border-[rgba(127,86,217,0.5)]",
             "shadow-[0_20px_40px_-10px_rgba(0,0,0,0.7)]",
@@ -290,7 +290,7 @@ function AddFilterPill({ options, onAdd }) {
           sideOffset={4}
           align="start"
           className={cn(
-            "min-w-[200px] p-2 rounded-xl z-50",
+            "min-w-[200px] p-2 rounded-xl z-[1400]",
             "bg-gradient-to-b from-[#2D245B] to-[#1E1740]",
             "border border-[rgba(127,86,217,0.5)]",
             "shadow-[0_20px_40px_-10px_rgba(0,0,0,0.7)]",
