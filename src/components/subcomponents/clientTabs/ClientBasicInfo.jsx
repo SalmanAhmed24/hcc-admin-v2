@@ -4,18 +4,19 @@ const ClientBasicInfo = ({ item, open }) => {
   const Field = ({ label, value }) => (
     <div
       style={{
-        background: "#13102C",
+        background: "rgba(127,86,217,0.06)",
         borderRadius: "8px",
         padding: "10px 13px",
-        border: "0.5px solid #2D2460",
+        border: "1px solid rgba(127,86,217,0.15)",
+        minWidth: 0,
       }}
     >
       <label
         style={{
           display: "block",
           fontSize: "11px",
-          fontWeight: 500,
-          color: "#6B5FA0",
+          fontWeight: 600,
+          color: "#8B7CB3",
           textTransform: "uppercase",
           letterSpacing: "0.07em",
           marginBottom: "5px",
@@ -28,9 +29,13 @@ const ClientBasicInfo = ({ item, open }) => {
           margin: 0,
           fontSize: "13px",
           fontWeight: 500,
-          color: value ? "#DDD6FF" : "#3D3560",
+          color: value ? "#E8E0F5" : "#4A4468",
           fontStyle: value ? "normal" : "italic",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
         }}
+        title={value || "N/A"}
       >
         {value || "N/A"}
       </p>
@@ -41,13 +46,13 @@ const ClientBasicInfo = ({ item, open }) => {
     <div
       style={{
         fontSize: "11px",
-        fontWeight: 500,
+        fontWeight: 600,
         textTransform: "uppercase",
         letterSpacing: "0.1em",
-        color: "#9B8EC4",
+        color: "#B797FF",
         paddingBottom: "10px",
         marginBottom: "14px",
-        borderBottom: "0.5px solid #2D2460",
+        borderBottom: "1px solid rgba(127,86,217,0.18)",
       }}
     >
       {title}
@@ -65,8 +70,8 @@ const ClientBasicInfo = ({ item, open }) => {
   return (
     <div
       style={{
-        background: "#191526",
-        border: "1px solid #2D2460",
+        background: "rgba(28,22,52,0.65)",
+        border: "1px solid rgba(127,86,217,0.22)",
         borderRadius: "14px",
         padding: "24px 28px",
       }}
@@ -120,11 +125,11 @@ const ClientBasicInfo = ({ item, open }) => {
         <div style={grid}>
           <Field
             label="Need category"
-            value={`${item?.needCategory?.categoryName} ${item?.needCategory?.categoryCode}`}
+            value={`${item?.needCategory?.categoryName || ""} ${item?.needCategory?.categoryCode || ""}`.trim() || null}
           />
           <Field
             label="Need sub-category"
-            value={`${item?.needCategory?.subCategory?.subCategoryName} ${item?.needCategory?.subCategory?.subCategoryCode}`}
+            value={`${item?.needCategory?.subCategory?.subCategoryName || ""} ${item?.needCategory?.subCategory?.subCategoryCode || ""}`.trim() || null}
           />
         </div>
       </div>
@@ -136,44 +141,44 @@ const ClientBasicInfo = ({ item, open }) => {
           gap: "8px",
           flexWrap: "wrap",
           paddingTop: "18px",
-          borderTop: "0.5px solid #2D2460",
+          borderTop: "1px solid rgba(127,86,217,0.18)",
         }}
       >
         <span
           style={{
-            background: "#0C2318",
+            background: "rgba(74,222,128,0.1)",
             color: "#4ADE80",
             fontSize: "11px",
-            fontWeight: 500,
+            fontWeight: 600,
             padding: "4px 11px",
             borderRadius: "99px",
-            border: "0.5px solid #166534",
+            border: "1px solid rgba(74,222,128,0.3)",
           }}
         >
           Lead status: {item.leadStatus}
         </span>
         <span
           style={{
-            background: "#1C1548",
+            background: "rgba(183,151,255,0.1)",
             color: "#C4B5FD",
             fontSize: "11px",
-            fontWeight: 500,
+            fontWeight: 600,
             padding: "4px 11px",
             borderRadius: "99px",
-            border: "0.5px solid #3C3080",
+            border: "1px solid rgba(183,151,255,0.3)",
           }}
         >
           Category · {item?.needCategory?.categoryCode}
         </span>
         <span
           style={{
-            background: "#0C1929",
+            background: "rgba(147,197,253,0.1)",
             color: "#93C5FD",
             fontSize: "11px",
-            fontWeight: 500,
+            fontWeight: 600,
             padding: "4px 11px",
             borderRadius: "99px",
-            border: "0.5px solid #1E3A5F",
+            border: "1px solid rgba(147,197,253,0.3)",
           }}
         >
           Sub-category · {item?.needCategory?.subCategory?.subCategoryCode}

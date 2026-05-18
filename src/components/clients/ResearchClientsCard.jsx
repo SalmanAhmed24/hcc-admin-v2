@@ -12,7 +12,7 @@
 
 import { useState, useCallback } from "react";
 import {
-  FlaskConical, RefreshCw, AlertCircle, ChevronRight,
+  FlaskConical, AlertCircle, ChevronRight,
   Clock, Pause, CheckCircle2, AlertTriangle, Loader2,
   X, UserMinus,
 } from "lucide-react";
@@ -640,78 +640,7 @@ export default function ResearchClientsCard({ onOpenClient }) {
 
   return (
     <>
-      {/* ── Card ─────────────────────────────────────────────────────────── */}
-      {/*
-       * Width matches ClientsCardInner's DashboardCard with defaultWidth="half":
-       *   w-full on mobile, lg:w-[calc(65%-10px)] on large screens.
-       * The card uses inline styles so we apply the width via className here.
-       */}
-      <div
-        className="w-full lg:w-[calc(65%-10px)]"
-        style={{
-          background: "rgba(28,22,52,0.85)",
-          border: "1px solid rgba(127,86,217,0.22)",
-          borderRadius: 18,
-          overflow: "hidden",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        {/* ── Card header ────────────────────────────────────────────────── */}
-        <div style={{
-          display: "flex", alignItems: "center", justifyContent: "space-between",
-          padding: "14px 16px",
-          borderBottom: "1px solid rgba(127,86,217,0.12)",
-        }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <div style={{
-              width: 32, height: 32, borderRadius: 10,
-              background: "rgba(183,151,255,0.1)",
-              border: "1px solid rgba(183,151,255,0.2)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-            }}>
-              <FlaskConical size={15} style={{ color: "#B797FF" }} />
-            </div>
-            <div>
-              <p style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.12em", color: "#6F618F", lineHeight: 1 }}>
-                Research
-              </p>
-              <p style={{ fontFamily: "'Instrument Serif', Georgia, serif", fontSize: 17, color: "#B797FF", lineHeight: 1.2 }}>
-                pipeline
-              </p>
-            </div>
-          </div>
-
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <div style={{
-              display: "flex", alignItems: "center", gap: 6,
-              background: "rgba(25,21,38,0.6)",
-              border: "1px solid rgba(69,44,149,0.4)",
-              borderRadius: 10, padding: "4px 10px",
-              fontSize: 11, color: "#A99BD4",
-            }}>
-              <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#B797FF", display: "inline-block" }} />
-              {isLoading ? "—" : counts.all} clients
-              {isValidating && !isLoading && (
-                <span style={{ color: "#6F618F" }}> · syncing</span>
-              )}
-            </div>
-
-            <button
-              onClick={() => mutate()}
-              style={{
-                width: 30, height: 30, borderRadius: 8,
-                border: "1px solid rgba(127,86,217,0.3)",
-                background: "rgba(127,86,217,0.08)",
-                color: "#8B7CB3", cursor: "pointer",
-                display: "flex", alignItems: "center", justifyContent: "center",
-              }}
-            >
-              <RefreshCw size={12} />
-            </button>
-          </div>
-        </div>
-
+      <div style={{ display: "flex", flexDirection: "column", overflow: "hidden" }}>
         {/* ── Status filter bar ───────────────────────────────────────────── */}
         <StatusFilterBar
           active={statusFilter}
@@ -853,7 +782,7 @@ export default function ResearchClientsCard({ onOpenClient }) {
         )}
       </div>
 
-      {/* ── AssignResearchDrawer — portalled outside the card ────────────── */}
+      {/* ── AssignResearchDrawer ────────────── */}
       <AssignResearchDrawer
         open={assignDrawer.open}
         onOpenChange={(open) => setAssignDrawer((prev) => ({ ...prev, open }))}

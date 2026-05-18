@@ -27,6 +27,9 @@ import { apiPath } from "@/utils/routes";
 import ResearchDrawer from "@/components/clients/ResearchDrawer";
 import ResearchClientsCard from "@/components/clients/ResearchClientsCard";
 import Notifications from "@/components/notifications";
+import TasksWidget from "@/components/dashboardWidgets/TasksWidget";
+import FilesWidget from "@/components/dashboardWidgets/FilesWidget";
+import { ListTodo, FolderOpen, FlaskConical } from "lucide-react";
 
 function DashboardCard({
   title,
@@ -305,146 +308,181 @@ function ClientsCardInner() {
   return (
     <div className="flex flex-col lg:flex-row-reverse gap-4 items-start">
       <Notifications />
-      <DashboardCard
-        title={title.main}
-        accent={title.accent}
-        count={pagination.total}
-        countLabel="clients"
-        icon={<Users className="w-4 h-4" />}
-        isSyncing={isValidating && !isLoading}
-        defaultExpanded={true}
-        defaultWidth="half"
-      >
-        {/* Filter bar */}
-        <div className="px-5 pt-4 pb-3 border-b border-[rgba(127,86,217,0.12)]">
-          <ClientsFilterBar
-            searchInput={searchInput}
-            handleSearchChange={handleSearchChange}
-            commitSearch={commitSearch}
-            activeFilters={activeFilters}
-            setFilter={setFilter}
-            removeFilter={removeFilter}
-            clearFilters={clearFilters}
-            isSearchPending={isSearchPending}
-            total={pagination.total}
-            mutate={mutate}
-          />
-        </div>
-
-        {/* Client rows */}
-        <div className="px-5 py-4">
-          {/* Loading skeleton */}
-          {isLoading && (
-            <div className="space-y-2.5">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="h-[72px] rounded-[12px] bg-[rgba(35,28,70,0.5)] border border-[rgba(69,44,149,0.2)] animate-pulse"
-                  style={{ animationDelay: `${i * 80}ms` }}
-                />
-              ))}
-            </div>
-          )}
-
-          {/* Error */}
-          {error && !isLoading && (
-            <div className="flex flex-col items-center justify-center py-10 gap-3">
-              <AlertCircle className="w-9 h-9 text-[#F87171]" />
-              <p className="text-[#FCA5A5] text-sm text-center max-w-sm">
-                {error.message || "Failed to load clients."}
-              </p>
-              <button
-                onClick={() => mutate()}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-[10px] text-[13px] font-medium bg-gradient-to-b from-[#9B74F0] to-[#6B42C8] text-white cursor-pointer"
-              >
-                <RefreshCw className="w-3.5 h-3.5" />
-                Retry
-              </button>
-            </div>
-          )}
-
-          {/* Empty */}
-          {!isLoading && !error && clients.length === 0 && (
-            <div className="flex flex-col items-center justify-center py-10 gap-3">
-              <Users className="w-10 h-10 text-[#6F618F]" />
-              <p className="text-[#A99BD4] text-sm">
-                {Object.keys(activeFilters).length > 0 || searchInput
-                  ? "No clients match your filters."
-                  : "No clients found."}
-              </p>
-              {(Object.keys(activeFilters).length > 0 || searchInput) && (
-                <button
-                  onClick={clearFilters}
-                  className="text-[12px] text-[#B797FF] hover:underline cursor-pointer"
-                >
-                  Clear all filters
-                </button>
-              )}
-            </div>
-          )}
-
-          {/* List */}
-          {!isLoading && !error && clients.length > 0 && (
-            <div
-              className="space-y-2"
-              style={{
-                opacity: isValidating && !isLoading ? 0.6 : 1,
-                transition: "opacity 0.2s",
-              }}
-            >
-              {clients.map((client) => (
-                <ClientRowCard
-                  key={client._id}
-                  client={client}
-                  onOpen={handleOpen}
-                  onEdit={handleEdit}
-                  onDelete={handleDelete}
-                  onAddToResearch={handleAddToResearch}
-                  onAssignResearch={handleAssignResearch}
-                  onOpenResearch={handleOpenResearch}
-                  onPauseResearch={handlePauseResearch}
-                  onSubmitResearch={handleSubmitResearch}
-                  onUnassignResearch={handleUnassignResearch}
-                />
-              ))}
-            </div>
-          )}
-
-          {empModal && item && empId === item._id && (
-            <AddCLient
-              open={empModal}
-              handleClose={() => setEmpModal(false)}
-              edit={true}
-              editData={item}
-              editEmp={editEmp}
+      <div className="flex flex-col gap-5 w-full lg:w-[calc(65%-10px)]">
+        <DashboardCard
+          title={title.main}
+          accent={title.accent}
+          count={pagination.total}
+          countLabel="clients"
+          icon={<Users className="w-4 h-4" />}
+          isSyncing={isValidating && !isLoading}
+          defaultExpanded={true}
+          defaultWidth="full"
+        >
+          {/* Filter bar */}
+          <div className="px-5 pt-4 pb-3 border-b border-[rgba(127,86,217,0.12)]">
+            <ClientsFilterBar
+              searchInput={searchInput}
+              handleSearchChange={handleSearchChange}
+              commitSearch={commitSearch}
+              activeFilters={activeFilters}
+              setFilter={setFilter}
+              removeFilter={removeFilter}
+              clearFilters={clearFilters}
+              isSearchPending={isSearchPending}
+              total={pagination.total}
+              mutate={mutate}
             />
-          )}
-          {openModal && item && empId === item._id && (
-            <ClientDetails
-              open={openModal}
-              handleClose={() => setOpenModal(false)}
-              item={item}
-            />
-          )}
-          {researchDrawer.open && researchDrawer.client && (
-            <ResearchDrawer
-              open={researchDrawer.open}
-              onOpenChange={(open) =>
-                setResearchDrawer((p) => ({ ...p, open }))
-              }
-              client={researchDrawer.client}
-              onSuccess={() => mutate()}
-            />
-          )}
-        </div>
-
-        {/* Pagination */}
-        {!isLoading && !error && clients.length > 0 && (
-          <div className="px-5 pb-4 pt-1 border-t border-[rgba(127,86,217,0.12)]">
-            <ClientsPagination pagination={pagination} onPageChange={setPage} />
           </div>
-        )}
-      </DashboardCard>
+
+          {/* Client rows */}
+          <div className="px-5 py-4">
+            {/* Loading skeleton */}
+            {isLoading && (
+              <div className="space-y-2.5">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="h-[72px] rounded-[12px] bg-[rgba(35,28,70,0.5)] border border-[rgba(69,44,149,0.2)] animate-pulse"
+                    style={{ animationDelay: `${i * 80}ms` }}
+                  />
+                ))}
+              </div>
+            )}
+
+            {/* Error */}
+            {error && !isLoading && (
+              <div className="flex flex-col items-center justify-center py-10 gap-3">
+                <AlertCircle className="w-9 h-9 text-[#F87171]" />
+                <p className="text-[#FCA5A5] text-sm text-center max-w-sm">
+                  {error.message || "Failed to load clients."}
+                </p>
+                <button
+                  onClick={() => mutate()}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-[10px] text-[13px] font-medium bg-gradient-to-b from-[#9B74F0] to-[#6B42C8] text-white cursor-pointer"
+                >
+                  <RefreshCw className="w-3.5 h-3.5" />
+                  Retry
+                </button>
+              </div>
+            )}
+
+            {/* Empty */}
+            {!isLoading && !error && clients.length === 0 && (
+              <div className="flex flex-col items-center justify-center py-10 gap-3">
+                <Users className="w-10 h-10 text-[#6F618F]" />
+                <p className="text-[#A99BD4] text-sm">
+                  {Object.keys(activeFilters).length > 0 || searchInput
+                    ? "No clients match your filters."
+                    : "No clients found."}
+                </p>
+                {(Object.keys(activeFilters).length > 0 || searchInput) && (
+                  <button
+                    onClick={clearFilters}
+                    className="text-[12px] text-[#B797FF] hover:underline cursor-pointer"
+                  >
+                    Clear all filters
+                  </button>
+                )}
+              </div>
+            )}
+
+            {/* List */}
+            {!isLoading && !error && clients.length > 0 && (
+              <div
+                className="space-y-2"
+                style={{
+                  opacity: isValidating && !isLoading ? 0.6 : 1,
+                  transition: "opacity 0.2s",
+                }}
+              >
+                {clients.map((client) => (
+                  <ClientRowCard
+                    key={client._id}
+                    client={client}
+                    onOpen={handleOpen}
+                    onEdit={handleEdit}
+                    onDelete={handleDelete}
+                    onAddToResearch={handleAddToResearch}
+                    onAssignResearch={handleAssignResearch}
+                    onOpenResearch={handleOpenResearch}
+                    onPauseResearch={handlePauseResearch}
+                    onSubmitResearch={handleSubmitResearch}
+                    onUnassignResearch={handleUnassignResearch}
+                  />
+                ))}
+              </div>
+            )}
+
+            {empModal && item && empId === item._id && (
+              <AddCLient
+                open={empModal}
+                handleClose={() => setEmpModal(false)}
+                edit={true}
+                editData={item}
+                editEmp={editEmp}
+              />
+            )}
+            {openModal && item && empId === item._id && (
+              <ClientDetails
+                open={openModal}
+                handleClose={() => setOpenModal(false)}
+                item={item}
+              />
+            )}
+            {researchDrawer.open && researchDrawer.client && (
+              <ResearchDrawer
+                open={researchDrawer.open}
+                onOpenChange={(open) =>
+                  setResearchDrawer((p) => ({ ...p, open }))
+                }
+                client={researchDrawer.client}
+                onSuccess={() => mutate()}
+              />
+            )}
+          </div>
+
+          {/* Pagination */}
+          {!isLoading && !error && clients.length > 0 && (
+            <div className="px-5 pb-4 pt-1 border-t border-[rgba(127,86,217,0.12)]">
+              <ClientsPagination pagination={pagination} onPageChange={setPage} />
+            </div>
+          )}
+        </DashboardCard>
+
+        <DashboardCard
+          title="Research"
+          accent="pipeline"
+          countLabel="clients"
+          icon={<FlaskConical className="w-4 h-4" />}
+          defaultExpanded={false}
+          defaultWidth="full"
+        >
+          <ResearchClientsCard />
+        </DashboardCard>
+
+        <DashboardCard
+          title="My"
+          accent="tasks"
+          countLabel="open"
+          icon={<ListTodo className="w-4 h-4" />}
+          defaultExpanded={false}
+          defaultWidth="full"
+        >
+          <TasksWidget />
+        </DashboardCard>
+
+        <DashboardCard
+          title="My"
+          accent="files"
+          countLabel="total"
+          icon={<FolderOpen className="w-4 h-4" />}
+          defaultExpanded={false}
+          defaultWidth="full"
+        >
+          <FilesWidget />
+        </DashboardCard>
+      </div>
 
       {/* Drawer — lives outside DashboardCard so it can overlay the full page */}
       <AssignResearchDrawer
@@ -498,15 +536,14 @@ export default function Home() {
       {/* Main */}
       <main className="flex-1 min-w-0 h-full flex flex-col overflow-hidden">
         <Navbar />
-
         <div className="flex-1 overflow-y-auto overflow-x-hidden px-6 py-6">
           <div className="flex flex-row flex-wrap gap-5 items-start">
             {/* ── CARD 1: Clients list — wrapped in Suspense ── */}
             <Suspense fallback={<ClientsCardFallback />}>
               <ClientsCardInner />
-              <ResearchClientsCard />
             </Suspense>
           </div>
+
         </div>
       </main>
     </div>

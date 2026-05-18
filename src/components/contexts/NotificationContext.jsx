@@ -9,6 +9,8 @@ import React, {
   useCallback,
 } from "react";
 import { useToast } from "@/hooks/use-toast";
+import useAuthStore from "@/store/store";
+import { prodPath } from "@/utils/routes";
 
 const NotificationContext = createContext(null);
 
@@ -20,6 +22,8 @@ export const useNotifications = () => {
 
 export const NotificationProvider = ({ children, userId }) => {
   const { toast } = useToast();
+  const authUser = useAuthStore((state) => state.user);
+  const token = authUser?.jwtToken;
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [sseConnected, setSseConnected] = useState(false);
@@ -63,14 +67,14 @@ export const NotificationProvider = ({ children, userId }) => {
   const fetchSseToken = async () => {
     try {
       /*  const res = await apiClient.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/sse-token`,
+        `${prodPath}/sse-token`,
       ); */
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/sse-token`,
+        `${prodPath}/sse-token`,
         {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${userId}`,
+            Authorization: `Bearer ${token}`,
           },
           cache: "no-store",
         },
@@ -91,7 +95,7 @@ export const NotificationProvider = ({ children, userId }) => {
     async (pageToLoad = 1) => {
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/notifications/${userId}?page=${pageToLoad}&limit=10`,
+          `${prodPath}/notifications/${userId}?page=${pageToLoad}&limit=10`,
         );
 
         const data = await res.json();
@@ -134,7 +138,7 @@ export const NotificationProvider = ({ children, userId }) => {
       );
 
       await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/notifications/${id}/read`,
+        `${prodPath}/notifications/${id}/read`,
         {
           method: "PATCH",
         },
@@ -154,7 +158,7 @@ export const NotificationProvider = ({ children, userId }) => {
       setNotifications((prev) => prev.map((n) => ({ ...n, status: "READ" })));
 
       await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/notifications/${userId}/readAll`,
+        `${prodPath}/notifications/${userId}/readAll`,
         {
           method: "PATCH",
         },
@@ -185,7 +189,7 @@ export const NotificationProvider = ({ children, userId }) => {
 
       if (!token) return;
 
-      const url = `${process.env.NEXT_PUBLIC_API_URL}/api/notifications/subscribe/${userId}?sseToken=${token}&tabId=${tabId.current}`;
+      const url = `${prodPath}/notifications/subscribe/${userId}?sseToken=${token}&tabId=${tabId.current}`;
 
       const es = new EventSource(url);
 

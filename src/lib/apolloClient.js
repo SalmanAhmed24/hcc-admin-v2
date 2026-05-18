@@ -14,9 +14,9 @@ const errorLink = onError(({ graphQLErrors, networkError, operation }) => {
     console.error(`Network Error: ${networkError}`);
   }
 });
-
+// process.env.NEXT_PUBLIC_API_URL_GRAPHQL ||
 const httpLink = new HttpLink({
-  uri:   process.env.NEXT_PUBLIC_API_URL_GRAPHQL || "http://localhost:8080/graphql",
+  uri: process.env.NEXT_PUBLIC_API_URL_GRAPHQL ||    "http://localhost:8080/graphql",
   credentials: "include",
 });
 //  
@@ -33,7 +33,7 @@ const authLink = setContext((_, { headers }) => {
   console.log("Auth Link - User:", user);
   
   if (user && user.jwtToken) {
-    token = user.user._id;
+    token = user.jwtToken;
   }
 
 
