@@ -681,7 +681,7 @@ function AddCLient({ open, handleClose, addEmp, edit, editData, editEmp }) {
               />
             </div>
             <div className="flex flex-col gap-2 w-1/3">
-              <label className="font-satoshi text-md">Client Need Category</label>
+              <label className="font-satoshi text-md">Client Category</label>
               <Select
                 options={needCatgoryOpt}
                 value={needCategory}
@@ -694,7 +694,7 @@ function AddCLient({ open, handleClose, addEmp, edit, editData, editEmp }) {
               />
             </div>
             <div className="flex flex-col gap-2 w-1/3">
-              <label className="font-satoshi text-md">Client Need Sub-Category</label>
+              <label className="font-satoshi text-md">Client Sub-Category</label>
               <Select
                 options={needSubCategoryOpt}
                 value={needSubCategory}

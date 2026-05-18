@@ -424,16 +424,16 @@ const ClientFile = ({ open, item }) => {
                 />
               </div>
                 <div className="flex flex-col gap-2 w-1/2">
-                <label className="font-satoshi text-md">File Catagory</label>
+                <label className="font-satoshi text-md">File Category</label>
                 <Select
                     options={fileCategoryOpt}
                     value={fileCategory}
                     onInputChange={handleInputFileCatagory}
                     inputValue={inputFileCatagory}
                     onChange={(e) => setFileCategory(e)}
-                    placeholder="Select File Catagory"
+                    placeholder="Select File Category"
                     styles={customStyles}
-                    id="role-select-cus"
+                    // id="role-select-cus"
                     name="File Catagory"
                   />
               </div>
@@ -451,16 +451,16 @@ const ClientFile = ({ open, item }) => {
                 />
               </div>
               <div className="flex flex-col gap-2 w-1/2">
-                <label className="font-satoshi text-md">created By</label>
+                <label className="font-satoshi text-md">Uploaded By</label>
                 <Select
                     options={createdByOpt}
                     value={createdBy}
                     onInputChange={handleInputCreatedBy}
                     inputValue={inputCreatedBy}
                     onChange={(e) => setCreatedBy(e)}
-                    placeholder="Select Created By"
+                    placeholder="Select Uploaded By"
                     styles={customStyles}
-                    id="role-select-cus"
+                    // id="role-select-cus"
                     name="Created By"
                   />
               </div>
@@ -505,7 +505,7 @@ const ClientFile = ({ open, item }) => {
             <TableHead className="text-[#E1C9FF]" style={{ minWidth: 150 }}>Date</TableHead>
             <TableHead className="text-[#E1C9FF]" style={{ minWidth: 100 }}>Client</TableHead>
             <TableHead className="text-[#E1C9FF]" style={{ minWidth: 100 }}>Note</TableHead>
-            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 100 }}>Created By</TableHead>
+            <TableHead className="text-[#E1C9FF]" style={{ minWidth: 100 }}>Uploaded By</TableHead>
             <TableHead className="text-[#E1C9FF]" >Actions</TableHead>
           </TableRow>
         </TableHeader>

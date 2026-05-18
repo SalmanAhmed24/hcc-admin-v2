@@ -414,18 +414,17 @@ function FileComp({ picklistName }) {
     }
   }, [userId, currentPage, picklistName]);
 
+  const PAGE_SIZE = 50;
+
   const fetchData = async (page = 1) => {
-    // Don't fetch if userId is required but not available
     if ((picklistName === "User Files" || picklistName === "Shared Files") && !userId) {
-      console.log("Waiting for userId...");
       return;
     }
 
     setLoader(true);
     filterOptions();
-    
-    var url = "";
-    
+
+    let url = "";
     if (picklistName === "User Files") {
       url = `${apiPath.prodPath}/api/files/getFileByUser/${userId}`;
     } else if (picklistName === "Shared Files") {
@@ -434,30 +433,19 @@ function FileComp({ picklistName }) {
       url = `${apiPath.prodPath}/api/files/getAllCommonFiles/`;
     }
 
-    await axios
-      .get(url)
-      .then((res) => {
-        if (picklistName === "User Files") {
-          setPicklistData(res.data);
-        } else if (picklistName === "Shared Files") {
-          setPicklistData(res.data);
-          setTotalPages(res.data.pages || 1);
-        } else if (picklistName === "Common Files") {
-          setPicklistData(res.data);
-          setTotalPages(res.data.pages || 1);
-        } else {
-          console.log("No data found");
-        }
-        setLoader(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        Swal.fire({
-          icon: "error",
-          text: "Something went wrong with the data fetching",
-        });
-        setLoader(false);
-      });
+    try {
+      const res = await axios.get(url, { params: { page, limit: PAGE_SIZE } });
+      const payload = res.data;
+      const files = Array.isArray(payload) ? payload : (payload.files || []);
+      const pagination = payload.pagination || {};
+      setPicklistData(files);
+      setTotalPages(pagination.totalPages || 1);
+    } catch (err) {
+      console.error(err);
+      Swal.fire({ icon: "error", text: "Something went wrong with the data fetching" });
+    } finally {
+      setLoader(false);
+    }
   };
 
   function filterOptions() {
@@ -485,56 +473,44 @@ function FileComp({ picklistName }) {
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    
-    // Don't search if userId is required but not available
+
     if ((picklistName === "User Files" || picklistName === "Shared Files") && !userId) {
-      Swal.fire({
-        icon: "warning",
-        text: "Please wait while we load your user information.",
-      });
+      Swal.fire({ icon: "warning", text: "Please wait while we load your user information." });
       return;
     }
 
     if (!filterBy || !searchTerm.trim()) {
-      Swal.fire({
-        icon: "warning",
-        text: "Please select a filter and enter a search term.",
-      });
+      Swal.fire({ icon: "warning", text: "Please select a filter and enter a search term." });
       return;
     }
 
     setLoader(true);
-    
-    var url = "";
 
+    let url = "";
     if (picklistName === "User Files") {
-      url = `${apiPath.prodPath}/api/files/getFileByUser/${userId}?${filterBy}=${searchTerm}`;
+      url = `${apiPath.prodPath}/api/files/getFileByUser/${userId}`;
     } else if (picklistName === "Shared Files") {
-      url = `${apiPath.prodPath}/api/files/getAllSharedFiles/${username}?${filterBy}=${searchTerm}`;
+      url = `${apiPath.prodPath}/api/files/getAllSharedFiles/${username}`;
     } else if (picklistName === "Common Files") {
-      url = `${apiPath.prodPath}/api/files/getAllCommonFiles?${filterBy}=${searchTerm}`;
+      url = `${apiPath.prodPath}/api/files/getAllCommonFiles`;
     }
-    
-    await axios
-      .get(url)
-      .then((res) => {
-        if (picklistName === "User Files") {
-          setPicklistData(res.data);
-        } else if (picklistName === "Shared Files") {
-          setPicklistData(res.data);
-        } else if (picklistName === "Common Files") {
-          setPicklistData(res.data);
-        }
-        setLoader(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        Swal.fire({
-          icon: "error",
-          text: "Something went wrong with the data fetching",
-        });
-        setLoader(false);
+
+    try {
+      const res = await axios.get(url, {
+        params: { [filterBy]: searchTerm, page: 1, limit: PAGE_SIZE },
       });
+      const payload = res.data;
+      const files = Array.isArray(payload) ? payload : (payload.files || []);
+      const pagination = payload.pagination || {};
+      setPicklistData(files);
+      setTotalPages(pagination.totalPages || 1);
+      setCurrentPage(1);
+    } catch (err) {
+      console.error(err);
+      Swal.fire({ icon: "error", text: "Something went wrong with the data fetching" });
+    } finally {
+      setLoader(false);
+    }
   };
 
   const handlePageChange = (event, page) => {
@@ -546,45 +522,7 @@ function FileComp({ picklistName }) {
   };
 
   const refreshData = async (page = 1) => {
-    // Don't refresh if userId is required but not available
-    if ((picklistName === "User Files" || picklistName === "Shared Files") && !userId) {
-      console.log("Waiting for userId...");
-      return;
-    }
-
-    setLoader(true);
-    var url = "";
-    
-    if (picklistName === "User Files") {
-      url = `${apiPath.prodPath}/api/files/getFileByUser/${userId}`;
-    } else if (picklistName === "Shared Files") {
-      url = `${apiPath.prodPath}/api/files/getAllSharedFiles/${username}`;
-    } else if (picklistName === "Common Files") {
-      url = `${apiPath.prodPath}/api/files/getAllCommonFiles/`;
-    }
-
-    await axios
-      .get(url)
-      .then((res) => {
-        if (picklistName === "User Files") {
-          setPicklistData(res.data);
-        } else if (picklistName === "Shared Files") {
-          setPicklistData(res.data);
-        } else if (picklistName === "Common Files") {
-          setPicklistData(res.data);
-        } else {
-          console.log("No data found");
-        }
-        setLoader(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        Swal.fire({
-          icon: "error",
-          text: "Something went wrong with the data fetching",
-        });
-        setLoader(false);
-      });
+    await fetchData(page || currentPage);
   };
 
   const handleFileModal = () => {

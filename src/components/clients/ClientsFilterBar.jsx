@@ -61,14 +61,36 @@ const FILTER_OPTIONS = [
   {
     key: "territory",
     label: "Territory",
-    // These would ideally come from the API. Hardcoded for now.
-    // TODO: Fetch distinct territory values from a /api/clients/filters endpoint
     values: [],
     freeText: true,
   },
   {
     key: "industry",
     label: "Industry",
+    values: [],
+    freeText: true,
+  },
+  {
+    key: "zipCode",
+    label: "Zip Code",
+    values: [],
+    freeText: true,
+  },
+  {
+    key: "city",
+    label: "City",
+    values: [],
+    freeText: true,
+  },
+  {
+    key: "state",
+    label: "State",
+    values: [],
+    freeText: true,
+  },
+  {
+    key: "needCategory",
+    label: "Business Category",
     values: [],
     freeText: true,
   },
@@ -112,7 +134,7 @@ export default function ClientsFilterBar({
           />
           <input
             className="flex-1 bg-transparent outline-none text-[13.5px] text-[#F5F0FF] placeholder:text-[#6F618F]"
-            placeholder="Search by company, name, email, phone…"
+            placeholder="Search by company, name, email, phone, city, zip, category…"
             value={searchInput}
             onChange={(e) => handleSearchChange(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && commitSearch()}

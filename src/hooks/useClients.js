@@ -118,6 +118,10 @@ const FILTER_KEYS = [
   "researchPriority",
   "researchTag",
   "leadInactive",
+  "city",
+  "state",
+  "zipCode",
+  "needCategory",
 ];
 
 /* ─────────────────────────────────────────────────────────────────────
