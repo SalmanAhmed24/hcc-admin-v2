@@ -16,10 +16,10 @@ const errorLink = onError(({ graphQLErrors, networkError, operation }) => {
 });
 // process.env.NEXT_PUBLIC_API_URL_GRAPHQL ||
 const httpLink = new HttpLink({
-  uri: process.env.NEXT_PUBLIC_API_URL_GRAPHQL ||    "http://localhost:8080/graphql",
+  uri: process.env.NEXT_PUBLIC_API_URL_GRAPHQL || "http://localhost:8080/graphql",
   credentials: "include",
 });
-//  
+//   
 
 import  { setContext }  from "@apollo/client/link/context";
 

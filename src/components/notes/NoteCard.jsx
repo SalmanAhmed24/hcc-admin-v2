@@ -20,6 +20,8 @@ import {
   MoreHorizontal,
   Archive,
   Trash2,
+  Building2,
+  Link2,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -132,7 +134,7 @@ const WhiteboardPreviewThumb = () => (
 // ─────────────────────────────────────────────
 // NOTE CARD
 // ─────────────────────────────────────────────
-export default function NoteCard({ note, onDeleted }) {
+export default function NoteCard({ note, onDeleted, onConnectClient }) {
   const router = useRouter();
   const { deleteNote, togglePin, toggleArchive, isDeleting } = useNoteActions(
     note._id
@@ -246,6 +248,18 @@ export default function NoteCard({ note, onDeleted }) {
                     <Archive size={13} />
                     {note.isArchived ? "Unarchive" : "Archive"}
                   </DropdownMenuItem>
+                  {!note.clientRef && onConnectClient && (
+                    <DropdownMenuItem
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onConnectClient(note);
+                      }}
+                      className="gap-2 text-slate-300 focus:text-white focus:bg-white/5"
+                    >
+                      <Link2 size={13} />
+                      Connect to Client
+                    </DropdownMenuItem>
+                  )}
                   <DropdownMenuSeparator style={{ background: "#2a3045" }} />
                   <DropdownMenuItem
                     onClick={handleDelete}
@@ -295,6 +309,16 @@ export default function NoteCard({ note, onDeleted }) {
                 +{note.tags.length - 3}
               </span>
             )}
+          </div>
+        )}
+
+        {/* Client badge */}
+        {note.clientRef && (
+          <div className="flex items-center gap-1.5 mb-2 px-2 py-1 rounded-md" style={{ background: "#0f1824", border: "1px solid #1e3a5f" }}>
+            <Building2 size={11} style={{ color: "#7C3AED" }} />
+            <span className="text-[11px] text-[#B797FF] truncate">
+              {typeof note.clientRef === "object" ? (note.clientRef.clientName || "Client") : "Connected"}
+            </span>
           </div>
         )}
 

@@ -278,9 +278,10 @@ const AddTask = ({ open, handleClose, addTask, edit, editData, editTask }) => {
     <>
       <Drawer
         className="bg-all-modals"
-        anchor="left" 
+        anchor="left"
         open={open}
         onClose={handleClose}
+        sx={{ zIndex: 1300 }}
         PaperProps={{
           sx: {
             width: "1142px",  

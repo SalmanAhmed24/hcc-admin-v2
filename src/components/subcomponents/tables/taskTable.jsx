@@ -19,6 +19,7 @@ import Swal from "sweetalert2";
 import React, { useEffect, useState } from "react";
 import AddTask from "../drawers/addTask";
 import TaskDetails from "../drawers/taskOpen";
+import ConnectClientDrawer from "../drawers/ConnectClientDrawer";
 import useAuthStore from "@/store/store";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -26,6 +27,8 @@ import {
   ChevronLeft,
   ChevronRight,
   CheckCircle2,
+  Building2,
+  Link2,
 } from "lucide-react";
 
 const AVATAR_GRADIENTS = [
@@ -197,6 +200,8 @@ function TaskTable({ open, handleClose, filterBy, searchTerm }) {
   const [taskModal, setTaskModal] = useState(false);
   const [taskId, setTaskId] = useState("");
   const [openModal, setOpenModal] = useState(false);
+  const [connectDrawerOpen, setConnectDrawerOpen] = useState(false);
+  const [connectTaskId, setConnectTaskId] = useState(null);
   const user = useAuthStore((state) => state.user);
   const [taskCreatedBy, setTaskCreatedBy] = useState([]);
   const [pagesCB, setPagesCB] = useState(1);
@@ -454,6 +459,30 @@ function TaskTable({ open, handleClose, filterBy, searchTerm }) {
           )}
         </TableCell>
 
+        {/* Client */}
+        <TableCell>
+          {task.clientRef ? (
+            <div className="modern-owner-cell">
+              <Building2 size={14} style={{ color: "#7C3AED", flexShrink: 0 }} />
+              <span className="modern-owner-name" style={{ fontSize: "12px" }}>
+                {task.client || "Linked"}
+              </span>
+            </div>
+          ) : (
+            <button
+              className="modern-chip chip-violet"
+              style={{ fontSize: "10.5px", gap: 4 }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setConnectTaskId(task._id);
+                setConnectDrawerOpen(true);
+              }}
+            >
+              <Link2 size={11} /> Connect
+            </button>
+          )}
+        </TableCell>
+
         {/* Due date */}
         <TableCell>
           {task.dueDate ? (
@@ -488,6 +517,11 @@ function TaskTable({ open, handleClose, filterBy, searchTerm }) {
                 <DropdownMenuItem onClick={() => handleEdit(task)}>
                   Edit
                 </DropdownMenuItem>
+                {!task.clientRef && (
+                  <DropdownMenuItem onClick={() => { setConnectTaskId(task._id); setConnectDrawerOpen(true); }}>
+                    Connect to Client
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuItem onClick={() => handleDelete(task._id)}>
                   Delete
                 </DropdownMenuItem>
@@ -645,6 +679,7 @@ function TaskTable({ open, handleClose, filterBy, searchTerm }) {
                           <TableHead>Status</TableHead>
                           <TableHead>Priority</TableHead>
                           <TableHead>Owner</TableHead>
+                          <TableHead>Client</TableHead>
                           <TableHead>Due</TableHead>
                           <TableHead style={{ textAlign: "right", paddingRight: 18 }} />
                         </TableRow>
@@ -678,6 +713,7 @@ function TaskTable({ open, handleClose, filterBy, searchTerm }) {
                           <TableHead>Status</TableHead>
                           <TableHead>Priority</TableHead>
                           <TableHead>Owner</TableHead>
+                          <TableHead>Client</TableHead>
                           <TableHead>Due</TableHead>
                           <TableHead style={{ textAlign: "right", paddingRight: 18 }} />
                         </TableRow>
@@ -702,6 +738,14 @@ function TaskTable({ open, handleClose, filterBy, searchTerm }) {
           </Tabs>
         </div>
       </div>
+
+      {/* Connect to Client Drawer */}
+      <ConnectClientDrawer
+        open={connectDrawerOpen}
+        onClose={() => { setConnectDrawerOpen(false); setConnectTaskId(null); }}
+        taskId={connectTaskId}
+        onConnected={() => refreshData()}
+      />
     </>
   );
 }

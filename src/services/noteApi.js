@@ -109,10 +109,11 @@ export const fetchNotesList = async ({
   limit = 20,
   sortBy = "updatedAt",
   archived = false,
+  clientRef = null,
 }) => {
-  const { data } = await apiClient.get(NOTE_ROUTES.list, {
-    params: { createdBy, page, limit, sortBy, archived },
-  });
+  const params = { createdBy, page, limit, sortBy, archived };
+  if (clientRef) params.clientRef = clientRef;
+  const { data } = await apiClient.get(NOTE_ROUTES.list, { params });
   return data; // { success, data: notes[], pagination }
 };
 

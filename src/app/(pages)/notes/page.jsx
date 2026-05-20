@@ -21,7 +21,7 @@
 
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import {
   Plus,
@@ -33,6 +33,7 @@ import {
   Archive,
   X,
   FileText,
+  Building2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -48,6 +49,7 @@ import NoteCard from "@/components/notes/NoteCard";
 import { useNotesList } from "@/hooks/useNotes";
 import { searchNotes } from "@/services/noteApi";
 import useAuthStore from "@/store/store";
+import ConnectClientToNoteDrawer from "@/components/subcomponents/drawers/ConnectClientToNoteDrawer";
 
 // ─────────────────────────────────────────────
 // EMPTY STATE
@@ -122,12 +124,20 @@ export default function NotesListPage() {
   const user = useAuthStore((state) => state.user);
   const currentUserId = user?.user?._id || null;
 
+  // Connect-to-client drawer state
+  const [connectDrawerOpen, setConnectDrawerOpen] = useState(false);
+  const [connectNoteId, setConnectNoteId] = useState(null);
+
+  // Client filter state
+  const [clientFilter, setClientFilter] = useState(null); // { _id, clientName }
+  const [clientFilterDrawerOpen, setClientFilterDrawerOpen] = useState(false);
+
   const searchTimer = useRef(null);
 
   // ── MAIN DATA FETCH ──────────────────────────
   const { notes, pagination, isLoading, mutate } = useNotesList(
     currentUserId,
-    { page, sortBy, archived: showArchived }
+    { page, sortBy, archived: showArchived, clientRef: clientFilter?._id || null }
   );
 
   // ── SEARCH ───────────────────────────────────
@@ -157,7 +167,7 @@ export default function NotesListPage() {
   // Decide which list to display
   const displayNotes = searchResults !== null ? searchResults : notes;
   const isActiveSearch = searchQuery.trim().length > 0;
-  const hasFilters = isActiveSearch || showArchived;
+  const hasFilters = isActiveSearch || showArchived || !!clientFilter;
 
   const handleCreateNote = () => {
     router.push(`/notes/new`);
@@ -241,6 +251,25 @@ export default function NotesListPage() {
             )}
           </div>
 
+          {/* Client filter button */}
+          <Button
+            variant="outline"
+            onClick={() => setClientFilterDrawerOpen(true)}
+            style={{
+              background: clientFilter ? "rgba(127,86,217,0.15)" : "#111520",
+              border: clientFilter ? "1px solid rgba(127,86,217,0.4)" : "1px solid #1e2538",
+              color: clientFilter ? "#B797FF" : "#94a3b8",
+              height: 40,
+              gap: 6,
+              fontSize: "13px",
+            }}
+          >
+            <Building2 size={14} />
+            <span className="hidden sm:block">
+              {clientFilter ? (clientFilter.clientName || "Client") : "Client"}
+            </span>
+          </Button>
+
           {/* Sort + Filter dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -301,7 +330,7 @@ export default function NotesListPage() {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        {(isActiveSearch || showArchived) && (
+        {(isActiveSearch || showArchived || clientFilter) && (
           <div className="flex flex-wrap gap-2 mt-3">
             {isActiveSearch && (
               <span
@@ -343,6 +372,26 @@ export default function NotesListPage() {
                 </button>
               </span>
             )}
+            {clientFilter && (
+              <span
+                className="flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full"
+                style={{
+                  background: "rgba(127,86,217,0.15)",
+                  border: "1px solid rgba(127,86,217,0.4)",
+                  color: "#B797FF",
+                }}
+              >
+                <Building2 size={10} />
+                {clientFilter.clientName || "Client"}
+                <button
+                  type="button"
+                  onClick={() => { setClientFilter(null); setPage(1); }}
+                  className="ml-0.5"
+                >
+                  <X size={10} />
+                </button>
+              </span>
+            )}
           </div>
         )}
       </div>
@@ -365,9 +414,11 @@ export default function NotesListPage() {
               <NoteCard
                 key={note._id}
                 note={note}
-                // entityId={entityId}
-                // entityType={entityType}
                 onDeleted={mutate}
+                onConnectClient={(n) => {
+                  setConnectNoteId(n._id);
+                  setConnectDrawerOpen(true);
+                }}
               />
             ))}
           </div>
@@ -408,6 +459,113 @@ export default function NotesListPage() {
           </div>
         )}
       </div>
+
+      {/* Connect to Client Drawer */}
+      <ConnectClientToNoteDrawer
+        open={connectDrawerOpen}
+        onClose={() => { setConnectDrawerOpen(false); setConnectNoteId(null); }}
+        noteId={connectNoteId}
+        onConnected={() => mutate()}
+      />
+
+      {/* Client Filter Picker — reuses the same drawer but picks a client for filtering */}
+      <ClientFilterDrawer
+        open={clientFilterDrawerOpen}
+        onClose={() => setClientFilterDrawerOpen(false)}
+        onSelect={(client) => {
+          setClientFilter(client);
+          setPage(1);
+          setClientFilterDrawerOpen(false);
+        }}
+      />
     </div>
+  );
+}
+
+// ─── Client Filter Drawer ─────────────────────
+// Minimal inline drawer to pick a client for filtering notes
+import { useSearchClientsForNote } from "@/hooks/useNoteClient";
+import Drawer from "@mui/material/Drawer";
+
+function ClientFilterDrawer({ open, onClose, onSelect }) {
+  const [query, setQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
+  const [fPage, setFPage] = useState(1);
+
+  React.useEffect(() => {
+    const t = setTimeout(() => { setDebouncedQuery(query); setFPage(1); }, 300);
+    return () => clearTimeout(t);
+  }, [query]);
+
+  React.useEffect(() => {
+    if (open) { setQuery(""); setDebouncedQuery(""); setFPage(1); }
+  }, [open]);
+
+  const { clients, pagination, isLoading } = useSearchClientsForNote(debouncedQuery, fPage, 5);
+
+  return (
+    <Drawer
+      anchor="right"
+      open={open}
+      onClose={onClose}
+      PaperProps={{ sx: { width: 400, backgroundColor: "#1E1B38", borderLeft: "1px solid rgba(69,44,149,0.3)" } }}
+    >
+      <div className="flex flex-col h-full">
+        <div className="flex items-center justify-between px-5 pt-5 pb-4 border-b border-[#2D2640]">
+          <div className="flex items-center gap-3">
+            <Building2 className="w-5 h-5 text-[#7C3AED]" />
+            <h2 className="text-lg font-semibold text-white">Filter by Client</h2>
+          </div>
+          <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-[#2D2640] text-gray-500 hover:text-white">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+        <div className="px-5 pt-4 pb-3">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+            <input
+              type="text"
+              placeholder="Search clients..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#0F0A1F] border border-[#2D2640] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-[#7C3AED]"
+              autoFocus
+            />
+          </div>
+        </div>
+        <div className="flex-1 overflow-y-auto px-5 pb-4">
+          {isLoading ? (
+            <div className="flex items-center justify-center py-12"><span className="text-gray-500 text-sm">Searching...</span></div>
+          ) : clients.length === 0 ? (
+            <div className="flex items-center justify-center py-12"><span className="text-gray-500 text-sm">{debouncedQuery ? "No matches" : "Type to search"}</span></div>
+          ) : (
+            <div className="flex flex-col gap-2">
+              {clients.map((c) => (
+                <button
+                  key={c._id}
+                  onClick={() => onSelect(c)}
+                  className="w-full flex items-center gap-3 p-3 rounded-xl border border-[#2D2640] bg-[#0F0A1F] hover:border-[#7C3AED] transition-all text-left"
+                >
+                  <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-[#7C3AED] to-[#4F46E5] flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                    {(c.clientName || "?").slice(0, 2).toUpperCase()}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-white text-sm font-medium truncate">{c.clientName || "Unnamed"}</div>
+                    <div className="text-xs text-gray-500">{[c.city, c.state].filter(Boolean).join(", ")}</div>
+                  </div>
+                </button>
+              ))}
+              {pagination.totalPages > 1 && (
+                <div className="flex items-center justify-center gap-2 pt-2">
+                  <button onClick={() => setFPage(Math.max(1, fPage - 1))} disabled={fPage === 1} className="text-xs text-gray-500 disabled:opacity-40">Prev</button>
+                  <span className="text-xs text-gray-600">{fPage}/{pagination.totalPages}</span>
+                  <button onClick={() => setFPage(Math.min(pagination.totalPages, fPage + 1))} disabled={fPage >= pagination.totalPages} className="text-xs text-gray-500 disabled:opacity-40">Next</button>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    </Drawer>
   );
 }
