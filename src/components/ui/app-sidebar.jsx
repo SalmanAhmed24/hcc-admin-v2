@@ -34,7 +34,7 @@ const NAV = [
     icon: <Users size={18} />,
     children: [
       { label: "Contacts", href: "/contacts", icon: <PeopleOutlineIcon fontSize="small" /> },
-      { label: "Companies", href: "/clients", icon: <Diversity3Icon fontSize="small" /> },
+      { label: "Leads/Clients", href: "/clients", icon: <Diversity3Icon fontSize="small" /> },
     ],
   },
   {

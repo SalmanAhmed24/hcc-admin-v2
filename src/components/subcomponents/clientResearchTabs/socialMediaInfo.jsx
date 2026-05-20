@@ -93,7 +93,7 @@ const SocialMediaInfo = ({item, open}) => {
             icon: "error",
             text: "Something went wrong with the editing Social Media Info",
           });
-          setEditClientTask(false);
+          setEditSocialMedia(false);
         });
 
     }else{
@@ -148,34 +148,8 @@ const SocialMediaInfo = ({item, open}) => {
   };
 
   const handleDelete = async (id) => {
-
-    Swal.fire({
-                  icon: "warning",
-                  text: `Are you sure you want to delete the note`,
-                  showCancelButton: true,
-                  cancelButtonText: "No",
-                  showConfirmButton: true,
-                  confirmButtonText: "Yes",
-                }).then(async (result)=>{
-                  if(result.isConfirmed){
-                    await axios
-                    .patch(`${apiPath.prodPath}/api/clients/deleteClientTask/${item._id}&&${id}`)
-                    .then((res) => {
-                      Swal.fire({
-                        icon: "success",
-                        text: "Client Task Deleted Successfully",
-                      });
-                    })
-                    .catch((err) => {
-                      console.log(err);
-                      Swal.fire({
-                        icon: "error",
-                        text: "Something went wrong with the deleting task",
-                      });
-                    });
-                  setLoader(true);
-                  }
-                })
+    // No-op: social media entries do not support individual deletion
+    Swal.fire({ icon: "info", text: "Delete is not available for this item." });
   }
   
   const handleOpenModal = (item) => {

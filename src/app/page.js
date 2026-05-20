@@ -29,7 +29,8 @@ import ResearchClientsCard from "@/components/clients/ResearchClientsCard";
 import Notifications from "@/components/notifications";
 import TasksWidget from "@/components/dashboardWidgets/TasksWidget";
 import FilesWidget from "@/components/dashboardWidgets/FilesWidget";
-import { ListTodo, FolderOpen, FlaskConical } from "lucide-react";
+import NotesWidget from "@/components/dashboardWidgets/NotesWidget";
+import { ListTodo, FolderOpen, FlaskConical, StickyNote } from "lucide-react";
 
 function DashboardCard({
   title,
@@ -481,6 +482,17 @@ function ClientsCardInner() {
           defaultWidth="full"
         >
           <FilesWidget />
+        </DashboardCard>
+
+        <DashboardCard
+          title="My"
+          accent="notes"
+          countLabel="total"
+          icon={<StickyNote className="w-4 h-4" />}
+          defaultExpanded={false}
+          defaultWidth="full"
+        >
+          <NotesWidget />
         </DashboardCard>
       </div>
 

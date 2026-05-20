@@ -44,12 +44,14 @@ const noteFetcher = ([, id]) => noteApi.fetchNoteById(id);
  * @returns {{ notes, pagination, isLoading, isError, mutate }}
  */
 export const useNotesList = (currentUserId, options = {}) => {
-  const { page = 1, limit = 20, sortBy = "updatedAt", archived = false } = options;
+  const { page = 1, limit = 20, sortBy = "updatedAt", archived = false, clientRef = null } = options;
+
+  const swrKey = currentUserId
+    ? ["notes-list", { createdBy: currentUserId, page, limit, sortBy, archived, ...(clientRef ? { clientRef } : {}) }]
+    : null;
 
   const { data, error, isLoading, mutate: revalidate } = useSWR(
-    currentUserId
-      ? ["notes-list", { createdBy: currentUserId, page, limit, sortBy, archived }]
-      : null,
+    swrKey,
     listFetcher,
     {
       revalidateOnFocus: false,
