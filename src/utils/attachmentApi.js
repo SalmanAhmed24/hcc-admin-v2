@@ -1,8 +1,8 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+const API_BASE_URL =  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 //  
 
 /**
- * Get auth token from storage
+ * Get auth token from storage 
  */
 // const getAuthToken = () => {
 //   // Adjust based on your auth implementation
