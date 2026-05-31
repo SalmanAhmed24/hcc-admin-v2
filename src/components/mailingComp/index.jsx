@@ -20,6 +20,7 @@ import MailingTable from "../subcomponents/tables/mailingTable";
 import ContactListsTable from "../subcomponents/tables/contactListsTable";
 import BulkJobsTable from "../subcomponents/tables/bulkJobsTable";
 import TemplatesTable from "../subcomponents/tables/templatesTable";
+import BulkResearchCampaigns from "../clients/research/BulkResearchCampaigns";
 
 const poppins = Poppins({
   weight: ["300", "400", "500", "600", "800"],
@@ -216,6 +217,7 @@ function MailingComp() {
                 <TabList onChange={(event, newValue) => setBulkSubTab(newValue)} aria-label="bulk email subtabs">
                   <Tab label="Contact Lists" value="0" />
                   <Tab label="Bulk Jobs" value="1" />
+                  <Tab label="Research Campaigns" value="2" />
                 </TabList>
               </Box>
               <TabPanel value="0">
@@ -223,6 +225,9 @@ function MailingComp() {
               </TabPanel>
               <TabPanel value="1">
                 <BulkJobsTable />
+              </TabPanel>
+              <TabPanel value="2">
+                <BulkResearchCampaigns />
               </TabPanel>
             </TabContext>
           </TabPanel>

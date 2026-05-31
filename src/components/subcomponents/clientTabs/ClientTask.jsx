@@ -160,6 +160,11 @@ function AddTaskForm({ clientId, onSuccess, onCancel }) {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div className="flex flex-col gap-1 col-span-2">
+          <label className="text-xs text-gray-400">Task Title</label>
+          <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Task title"
+            className="p-2 border border-[#452C95] rounded-lg bg-[#191526] text-white text-sm focus:outline-none focus:border-violet-500" />
+        </div>
+        <div className="flex flex-col gap-1 col-span-2">
           <label className="text-xs text-gray-400">Description *</label>
           <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="What needs to be done?"
             className="p-2 border border-[#452C95] rounded-lg bg-[#191526] text-white text-sm focus:outline-none focus:border-violet-500" />
@@ -261,6 +266,7 @@ function AssignForm({ task, onSuccess, onCancel }) {
 
 function TaskCard({ task, onOpen, onEdit, onDelete, onAssign }) {
   const [expanded, setExpanded] = useState(false);
+  // const [edit, setEdit] = useState(false);
   const pColor = getPriorityColor(task.taskPriority);
   const sColor = getStatusColor(task.taskStatus);
   const due = formatDue(task.dueDate);
@@ -269,7 +275,7 @@ function TaskCard({ task, onOpen, onEdit, onDelete, onAssign }) {
 
   const handleCardClick = (e) => {
     // Don't open if clicking dropdown, expand button, or other interactive elements
-    if (e.target.closest("[data-dropdown]") || e.target.closest("button")) return;
+    if (e.target.closest("[data-dropdown]") || e.target.closest("button") || e.target.closest("input") || e.target.closest("dropdown")) return;
     onOpen(task);
   };
 
@@ -306,7 +312,9 @@ function TaskCard({ task, onOpen, onEdit, onDelete, onAssign }) {
                   <DropdownMenuItem onClick={() => onOpen(task)} className="gap-2 text-slate-300 focus:text-white focus:bg-white/5">
                     <ExternalLink className="h-3.5 w-3.5" /> Open
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => onEdit(task)} className="gap-2 text-slate-300 focus:text-white focus:bg-white/5">
+                  <DropdownMenuItem onClick={() => {
+                    onEdit(task);
+                    }} className="gap-2 text-slate-300 focus:text-white focus:bg-white/5">
                     <Pencil className="h-3.5 w-3.5" /> Edit
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => onAssign(task)} className="gap-2 text-slate-300 focus:text-white focus:bg-white/5">
@@ -322,6 +330,9 @@ function TaskCard({ task, onOpen, onEdit, onDelete, onAssign }) {
 
           {/* Description */}
           <div className="mt-1.5">
+            <p className={`text-white font-medium text-sm ${completed ? "line-through decoration-gray-600" : ""} ${!expanded ? "line-clamp-2" : ""}`}>
+              {task.taskTitle || (task.taskDescription || "").slice(0, 50) || "Untitled Task"}
+            </p>
             <p className={`text-white font-medium text-sm ${completed ? "line-through decoration-gray-600" : ""} ${!expanded ? "line-clamp-2" : ""}`}>
               {task.taskDescription}
             </p>
@@ -507,7 +518,7 @@ const ClientTask = ({ item, open }) => {
       )}
 
       {/* Task Open Drawer */}
-      {openTaskDrawer && selectedTask && (
+      { !editTaskDrawer && openTaskDrawer && selectedTask && (
         <TaskDetails
           open={openTaskDrawer}
           handleClose={() => { setOpenTaskDrawer(false); setSelectedTask(null); refresh(); }}

@@ -1,10 +1,10 @@
 
 export const apiPath = {
   devPath: "http://localhost:8080",
-  prodPath: process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080",
+  prodPath:  process.env.NEXT_PUBLIC_API_URL ||  "http://localhost:8080",
   prodPath2: "https://google-scraper-inky.vercel.app",
   devpath2: "http://localhost:5000",
-  prodPath3: "https://api-hccbackendcrm.com",
+  prodPath3: "https://api-hccbackendcrm.com" || "http://localhost:5000",
 };
 //   "https://hcc-adam-backend.vercel.app" process.env.NEXT_PUBLIC_API_URL, 
 
@@ -28,7 +28,7 @@ export const apiPath = {
  */
 
 // Your deployed backend base URL (no trailing slash) 
-export const prodPath =  `${process.env.NEXT_PUBLIC_API_URL}/api` || "http://localhost:8080/api";
+export const prodPath =   `${process.env.NEXT_PUBLIC_API_URL}/api` || "http://localhost:8080/api";
 
 // Local development backend (useful to switch quickly) `${process.env.NEXT_PUBLIC_API_URL}/api`
 export const devPath = "http://localhost:8080/api";
@@ -152,4 +152,14 @@ researchReportExport: (id) => `${prodPath}/clients/${id}/research/report/export`
 // POST /:id/seo/history          → append a snapshot
 seoHistory:       (id) => `${prodPath}/clients/${id}/seo/history`,
 seoHistoryAppend: (id) => `${prodPath}/clients/${id}/seo/history`,
+
+// Research-completed clients for bulk flow
+researchCompleted: `${prodPath}/clients/research/completed`,
+};
+
+// ── Email / template endpoints ──────────────────────────────
+
+export const EMAIL_ROUTES = {
+  // GET /api/appGmail/template/:templateId — raw HTML of a local template
+  templateRaw: (templateId) => `${prodPath}/appGmail/template/${templateId}`,
 };
