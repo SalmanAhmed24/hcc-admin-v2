@@ -308,8 +308,8 @@ function ClientsCardInner() {
 
   return (
     <div className="flex flex-col lg:flex-row-reverse gap-4 items-start">
-      <Notifications />
-      <div className="flex flex-col gap-5 w-full lg:w-[calc(65%-10px)]">
+      {/* <Notifications /> */}
+      <div className="flex flex-col gap-5 w-full lg:w-[calc(100%-10px)]">
         <DashboardCard
           title={title.main}
           accent={title.accent}

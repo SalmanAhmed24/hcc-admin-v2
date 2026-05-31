@@ -27,7 +27,7 @@ import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import {
   X, Building2, Globe, BarChart3, MapPin, Key,
   Users2, Target, FileText, Send, CheckCircle2,
-  ChevronRight, Loader2, AlertCircle,
+  ChevronRight, Loader2, AlertCircle, Sparkles,
 } from "lucide-react";
 import { cn } from "@/lib/cn";
 import apiClient from "@/lib/apiClient";
@@ -38,6 +38,7 @@ import TabCompanyInfo      from "./research/tabs/TabCompanyInfo";
 import TabSocialMedia      from "./research/tabs/TabSocialMedia";
 import TabSeoMetrics       from "./research/tabs/TabSeoMetrics";
 import TabLocalSeo         from "./research/tabs/TabLocalSeo";
+import TabGeoUsability     from "./research/tabs/TabGeoUsability";
 import TabKeywords         from "./research/tabs/TabKeywords";
 import TabCompetitors      from "./research/tabs/TabCompetitors";
 import TabOpportunity      from "./research/tabs/TabOpportunity";
@@ -53,6 +54,7 @@ const TABS = [
   { id: "social",      label: "Social media",    icon: Globe,      endpoint: "social",      required: false },
   { id: "seo",         label: "SEO metrics",     icon: BarChart3,  endpoint: "seo",         required: true  },
   { id: "localseo",    label: "Local SEO",       icon: MapPin,     endpoint: "localseo",    required: false },
+  { id: "geousability",label: "GEO & Usability", icon: Sparkles,   endpoint: "geousability",required: false },
   { id: "keywords",    label: "Keywords",        icon: Key,        endpoint: "keywords",    required: true  },
   { id: "competitors", label: "Competitors",     icon: Users2,     endpoint: "competitors", required: false },
   { id: "opportunity", label: "Opportunity",     icon: Target,     endpoint: "opportunity", required: false },
@@ -91,6 +93,7 @@ export default function ResearchDrawer({ open, onOpenChange, client, onSuccess }
           const saved = {};
           if (report.seoMetrics?.authorityScore != null) saved.seo         = true;
           if (report.localSeo?.napConsistency   != null) saved.localseo    = true;
+          if (report.geoUsability?.geoOverallScore != null || report.geoUsability?.usabilityOverallScore != null) saved.geousability = true;
           if (report.topKeywords?.length)                saved.keywords    = true;
           if (report.competitors?.length)                saved.competitors = true;
           if (report.opportunityScore?.overallScore != null) saved.opportunity = true;
@@ -193,12 +196,12 @@ export default function ResearchDrawer({ open, onOpenChange, client, onSuccess }
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
         <Dialog.Overlay
-          className="fixed inset-0 z-40"
-          style={{ background: "rgba(8, 5, 20, 0.72)", backdropFilter: "blur(6px)" }}
+          className="fixed inset-0"
+          style={{ background: "rgba(8, 5, 20, 0.72)", backdropFilter: "blur(6px)", zIndex: 1300 }}
         />
         <Dialog.Content
           className={cn(
-            "fixed top-0 right-0 bottom-0 z-50",
+            "fixed top-0 right-0 bottom-0",
             "flex overflow-hidden",
             "research-drawer",
             // animate in from right
@@ -206,7 +209,7 @@ export default function ResearchDrawer({ open, onOpenChange, client, onSuccess }
             "data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right-0",
             "duration-300"
           )}
-          style={{ width: "min(960px, 96vw)", borderRadius: "16px 0 0 16px", overflow: "hidden" }}
+          style={{ width: "min(960px, 96vw)", borderRadius: "16px 0 0 16px", overflow: "hidden", zIndex: 1301 }}
         >
           {/* Accessible title — visually hidden, required by Radix Dialog */}
           <VisuallyHidden.Root>
@@ -421,6 +424,7 @@ export default function ResearchDrawer({ open, onOpenChange, client, onSuccess }
               {activeTab === "social"      && <TabSocialMedia      {...tabProps} />}
               {activeTab === "seo"         && <TabSeoMetrics       {...tabProps} />}
               {activeTab === "localseo"    && <TabLocalSeo         {...tabProps} />}
+              {activeTab === "geousability" && <TabGeoUsability    {...tabProps} />}
               {activeTab === "keywords"    && <TabKeywords         {...tabProps} />}
               {activeTab === "competitors" && <TabCompetitors      {...tabProps} />}
               {activeTab === "opportunity" && <TabOpportunity      {...tabProps} />}

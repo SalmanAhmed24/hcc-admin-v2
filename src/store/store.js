@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { persist, createJSONStorage } from "zustand/middleware"; // ← add createJSONStorage
 
 const useAuthStore = create(
   persist(
@@ -7,7 +7,8 @@ const useAuthStore = create(
       user: null,
       isLoggedIn: false,
       hasHydrated: false,
-      setHasHydrated: (val) => set({ hasHydrated: val }),  // ← add this action
+
+      setHasHydrated: (val) => set({ hasHydrated: val }),
       login: (userData) => {
         set({ user: { ...userData, loginTime: Date.now() }, isLoggedIn: true });
       },
@@ -29,15 +30,11 @@ const useAuthStore = create(
     }),
     {
       name: "auth-storage",
-      storage: {                                   // ← fix: modern Zustand API
-        getItem: (key) => sessionStorage.getItem(key),
-        setItem: (key, val) => sessionStorage.setItem(key, val),
-        removeItem: (key) => sessionStorage.removeItem(key),
-      },
+      storage: createJSONStorage(() => sessionStorage), // ← only change here
       version: 1,
-      onRehydrateStorage: () => (state) => {       // ← fix: no Promise, use action
+      onRehydrateStorage: () => (state) => {
         state?.checkAuthExpiration();
-        state?.setHasHydrated(true);               // ← this actually works
+        state?.setHasHydrated(true);
       },
     }
   )
