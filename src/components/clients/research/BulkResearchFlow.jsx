@@ -40,6 +40,31 @@ const STEPS = [
 
 const PAGE_SIZE = 10;
 
+// Local server templates available for research campaigns.
+// Each gets a default subject — switching templates resets the subject field.
+const BULK_TEMPLATES = [
+  {
+    id: "website-audit",
+    label: "Website Audit — Digital Discovery",
+    icon: "📊",
+    subject: "{{firstName}}, did you notice these urgent issues on the {{clientName}} website?",
+  },
+  {
+    id: "hcc-proposal-dark",
+    label: "HCC Proposal — Dark",
+    icon: "🌙",
+    subject: "{{firstName}}, your digital growth proposal for {{clientName}} is ready",
+  },
+  {
+    id: "hcc-proposal-light",
+    label: "HCC Proposal — Light",
+    icon: "☀️",
+    subject: "{{firstName}}, your digital growth proposal for {{clientName}} is ready",
+  },
+];
+const DEFAULT_TEMPLATE = BULK_TEMPLATES[0];
+const templateLabel = (id) => BULK_TEMPLATES.find((t) => t.id === id)?.label || "Website Audit";
+
 // ─────────────────────────────────────────────────────────────────────────────
 // STYLES
 // ─────────────────────────────────────────────────────────────────────────────
@@ -672,12 +697,23 @@ function StepConfigure({ config, setConfig }) {
 
         <div>
           <label style={labelStyle}>Template</label>
-          <div style={{ ...inputStyle, color: "#B797FF", cursor: "default", display: "flex", alignItems: "center", gap: 8 }}>
-            Website Audit — Digital Discovery
-            <span style={{ marginLeft: "auto", fontSize: 10, color: "#4ADE80", background: "rgba(74,222,128,0.1)", padding: "2px 8px", borderRadius: 999 }}>Locked</span>
-          </div>
+          <select
+            value={config.templateId}
+            onChange={(e) => {
+              const tpl = BULK_TEMPLATES.find((t) => t.id === e.target.value) || DEFAULT_TEMPLATE;
+              // Switching templates also resets the subject to that template's default
+              setConfig((p) => ({ ...p, templateId: tpl.id, subject: tpl.subject }));
+            }}
+            style={{ ...inputStyle, cursor: "pointer" }}
+          >
+            {BULK_TEMPLATES.map((t) => (
+              <option key={t.id} value={t.id}>{t.icon} {t.label}</option>
+            ))}
+          </select>
           <p style={{ margin: "4px 0 0", fontSize: 11, color: "#6F618F" }}>
-            Template is locked to Website Audit for research campaigns. Each client&apos;s data will auto-fill.
+            Each client&apos;s research data auto-fills the selected template.
+            Proposal templates use the SEOptimer letter grades from the research tab
+            (missing grades fall back to assumed below-average values).
           </p>
         </div>
 
@@ -826,7 +862,7 @@ function StepLaunch({ selectedClients, config, sending }) {
           {sending ? "Launching…" : "Ready to launch"}
         </h3>
         <p style={{ margin: 0, fontSize: 13, color: "#A99BD4", maxWidth: 480, marginInline: "auto", lineHeight: 1.6 }}>
-          {selectedClients.length} personalized research emails will be sent. Each recipient gets the Website Audit template populated with <i>their</i> data. Sends throttle at 50/min via {config.service === "sendgrid" ? "SendGrid" : "Gmail"} to avoid bouncing.
+          {selectedClients.length} personalized research emails will be sent. Each recipient gets the <b style={{ color: "#E1C9FF" }}>{templateLabel(config.templateId)}</b> template populated with <i>their</i> data. Sends throttle at 50/min via {config.service === "sendgrid" ? "SendGrid" : "Gmail"} to avoid bouncing.
         </p>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14, marginTop: 24, maxWidth: 440, marginInline: "auto" }}>
@@ -884,8 +920,9 @@ export default function BulkResearchFlow({ open, onClose }) {
   const user = useAuthStore((state) => state.user);
   const [step, setStep] = useState(1);
   const [config, setConfig] = useState({
-    subject: "{{firstName}}, did you notice these urgent issues on the {{clientName}} website?",
+    subject: DEFAULT_TEMPLATE.subject,
     service: "gmail",
+    templateId: DEFAULT_TEMPLATE.id,
     bodyOverride: "",
     logInteractions: true,
   });
@@ -903,6 +940,10 @@ export default function BulkResearchFlow({ open, onClose }) {
   const hccEmail = user?.user?.hccEmail || "";
   const senderName = `${user?.user?.firstName || ""} ${user?.user?.secondName || ""}`.trim();
   const senderTitle = user?.user?.title || "Business Growth Consultant";
+  const senderInfo = {
+    email: hccEmail || user?.user?.email || "",
+    phone: user?.user?.phone || "",
+  };
 
   const selectedClients = useMemo(
     () => Object.values(selectedMapRef.current),
@@ -918,8 +959,9 @@ export default function BulkResearchFlow({ open, onClose }) {
     bumpSelection();
     setPreviews([]);
     setConfig({
-      subject: "{{firstName}}, did you notice these urgent issues on the {{clientName}} website?",
+      subject: DEFAULT_TEMPLATE.subject,
       service: "gmail",
+      templateId: DEFAULT_TEMPLATE.id,
       bodyOverride: "",
       logInteractions: true,
     });
@@ -944,10 +986,10 @@ export default function BulkResearchFlow({ open, onClose }) {
           try {
             const res = await apiClient.get(`${prodPath}/clients/${client._id}/research/report`);
             const report = res.data?.report || {};
-            const td = buildTemplateData(client, report, senderName, senderTitle);
+            const td = buildTemplateData(client, report, senderName, senderTitle, senderInfo);
             return { client, report, templateData: td };
           } catch {
-            const td = buildTemplateData(client, {}, senderName, senderTitle);
+            const td = buildTemplateData(client, {}, senderName, senderTitle, senderInfo);
             return { client, report: {}, templateData: td };
           }
         })
@@ -973,7 +1015,7 @@ export default function BulkResearchFlow({ open, onClose }) {
 
     setSending(true);
     try {
-      const templateRes = await apiClient.get(`${prodPath}/appGmail/template/website-audit`, { responseType: "text" });
+      const templateRes = await apiClient.get(`${prodPath}/appGmail/template/${config.templateId}`, { responseType: "text" });
       const templateHtml = templateRes.data;
 
       const testClient = selectedClients[0];
@@ -983,7 +1025,7 @@ export default function BulkResearchFlow({ open, onClose }) {
         testReport = rr.data?.report || {};
       } catch {}
 
-      const td = buildTemplateData(testClient, testReport, senderName, senderTitle);
+      const td = buildTemplateData(testClient, testReport, senderName, senderTitle, senderInfo);
 
       const formData = new FormData();
       formData.append("recipients", JSON.stringify([resolvedEmail]));
@@ -1013,8 +1055,8 @@ export default function BulkResearchFlow({ open, onClose }) {
 
     setSending(true);
     try {
-      // 1. Fetch template HTML
-      const templateRes = await apiClient.get(`${prodPath}/appGmail/template/website-audit`, { responseType: "text" });
+      // 1. Fetch the selected template's HTML
+      const templateRes = await apiClient.get(`${prodPath}/appGmail/template/${config.templateId}`, { responseType: "text" });
       const templateHtml = templateRes.data;
 
       // 2. Fetch research for all selected clients
@@ -1036,7 +1078,7 @@ export default function BulkResearchFlow({ open, onClose }) {
       for (const { client, report } of reportResults) {
         if (!client.email) continue;
         recipientEmails.push(client.email);
-        const td = buildTemplateData(client, report, senderName, senderTitle);
+        const td = buildTemplateData(client, report, senderName, senderTitle, senderInfo);
         recipientsData.push({ email: client.email, ...td });
       }
 
@@ -1067,7 +1109,7 @@ export default function BulkResearchFlow({ open, onClose }) {
               ? axios.patch(`${apiPath.prodPath}/api/clients/addClientInteractions/${client._id}`, {
                   interactionCategory: "Research Email Sent",
                   date: new Date().toISOString(),
-                  interactionDescription: `Bulk research email sent to ${client.email} using Website Audit template. Subject: "${config.subject.replace("{{clientName}}", client.clientName)}". Campaign: ${recipientEmails.length} recipients.`,
+                  interactionDescription: `Bulk research email sent to ${client.email} using ${templateLabel(config.templateId)} template. Subject: "${config.subject.replace("{{clientName}}", client.clientName)}". Campaign: ${recipientEmails.length} recipients.`,
                   createdBy: senderName,
                 })
               : Promise.resolve()

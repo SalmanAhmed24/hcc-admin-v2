@@ -12,7 +12,7 @@ import {
   Printer, Download, Edit3, Mail,
   Building2, Globe, BarChart3, MapPin, Key,
   Users2, Target, FileText, Check, Loader2,
-  AlertCircle, ExternalLink, TrendingUp, TrendingDown, Minus, Sparkles,
+  AlertCircle, ExternalLink, TrendingUp, TrendingDown, Minus, Sparkles, Gauge,
 } from "lucide-react";
 import apiClient from "@/lib/apiClient";
 import { CLIENT_ROUTES } from "@/utils/routes";
@@ -32,6 +32,7 @@ const SUB_TABS = [
   { id: "seo",         label: "SEO Metrics",   icon: BarChart3 },
   { id: "localseo",    label: "Local SEO",     icon: MapPin },
   { id: "geousability",label: "GEO & Usability",icon: Sparkles },
+  { id: "seoptimer",   label: "SEOptimer",     icon: Gauge },
   { id: "keywords",    label: "Keywords",      icon: Key },
   { id: "competitors", label: "Competitors",   icon: Users2 },
   { id: "opportunity", label: "Opportunity",   icon: Target },
@@ -61,6 +62,7 @@ function hasData(report, client, tabId) {
     case "seo":         return report?.seoMetrics?.authorityScore != null;
     case "localseo":    return report?.localSeo?.napConsistency != null;
     case "geousability": return report?.geoUsability?.geoOverallScore != null;
+    case "seoptimer":   return !!(report?.seoptimerReport?.overallGrade || report?.seoptimerReport?.onPageSeoGrade || report?.seoptimerReport?.reportFileUrl);
     case "keywords":    return (report?.topKeywords?.length || 0) > 0;
     case "competitors": return (report?.competitors?.length || 0) > 0;
     case "opportunity": return report?.opportunityScore?.overallScore != null;
@@ -361,6 +363,69 @@ function SectionLocalSeo({ report }) {
 
 // ── GEO & Usability (read-only view) ────────────────────────────────────────
 // Shows GEO (AI search visibility) and Usability metrics with overall score badges
+function SectionSeoptimer({ report }) {
+  const so = report?.seoptimerReport || {};
+
+  // SEOptimer letter grades include +/- variants
+  const gradeColor = (grade) => {
+    if (!grade) return "#6B5F8A";
+    const letter = grade[0];
+    if (letter === "A") return "#4ADE80";
+    if (letter === "B") return "#2DD4BF";
+    if (letter === "C") return "#FCD34D";
+    if (letter === "D") return "#FB923C";
+    return "#F87171";
+  };
+
+  const grades = [
+    { label: "Overall Score", value: so.overallGrade },
+    { label: "On-Page SEO",   value: so.onPageSeoGrade },
+    { label: "Usability",     value: so.usabilityGrade },
+    { label: "Performance",   value: so.performanceGrade },
+    { label: "Links",         value: so.linksGrade },
+    { label: "GEO",           value: so.geoGrade },
+  ];
+
+  return (
+    <div>
+      <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.12em", color: "#B797FF", fontWeight: 600, marginBottom: 10 }}>SEOptimer Audit Grades</div>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14, marginBottom: 20 }}>
+        {grades.map(({ label, value }) => (
+          <div key={label} style={{ ...cardStyle, display: "flex", alignItems: "center", gap: 14 }}>
+            <span style={{
+              width: 48, height: 48, borderRadius: "50%",
+              border: `4px solid ${gradeColor(value)}`,
+              display: "flex", alignItems: "center", justifyContent: "center",
+              color: gradeColor(value), fontWeight: 800, fontSize: 17, flexShrink: 0,
+            }}>
+              {value || "—"}
+            </span>
+            <div style={labelStyle}>{label}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Uploaded report file */}
+      {so.reportFileUrl && (
+        <div style={{ ...cardStyle, display: "flex", alignItems: "center", gap: 10 }}>
+          <FileText size={16} style={{ color: "#B797FF" }} />
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={labelStyle}>SEOptimer Report File</div>
+            <div style={{ fontSize: 13, color: "#fff", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+              {so.reportFileName || "report.pdf"}
+              {so.uploadedAt && <span style={{ color: "#6B5F8A", fontSize: 11 }}> · uploaded {new Date(so.uploadedAt).toLocaleDateString()}</span>}
+            </div>
+          </div>
+          <a href={so.reportFileUrl} target="_blank" rel="noreferrer"
+            style={{ display: "inline-flex", alignItems: "center", gap: 5, color: "#B797FF", fontSize: 12.5, textDecoration: "none", fontWeight: 600 }}>
+            View <ExternalLink size={13} />
+          </a>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function SectionGeoUsability({ report }) {
   const gu = report?.geoUsability || {};
 
@@ -711,6 +776,7 @@ export default function ClientResearch({ item, open }) {
       case "seo":         return <SectionSeoMetrics report={report} client={c} />;
       case "localseo":    return <SectionLocalSeo report={report} />;
       case "geousability": return <SectionGeoUsability report={report} />;
+      case "seoptimer":   return <SectionSeoptimer report={report} />;
       case "keywords":    return <SectionKeywords report={report} />;
       case "competitors": return <SectionCompetitors report={report} client={c} />;
       case "opportunity": return <SectionOpportunity report={report} />;

@@ -23,14 +23,29 @@ import { buildTemplateData, countVariableHealth } from "./researchEmailUtils";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-// ── Local template definition ─────────────────────────────────────────────────
-// Template definition — uses website-audit (5-category audit with score circles).
-// The older seo-comparison.html is preserved for future use.
-const LOCAL_TEMPLATE = {
-  id: "website-audit",
-  label: "Website Audit — Digital Discovery",
-  isLocal: true,
-};
+// ── Local template definitions ────────────────────────────────────────────────
+// Server-side templates in server/templates/. The older seo-comparison.html is
+// preserved for future use. Proposal templates use SEOptimer letter grades.
+const LOCAL_TEMPLATES = [
+  { id: "website-audit",      label: "Website Audit — Digital Discovery", icon: "📊" },
+  { id: "hcc-proposal-dark",  label: "HCC Proposal — Dark",               icon: "🌙" },
+  { id: "hcc-proposal-light", label: "HCC Proposal — Light",              icon: "☀️" },
+];
+const LOCAL_TEMPLATE = LOCAL_TEMPLATES[0]; // default
+const LOCAL_TEMPLATE_IDS = new Set(LOCAL_TEMPLATES.map((t) => t.id));
+
+// Subject line builders per local template
+function buildLocalSubject(templateId, client) {
+  const name = client?.clientName || "Your Company";
+  const contacts = client?.contacts || [];
+  const primary = contacts.find((c) => c.isPrimary) || contacts[0] || {};
+  const fn = primary.firstName || name.split(" ")[0] || "there";
+  if (templateId === "website-audit") {
+    return `${fn}, did you notice these urgent issues on the ${name} website?`;
+  }
+  // Proposal templates (dark + light share the subject)
+  return `${fn}, your digital growth proposal for ${name} is ready`;
+}
 
 // ── Recipient chip input ──────────────────────────────────────────────────────
 function ToField({ initialEmail = "", onChange = () => {}, missingEmail = false }) {
@@ -248,9 +263,13 @@ const ResearchEmailDrawer = ({ open, onClose, client, researchData }) => {
   const id = user?.user?._id;
   const senderName = `${user?.user?.firstName || ""} ${user?.user?.secondName || ""}`.trim();
   const senderTitle = user?.user?.title || "Business Growth Consultant";
+  const senderInfo = {
+    email: hccEmail || user?.user?.email || "",
+    phone: user?.user?.phone || "",
+  };
 
-  // Build template data from research
-  const templateData = buildTemplateData(client, researchData, senderName, senderTitle);
+  // Build template data from research (includes SEOptimer proposal vars)
+  const templateData = buildTemplateData(client, researchData, senderName, senderTitle, senderInfo);
 
   // Client email
   const clientEmail = client?.email || "";
@@ -260,12 +279,8 @@ const ResearchEmailDrawer = ({ open, onClose, client, researchData }) => {
   useEffect(() => {
     if (!open) return;
 
-    // Auto-set subject — compute firstName inline since templateData may not be ready yet
-    const name = client?.clientName || "Your Company";
-    const contacts = client?.contacts || [];
-    const primary = contacts.find((c) => c.isPrimary) || contacts[0] || {};
-    const fn = primary.firstName || name.split(" ")[0] || "there";
-    setSubject(`${fn}, did you notice these urgent issues on the ${name} website?`);
+    // Auto-set subject for the default local template
+    setSubject(buildLocalSubject(LOCAL_TEMPLATE.id, client));
 
     // Default to local template
     setTemplateId(LOCAL_TEMPLATE.id);
@@ -333,16 +348,12 @@ const ResearchEmailDrawer = ({ open, onClose, client, researchData }) => {
 
   // ── Handle template switch ──────────────────────────────────────────────
   function handleTemplateChange(value) {
-    if (value === LOCAL_TEMPLATE.id) {
-      setTemplateId(LOCAL_TEMPLATE.id);
+    if (LOCAL_TEMPLATE_IDS.has(value)) {
+      setTemplateId(value);
       setIsLocalTemplate(true);
       setTemplateBody("");
-      // Re-set subject for Website Audit template
-      const name = client?.clientName || "Your Company";
-      const contacts = client?.contacts || [];
-      const primary = contacts.find((c) => c.isPrimary) || contacts[0] || {};
-      const fn = primary.firstName || name.split(" ")[0] || "there";
-      setSubject(`${fn}, did you notice these urgent issues on the ${name} website?`);
+      // Re-set subject for the chosen local template
+      setSubject(buildLocalSubject(value, client));
     } else if (value === "") {
       setTemplateId("");
       setIsLocalTemplate(false);
@@ -358,6 +369,53 @@ const ResearchEmailDrawer = ({ open, onClose, client, researchData }) => {
   const getPreviewHtml = useCallback(() => {
     if (!isLocalTemplate) return templateBody || body || "";
     if (body) return body;
+
+    // ── HCC Proposal preview (dark / light) ──────────────────────────────
+    if (templateId === "hcc-proposal-dark" || templateId === "hcc-proposal-light") {
+      const dark = templateId === "hcc-proposal-dark";
+      const bg      = dark ? "#0a1628" : "#f8fafc";
+      const surface = dark ? "#0f1f3a" : "#ffffff";
+      const tile    = dark ? "#162547" : "#f1f5f9";
+      const text    = dark ? "#e2e8f0" : "#0f172a";
+      const muted   = dark ? "#94a3b8" : "#64748b";
+      const accent  = dark ? "#00d4aa" : "#0891b2";
+      const grades = [
+        { label: "Overall", grade: templateData.propOverallGrade, color: templateData.propOverallColor },
+        { label: "On-Page SEO", grade: templateData.propSeoGrade, color: templateData.propSeoColor },
+        { label: "GEO", grade: templateData.propGeoGrade, color: templateData.propGeoColor },
+        { label: "Links", grade: templateData.propLinksGrade, color: templateData.propLinksColor },
+        { label: "Usability", grade: templateData.propUsabilityGrade, color: templateData.propUsabilityColor },
+        { label: "Performance", grade: templateData.propPerformanceGrade, color: templateData.propPerformanceColor },
+      ];
+      const tiles = grades.map(g => `
+        <td style="text-align:center;width:16%;padding:4px;">
+          <div style="background:${tile};border-radius:10px;padding:12px 4px;">
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:${muted};">${g.label}</div>
+            <div style="font-size:26px;font-weight:800;color:${g.color};margin-top:4px;">${g.grade}</div>
+          </div>
+        </td>
+      `).join("");
+      return `
+        <div style="font-family:Arial,sans-serif;padding:24px;background:${bg};">
+          <div style="max-width:600px;margin:0 auto;background:${surface};border-radius:16px;padding:32px;border:1px solid ${dark ? "#1e3a5f" : "#e2e8f0"};">
+            <div style="text-align:center;">
+              <span style="display:inline-block;border:1px solid ${accent}44;border-radius:100px;padding:5px 14px;font-size:10px;font-weight:600;color:${accent};letter-spacing:1.5px;text-transform:uppercase;">● Digital Growth Proposal</span>
+              <h2 style="margin:18px 0 0;font-size:24px;color:${text};line-height:1.25;">We Build <span style="color:${accent};">Attention Mechanisms</span> for Your Business</h2>
+              <p style="margin:14px 0 2px;font-size:10px;color:${muted};letter-spacing:2px;text-transform:uppercase;">Prepared for</p>
+              <p style="margin:0;font-size:17px;color:${accent};font-weight:700;">${templateData.clientName}</p>
+              <p style="margin:10px 0 0;font-size:11px;color:${muted};">By ${templateData.senderName} · ${templateData.currentDate} · Valid 30 days</p>
+            </div>
+            <div style="margin-top:24px;">
+              <div style="font-size:10px;text-transform:uppercase;letter-spacing:2px;color:${accent};font-weight:600;margin-bottom:8px;">Your Current Score (SEOptimer)</div>
+              <table style="width:100%;border-collapse:collapse;"><tr>${tiles}</tr></table>
+            </div>
+            <div style="margin-top:20px;text-align:center;font-size:11px;color:${muted};">
+              + About HCC · Services · Packages ($700 / $1,240 / $7,000) · Maintenance plans · Contact card
+            </div>
+          </div>
+        </div>
+      `;
+    }
 
     // For the local template, show a simplified preview matching the website-audit
     // 5-category audit layout. The actual template is server-side.
@@ -403,7 +461,7 @@ const ResearchEmailDrawer = ({ open, onClose, client, researchData }) => {
         </div>
       </div>
     `;
-  }, [isLocalTemplate, body, templateBody, templateData]);
+  }, [isLocalTemplate, templateId, body, templateBody, templateData]);
 
   // ── Log interaction after successful send ───────────────────────────────
   async function logInteraction(recipientEmails) {
@@ -413,7 +471,7 @@ const ResearchEmailDrawer = ({ open, onClose, client, researchData }) => {
         {
           interactionCategory: "Research Email Sent",
           date: new Date().toISOString(),
-          interactionDescription: `Research email sent to ${recipientEmails.join(", ")} using ${isLocalTemplate ? "Website Audit" : "custom"} template. Subject: "${subject}". Attachments: ${attachments.length} file(s).`,
+          interactionDescription: `Research email sent to ${recipientEmails.join(", ")} using ${isLocalTemplate ? (LOCAL_TEMPLATES.find((t) => t.id === templateId)?.label || "Website Audit") : "custom"} template. Subject: "${subject}". Attachments: ${attachments.length} file(s).`,
           createdBy: senderName,
         }
       );
@@ -610,7 +668,11 @@ const ResearchEmailDrawer = ({ open, onClose, client, researchData }) => {
                 onChange={(e) => handleTemplateChange(e.target.value)}
                 style={{ ...inputStyle, cursor: "pointer" }}
               >
-                <option value={LOCAL_TEMPLATE.id}>📊 {LOCAL_TEMPLATE.label} (Recommended)</option>
+                {LOCAL_TEMPLATES.map((t, i) => (
+                  <option key={t.id} value={t.id}>
+                    {t.icon} {t.label}{i === 0 ? " (Recommended)" : ""}
+                  </option>
+                ))}
                 <option value="">— No template (custom email) —</option>
                 {templateOptions.map((t) => (
                   <option key={t.value} value={t.value}>{t.label}</option>

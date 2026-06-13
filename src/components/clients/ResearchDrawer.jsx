@@ -27,7 +27,7 @@ import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import {
   X, Building2, Globe, BarChart3, MapPin, Key,
   Users2, Target, FileText, Send, CheckCircle2,
-  ChevronRight, Loader2, AlertCircle, Sparkles,
+  ChevronRight, Loader2, AlertCircle, Sparkles, Gauge,
 } from "lucide-react";
 import { cn } from "@/lib/cn";
 import apiClient from "@/lib/apiClient";
@@ -39,6 +39,7 @@ import TabSocialMedia      from "./research/tabs/TabSocialMedia";
 import TabSeoMetrics       from "./research/tabs/TabSeoMetrics";
 import TabLocalSeo         from "./research/tabs/TabLocalSeo";
 import TabGeoUsability     from "./research/tabs/TabGeoUsability";
+import TabSeoptimer        from "./research/tabs/TabSeoptimer";
 import TabKeywords         from "./research/tabs/TabKeywords";
 import TabCompetitors      from "./research/tabs/TabCompetitors";
 import TabOpportunity      from "./research/tabs/TabOpportunity";
@@ -55,6 +56,7 @@ const TABS = [
   { id: "seo",         label: "SEO metrics",     icon: BarChart3,  endpoint: "seo",         required: true  },
   { id: "localseo",    label: "Local SEO",       icon: MapPin,     endpoint: "localseo",    required: false },
   { id: "geousability",label: "GEO & Usability", icon: Sparkles,   endpoint: "geousability",required: false },
+  { id: "seoptimer",   label: "SEOptimer Report",icon: Gauge,      endpoint: "seoptimer",   required: false },
   { id: "keywords",    label: "Keywords",        icon: Key,        endpoint: "keywords",    required: true  },
   { id: "competitors", label: "Competitors",     icon: Users2,     endpoint: "competitors", required: false },
   { id: "opportunity", label: "Opportunity",     icon: Target,     endpoint: "opportunity", required: false },
@@ -94,6 +96,7 @@ export default function ResearchDrawer({ open, onOpenChange, client, onSuccess }
           if (report.seoMetrics?.authorityScore != null) saved.seo         = true;
           if (report.localSeo?.napConsistency   != null) saved.localseo    = true;
           if (report.geoUsability?.geoOverallScore != null || report.geoUsability?.usabilityOverallScore != null) saved.geousability = true;
+          if (report.seoptimerReport?.overallGrade || report.seoptimerReport?.onPageSeoGrade || report.seoptimerReport?.reportFileUrl) saved.seoptimer = true;
           if (report.topKeywords?.length)                saved.keywords    = true;
           if (report.competitors?.length)                saved.competitors = true;
           if (report.opportunityScore?.overallScore != null) saved.opportunity = true;
@@ -425,6 +428,7 @@ export default function ResearchDrawer({ open, onOpenChange, client, onSuccess }
               {activeTab === "seo"         && <TabSeoMetrics       {...tabProps} />}
               {activeTab === "localseo"    && <TabLocalSeo         {...tabProps} />}
               {activeTab === "geousability" && <TabGeoUsability    {...tabProps} />}
+              {activeTab === "seoptimer"   && <TabSeoptimer        {...tabProps} />}
               {activeTab === "keywords"    && <TabKeywords         {...tabProps} />}
               {activeTab === "competitors" && <TabCompetitors      {...tabProps} />}
               {activeTab === "opportunity" && <TabOpportunity      {...tabProps} />}
