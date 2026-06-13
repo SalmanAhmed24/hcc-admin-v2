@@ -1,12 +1,12 @@
 
 export const apiPath = {
   devPath: "http://localhost:8080",
-  prodPath:  process.env.NEXT_PUBLIC_API_URL ||  "http://localhost:8080",
+  prodPath:     process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080",
   prodPath2: "https://google-scraper-inky.vercel.app",
   devpath2: "http://localhost:5000",
-  prodPath3: "https://api-hccbackendcrm.com" || "http://localhost:5000",
+  prodPath3:  "https://api-hccbackendcrm.com" || "http://localhost:5000",
 };
-//   "https://hcc-adam-backend.vercel.app" process.env.NEXT_PUBLIC_API_URL, 
+//   "https://hcc-adam-backend.vercel.app" process.env.NEXT_PUBLIC_API_URL, "https://api-hccbackendcrm.com" ||
 
 /**  
  * ============================================================
@@ -28,8 +28,8 @@ export const apiPath = {
  */
 
 // Your deployed backend base URL (no trailing slash) 
-export const prodPath =   `${process.env.NEXT_PUBLIC_API_URL}/api` || "http://localhost:8080/api";
-
+export const prodPath =  `${process.env.NEXT_PUBLIC_API_URL}/api` ||  "http://localhost:8080/api";
+//`${process.env.NEXT_PUBLIC_API_URL}/api` ||
 // Local development backend (useful to switch quickly) `${process.env.NEXT_PUBLIC_API_URL}/api`
 export const devPath = "http://localhost:8080/api";
 

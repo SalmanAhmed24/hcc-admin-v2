@@ -106,6 +106,43 @@ const DEFAULTS = {
   performance: 40,   // D
 };
 
+// ── SEOptimer letter-grade helpers (supports +/- variants) ──────────────────
+// Used by the HCC Proposal templates (hcc-proposal-dark / hcc-proposal-light).
+
+// Letter grade → ring/bar color: A=green, B=teal, C=amber, D=orange, F=red
+export function seoptimerGradeColor(grade) {
+  if (!grade) return "#ef4444";
+  const letter = grade[0].toUpperCase();
+  if (letter === "A") return "#10b981";
+  if (letter === "B") return "#2dd4bf";
+  if (letter === "C") return "#f59e0b";
+  if (letter === "D") return "#fb923c";
+  return "#ef4444";
+}
+
+// Letter grade → bar fill percentage for the proposal scorecard
+const GRADE_PCT = {
+  "A+": 98, "A": 95, "A-": 90,
+  "B+": 87, "B": 82, "B-": 78,
+  "C+": 72, "C": 65, "C-": 60,
+  "D+": 55, "D": 48, "D-": 42,
+  "F": 15,
+};
+export function seoptimerGradePct(grade) {
+  return GRADE_PCT[grade] ?? 15;
+}
+
+// Below-average assumed grades when SEOptimer data is missing — keeps every
+// proposal placeholder filled so emails never render with raw {{vars}}.
+const SEOPTIMER_GRADE_DEFAULTS = {
+  onPageSeoGrade:   "D",
+  usabilityGrade:   "F",
+  performanceGrade: "D",
+  linksGrade:       "F",
+  geoGrade:         "F",
+  overallGrade:     "D",
+};
+
 // ── Keys that are allowed to be "0" — they represent numeric metrics, ───────
 // not missing data. countVariableHealth uses this to avoid false "missing".
 const NUMERIC_KEYS = new Set([
@@ -148,11 +185,13 @@ function extractDomain(client) {
  * @param {Object} researchData  — the researchReport subdoc (seoMetrics, competitors, geoUsability, etc.)
  * @param {string} senderName    — current user's full name
  * @param {string} senderTitle   — current user's title
+ * @param {Object} [senderInfo]  — optional { email, phone } for proposal templates
  * @returns {Object}             — flat key-value map of all merge variables
  */
-export function buildTemplateData(client, researchData, senderName, senderTitle) {
+export function buildTemplateData(client, researchData, senderName, senderTitle, senderInfo = {}) {
   const seo = researchData?.seoMetrics || {};
   const geo = researchData?.geoUsability || {};
+  const seoptimer = researchData?.seoptimerReport || {};
   const competitors = researchData?.competitors || [];
 
   // ── Competitor analysis (preserved from original) ─────────────────────
@@ -207,6 +246,28 @@ export function buildTemplateData(client, researchData, senderName, senderTitle)
   // Overall audit score = simple average of 5 categories
   const overallAudit = Math.round((onPageScore + geoScore + linksScoreV + usabScore + perfScore) / 5);
   const overallAuditGrade = letterGrade(overallAudit);
+
+  // ── SEOptimer proposal grades (for hcc-proposal-dark / -light) ────────
+  // Priority: SEOptimer tab value → computed audit grade → assumed default.
+  const propGrades = {
+    onPageSeoGrade:   seoptimer.onPageSeoGrade   || onPageGrade        || SEOPTIMER_GRADE_DEFAULTS.onPageSeoGrade,
+    usabilityGrade:   seoptimer.usabilityGrade   || usabGrade          || SEOPTIMER_GRADE_DEFAULTS.usabilityGrade,
+    performanceGrade: seoptimer.performanceGrade || perfGrade          || SEOPTIMER_GRADE_DEFAULTS.performanceGrade,
+    linksGrade:       seoptimer.linksGrade       || linksGrade         || SEOPTIMER_GRADE_DEFAULTS.linksGrade,
+    geoGrade:         seoptimer.geoGrade         || geoGradeV          || SEOPTIMER_GRADE_DEFAULTS.geoGrade,
+    overallGrade:     seoptimer.overallGrade     || overallAuditGrade  || SEOPTIMER_GRADE_DEFAULTS.overallGrade,
+  };
+
+  // ── Sender contact details (proposal contact card; never empty) ───────
+  const resolvedSenderName = senderName || "Hill Country Coders";
+  const senderEmail = senderInfo.email || "info@hillcountrycoders.com";
+  const senderPhone = senderInfo.phone || "512-265-6331";
+  const senderInitial = (resolvedSenderName[0] || "H").toUpperCase();
+
+  // ── Today's date, e.g. "June 10, 2026" ─────────────────────────────────
+  const currentDate = new Date().toLocaleDateString("en-US", {
+    year: "numeric", month: "long", day: "numeric",
+  });
 
   return {
     // ── Contact / client ────────────────────────────────────────────────
@@ -270,9 +331,33 @@ export function buildTemplateData(client, researchData, senderName, senderTitle)
     overallAuditGrade: overallAuditGrade || "F",
     overallAuditColor: gradeColor(overallAuditGrade),
 
+    // ── SEOptimer Proposal vars (hcc-proposal-dark / -light) ────────────
+    currentDate,
+    propOverallGrade: propGrades.overallGrade,
+    propOverallColor: seoptimerGradeColor(propGrades.overallGrade),
+    propOverallPct: String(seoptimerGradePct(propGrades.overallGrade)),
+    propSeoGrade: propGrades.onPageSeoGrade,
+    propSeoColor: seoptimerGradeColor(propGrades.onPageSeoGrade),
+    propSeoPct: String(seoptimerGradePct(propGrades.onPageSeoGrade)),
+    propGeoGrade: propGrades.geoGrade,
+    propGeoColor: seoptimerGradeColor(propGrades.geoGrade),
+    propGeoPct: String(seoptimerGradePct(propGrades.geoGrade)),
+    propLinksGrade: propGrades.linksGrade,
+    propLinksColor: seoptimerGradeColor(propGrades.linksGrade),
+    propLinksPct: String(seoptimerGradePct(propGrades.linksGrade)),
+    propUsabilityGrade: propGrades.usabilityGrade,
+    propUsabilityColor: seoptimerGradeColor(propGrades.usabilityGrade),
+    propUsabilityPct: String(seoptimerGradePct(propGrades.usabilityGrade)),
+    propPerformanceGrade: propGrades.performanceGrade,
+    propPerformanceColor: seoptimerGradeColor(propGrades.performanceGrade),
+    propPerformancePct: String(seoptimerGradePct(propGrades.performanceGrade)),
+
     // ── Sender (never empty) ────────────────────────────────────────────
-    senderName: senderName || "Hill Country Coders",
+    senderName: resolvedSenderName,
     senderTitle: senderTitle || "Business Growth Consultant",
+    senderEmail,
+    senderPhone,
+    senderInitial,
     bookingLink: "https://calendar.app.google/T8MXTN45ACbcNyJg6",
   };
 }
